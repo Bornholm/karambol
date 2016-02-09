@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+is_php_sup_54=$(php -v | grep -oE "PHP [56789]\.[456789]")
+
+if [ -z "$is_php_sup_54" ]; then
+  echo "Votre version de PHP doit être supérieur à 5.4 si vous souhaitez utiliser le serveur de développement."
+  exit 1
+fi
+
+php -S localhost:8080 -t public public/index.php

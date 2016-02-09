@@ -1,0 +1,8 @@
+debug: true
+
+logger:
+  file: ~
+  level: debug
+
+plugins:
+  - Karambol\ExamplePlugin\ExamplePlugin
