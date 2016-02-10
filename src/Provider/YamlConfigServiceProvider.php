@@ -1,6 +1,6 @@
 <?php
 
-namespace Karambol\Providers;
+namespace Karambol\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;

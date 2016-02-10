@@ -1,15 +1,21 @@
 <?php
 
-namespace Karambol\ExamplePlugin;
+namespace ExamplePlugin;
 
-use Karambol\Interfaces\PluginInterface;
-use Silex\Application;
+use Karambol\Plugin\PluginInterface;
+use Karambol\KarambolApp;
+use ExamplePlugin\Controller\ExampleController;
 
-class ExamplePlugin implements PluginInterface;
+class ExamplePlugin implements PluginInterface
 {
 
-  public function boot(Application $app) {
-    
+  public function boot(KarambolApp $app) {
+
+    $app['twig.path'] = array_merge($app['twig.path'], array(__DIR__.'/views'));
+
+    $exampleCtrl = new ExampleController();
+    $exampleCtrl->setApp($app)->mount();
+
   }
 
 }

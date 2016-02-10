@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+port=$1
 is_php_sup_54=$(php -v | grep -oE "PHP [56789]\.[456789]")
 
 if [ -z "$is_php_sup_54" ]; then
@@ -7,4 +8,4 @@ if [ -z "$is_php_sup_54" ]; then
   exit 1
 fi
 
-php -S localhost:8080 -t public public/index.php
+php -S localhost:${port:-8080} -t public public/index.php

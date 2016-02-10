@@ -2,3 +2,4 @@
 /vendor
 /config.yml
 *.log
+/public/vendor

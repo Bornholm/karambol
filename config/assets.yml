@@ -1,0 +1,3 @@
+assets:
+  - { src: vendor/components/jquery, dest: public/vendor/jquery }
+  - { src: vendor/twbs/bootstrap/dist, dest: public/vendor/bootstrap }
