@@ -6,6 +6,5 @@ use Karambol\KarambolApp;
 
 interface ControllerInterface
 {
-  public function setApp(KarambolApp $app);
-  public function mount();
+  public function mount(KarambolApp $app);
 }

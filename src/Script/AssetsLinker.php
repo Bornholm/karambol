@@ -2,6 +2,7 @@
 
 namespace Karambol\Script;
 
+use Karambol\KarambolApp;
 use Symfony\Component\Yaml\Yaml;
 
 class AssetsLinker
@@ -9,11 +10,10 @@ class AssetsLinker
 
   public static function linkAssets() {
 
-    $baseDir = __DIR__.'/../..';
-    $assetsFile = $baseDir.'/config/assets.yml';
-    $assetsConfig = Yaml::parse(file_get_contents($assetsFile));
+    $app = new KarambolApp();
+    $assets = $app['config']['assets'];
 
-    $assets = $assetsConfig['assets'];
+    $baseDir = __DIR__.'/../';
 
     foreach($assets as $assetItem) {
 

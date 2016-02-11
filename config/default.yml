@@ -1,8 +1,20 @@
+imports:
+  - { resource: assets.yml }
+
 debug: true
 
 logger:
   file: ~
   level: debug
+
+entities:
+  - src/Entity
+
+database:
+  driver: pdo_mysql
+  user: karambol
+  password: ThisIsNotASecret
+  dbname: karambol
 
 plugins:
   - ExamplePlugin\ExamplePlugin

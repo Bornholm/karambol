@@ -2,6 +2,8 @@
 
 namespace Karambol\Controller;
 
+use Karambol\KarambolApp;
+
 class HomeController extends Controller {
 
   public function showHome() {
@@ -11,8 +13,7 @@ class HomeController extends Controller {
     ]);
   }
 
-  public function mount() {
-    $app = $this->getApp();
+  protected function _mount(KarambolApp $app) {
     $app->get('/', array($this, 'showHome'));
   }
 

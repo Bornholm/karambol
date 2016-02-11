@@ -4,6 +4,7 @@ namespace Karambol;
 
 use Silex\Application;
 use Karambol\Provider\YamlConfigServiceProvider;
+use Karambol\Provider\DoctrineORMServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\TwigServiceProvider;
@@ -20,6 +21,7 @@ class KarambolApp extends Application
 
   protected function bootstrapApplication() {
     $this->bootstrapConfig();
+    $this->bootstrapDoctrine();
     $this->bootstrapMonolog();
     $this->bootstrapTwig();
     $this->bootstrapUrlGenerator();
@@ -48,6 +50,13 @@ class KarambolApp extends Application
     // Activate debug
     $this['debug'] = $this['config']['debug'];
 
+  }
+
+  protected function bootstrapDoctrine() {
+    $databaseConfig = $this['config']['database'];
+    $debug = $this['config']['debug'];
+    $config['orm.entities'] = [__DIR__];
+    $this->register(new DoctrineORMServiceProvider($config['orm.entities'], $databaseConfig, $debug));
   }
 
   protected function bootstrapMonolog() {
@@ -105,7 +114,7 @@ class KarambolApp extends Application
   protected function bootstrapControllers() {
 
     $homeCtrl = new Controller\HomeController();
-    $homeCtrl->setApp($this)->mount();
+    $homeCtrl->mount($this);
 
   }
 

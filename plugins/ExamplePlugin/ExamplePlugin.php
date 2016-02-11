@@ -14,7 +14,7 @@ class ExamplePlugin implements PluginInterface
     $app['twig.path'] = array_merge($app['twig.path'], array(__DIR__.'/views'));
 
     $exampleCtrl = new ExampleController();
-    $exampleCtrl->setApp($app)->mount();
+    $exampleCtrl->mount($app);
 
   }
 

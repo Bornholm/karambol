@@ -3,6 +3,7 @@
 namespace ExamplePlugin\Controller;
 
 use Karambol\Controller\Controller;
+use Karambol\KarambolApp;
 
 class ExampleController extends Controller {
 
@@ -11,8 +12,7 @@ class ExampleController extends Controller {
     return $twig->render('example-plugin.html.twig');
   }
 
-  public function mount() {
-    $app = $this->getApp();
+  protected function _mount(KarambolApp $app) {
     $app->get('/example-plugin', array($this, 'showExample'));
   }
 

@@ -8,19 +8,15 @@ abstract class Controller implements ControllerInterface {
 
   protected $app;
 
-  public function setApp(KarambolApp $app) {
-    $this->app = $app;
-    return $this;
-  }
-
-  public function getApp() {
-    return $this->app;
-  }
-
   public function get($service) {
     return $this->app[$service];
   }
 
-  abstract public function mount();
+  public function mount(KarambolApp $app) {
+    $this->app = $app;
+    $this->_mount($app);
+  }
+
+  abstract protected function _mount(KarambolApp $app);
 
 }
