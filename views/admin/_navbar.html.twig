@@ -1,0 +1,19 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#karambol-admin-navbar-collapse" aria-expanded="false">
+        <span class="sr-only">{{ 'admin.navbar.toggle_nav'|trans }}</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ path('admin') }}">{{ 'admin.navbar.brand'|trans }}</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="karambol-admin-navbar-collapse">
+      {{ menu('admin_main') }}
+    </div>
+  </div>
+</nav>

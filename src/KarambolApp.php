@@ -3,13 +3,17 @@
 namespace Karambol;
 
 use Silex\Application;
-use Karambol\Provider\YamlConfigServiceProvider;
-use Karambol\Provider\DoctrineORMServiceProvider;
+use Karambol\Provider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\FormServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Karambol\Controller;
+
 
 class KarambolApp extends Application
 {
@@ -23,9 +27,12 @@ class KarambolApp extends Application
     $this->bootstrapConfig();
     $this->bootstrapDoctrine();
     $this->bootstrapMonolog();
+    $this->bootstrapFormAndValidator();
     $this->bootstrapTwig();
+    $this->bootstrapMenu();
     $this->bootstrapUrlGenerator();
     $this->bootstrapSecurity();
+    $this->bootstrapTranslation();
     $this->bootstrapControllers();
     $this->bootstrapPlugins();
   }
@@ -35,16 +42,11 @@ class KarambolApp extends Application
     $configDir = __DIR__.'/../config';
 
     $defaultConfig = $configDir.'/default.yml';
-    $this->register(new YamlConfigServiceProvider($defaultConfig));
-
-    $hostConfig = $configDir.'/'.gethostname().'.yml';
-    if(file_exists($hostConfig)) {
-      $this->register(new YamlConfigServiceProvider($hostConfig));
-    }
+    $this->register(new Provider\YamlConfigServiceProvider($defaultConfig));
 
     $localConfig = $configDir.'/local.yml';
     if(file_exists($localConfig)) {
-      $this->register(new YamlConfigServiceProvider($localConfig));
+      $this->register(new Provider\YamlConfigServiceProvider($localConfig));
     }
 
     // Activate debug
@@ -56,19 +58,21 @@ class KarambolApp extends Application
     $databaseConfig = $this['config']['database'];
     $debug = $this['config']['debug'];
     $config['orm.entities'] = [__DIR__];
-    $this->register(new DoctrineORMServiceProvider($config['orm.entities'], $databaseConfig, $debug));
+    $this->register(new Provider\DoctrineORMServiceProvider($config['orm.entities'], $databaseConfig, $debug));
   }
 
   protected function bootstrapMonolog() {
-
     $loggerConfig = $this['config']['logger'];
-
     $this->register(new MonologServiceProvider(), [
       'monolog.logfile' => !empty($loggerConfig['file']) ? $loggerConfig['file'] : __DIR__.'/../karambol.log',
       'monolog.level' => !empty($loggerConfig['level']) ? $loggerConfig['level'] : 'debug',
       'monolog.name' => 'karambol',
     ]);
+  }
 
+  protected function bootstrapFormAndValidator() {
+    $this->register(new ValidatorServiceProvider());
+    $this->register(new FormServiceProvider());
   }
 
   protected function bootstrapTwig() {
@@ -76,6 +80,7 @@ class KarambolApp extends Application
     // Init Twig view engine
     $this->register(new TwigServiceProvider(), [
       'twig.path' => [__DIR__.'/../views'],
+      'twig.form.templates' => ['bootstrap_3_layout.html.twig']
     ]);
 
     $this['twig'] = $this->share($this->extend('twig', function($twig, $app) {
@@ -90,6 +95,10 @@ class KarambolApp extends Application
 
     }));
 
+  }
+
+  protected function bootstrapMenu() {
+    $this->register(new Provider\MenuServiceProvider());
   }
 
   protected function bootstrapSecurity() {
@@ -111,10 +120,30 @@ class KarambolApp extends Application
     $this->register(new UrlGeneratorServiceProvider());
   }
 
+  protected function bootstrapTranslation() {
+    $this->register(new TranslationServiceProvider(), [
+      'locale' => 'fr',
+      'locale_fallbacks' => array('en')
+    ]);
+    $this['translator'] = $this->share($this->extend('translator', function($translator) {
+      $translator->addLoader('yaml', new YamlFileLoader());
+      $baseDir = __DIR__.'/../locales';
+      $transFiles = glob($baseDir.'/*.yml');
+      foreach($transFiles as $file) {
+        $lang = basename($file, '.yml');
+        $translator->addResource('yaml', $file, $lang);
+      }
+      return $translator;
+    }));
+  }
+
   protected function bootstrapControllers() {
 
     $homeCtrl = new Controller\HomeController();
     $homeCtrl->mount($this);
+
+    $adminCtrl = new Controller\AdminController();
+    $adminCtrl->mount($this);
 
   }
 

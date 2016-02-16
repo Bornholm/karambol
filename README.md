@@ -16,6 +16,7 @@ touch config/local.yml # Editer/ajouter vos paramètres locaux de configuration 
 php vendor/bin/doctrine orm:schema-tool:create # Création du schema de la BDD
 # ou
 php vendor/bin/doctrine orm:schema-tool:update # Mise à jour du schema de la BDD
+./start-dev-server
 ```
 
 ## Documentation et tutoriels

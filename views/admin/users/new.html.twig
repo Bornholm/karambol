@@ -1,0 +1,10 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <h2>{{ 'admin.users.new_user'|trans }}</h2>
+      {{ form(form) }}
+    </div>
+  </div>
+{% endblock %}

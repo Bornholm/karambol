@@ -1,0 +1,14 @@
+admin:
+  navbar:
+    toggle_nav: Toggle navigation
+    brand: Karambol Admin
+    users: Users
+  users:
+    id: ID
+    email: Email
+    actions: Actions
+    no_users: No users yet.
+    create: Create
+    edit: Edit
+    delete: Delete
+    new_user: New user

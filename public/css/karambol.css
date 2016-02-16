@@ -1,0 +1,12 @@
+.karambol-header {
+  height: 120px;
+}
+
+.karambol-footer {
+  text-align: center;
+}
+
+body.karambol[class^="admin"],
+body.karambol[class*=" admin"] {
+  padding-top: 70px;
+}

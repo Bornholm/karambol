@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block main_content %}
-  Test
+{% block body %}
+  <div class="container">
+    {% block body_header %}
+      {% include 'home/_header.html.twig' %}
+    {% endblock %}
+    {% block body_content %}
+      {% include 'home/_content.html.twig' %}
+    {% endblock %}
+    {% block body_footer %}
+      {% include 'home/_footer.html.twig' %}
+    {% endblock %}
+  </div>
 {% endblock %}

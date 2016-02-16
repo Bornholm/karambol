@@ -1,0 +1,45 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12 clearfix">
+      <div class="pull-right">
+        <a href="{{ path('admin_users_new') }}" class="btn btn-primary">{{ 'admin.users.create'|trans }}</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-hovered">
+          <thead>
+            <tr>
+              <th>{{ 'admin.users.id'|trans }}</th>
+              <th>{{ 'admin.users.email'|trans }}</th>
+              <th>{{ 'admin.users.actions'|trans }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+              <tr>
+                <td>{{user.id}}</td>
+                <td>{{user.email}}</td>
+                <td>
+                  <a href="{{ path('admin_users_edit', {'id': user.id}) }}" class="btn btn-primary">{{ 'admin.users.edit'|trans }}</a>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="3">
+                  <div class="well text-center">
+                    <p>{{ 'admin.users.no_users'|trans }}</p>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </body>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

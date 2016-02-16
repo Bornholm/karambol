@@ -5,31 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     {% block style %}
-      <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css', true) }}">
+      <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
+      <link rel="stylesheet" href="{{ asset('css/karambol.css') }}">
     {% endblock %}
   </head>
-  <body>
-    {% block body %}
-      <div class="container">
-        {% block main_header %}
-        <div class="row">
-          <div class="col-md-12"></div>
-        </div>
-        {% endblock %}
-        {% block main_content %}
-        <div class="row">
-          <div class="col-md-12"></div>
-        </div>
-        {% endblock %}
-        {% block main_footer %}
-        <div class="row">
-          <div class="col-md-12"></div>
-        </div>
-        {% endblock %}
-      </div>
-    {% endblock %}
+  <body class="karambol {{  app.request.attributes.get('_route') }}">
+    {{ block('body') }}
     {% block javascript %}
-      <script type="text/javascript" src="{{ asset('vendor/jquery/jquery.min.js', true) }}"></script>
+      <script type="text/javascript" src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
       <script type="text/javascript" src="{{ asset('vendor/bootstrap/js/bootstrap.min.js', true) }}"></script>
     {% endblock %}
   </body>
