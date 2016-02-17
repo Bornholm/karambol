@@ -12,7 +12,7 @@ class ExampleController extends Controller {
     return $twig->render('example-plugin.html.twig');
   }
 
-  protected function _mount(KarambolApp $app) {
+  public function mount(KarambolApp $app) {
     $app->get('/example-plugin', array($this, 'showExample'));
   }
 

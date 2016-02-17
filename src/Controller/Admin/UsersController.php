@@ -1,17 +1,14 @@
 <?php
 
-namespace Karambol\Controller;
+namespace Karambol\Controller\Admin;
 
 use Karambol\KarambolApp;
+use Karambol\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class AdminController extends Controller {
-
-  public function showAdminIndex() {
-    $twig = $this->get('twig');
-    return $twig->render('admin/index.html.twig');
-  }
+class UsersController extends Controller {
 
   public function showUsersIndex() {
     $twig = $this->get('twig');
@@ -38,16 +35,16 @@ class AdminController extends Controller {
     ]);
   }
 
-  protected function _mount(KarambolApp $app) {
-    $app->get('/admin', array($this, 'showAdminIndex'))->bind('admin');
+  public function mount(KarambolApp $app) {
     $app->get('/admin/users', array($this, 'showUsersIndex'))->bind('admin_users');
     $app->get('/admin/users/new', array($this, 'showUsersNew'))->bind('admin_users_new');
-    $this->composeMainMenu();
+    $app->post('/admin/users/new', array($this, 'handleUserForm'))->bind('admin_users_new_handler');
   }
 
   protected function getUserForm($user = null) {
 
     $formFactory = $this->get('form.factory');
+    $urlGen = $this->get('url_generator');
 
     if($user === null) {
       $user = [];
@@ -60,19 +57,11 @@ class AdminController extends Controller {
         'choices' => array(1 => 'male', 2 => 'female'),
         'expanded' => true
       ))
+      ->add('submit', SubmitType::class)
+      ->setAction($urlGen->generate('admin_users_new_handler'))
+      ->setMethod('POST')
       ->getForm()
     ;
-
-  }
-
-  protected function composeMainMenu() {
-
-    $menu = $this->get('menu');
-
-    $menu->additem('admin_main', [
-      'label' => 'admin.navbar.users',
-      'route' => 'admin_users'
-    ]);
 
   }
 

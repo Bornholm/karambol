@@ -9,8 +9,12 @@ class AssetsLinker
 {
 
   public static function linkAssets() {
-
     $app = new KarambolApp();
+    self::linkVendorAssets($app);
+  }
+
+  public static function linkVendorAssets(KarambolApp $app) {
+
     $assets = $app['config']['assets'];
 
     $baseDir = __DIR__.'/../';

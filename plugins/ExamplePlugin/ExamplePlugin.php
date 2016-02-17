@@ -9,7 +9,7 @@ use ExamplePlugin\Controller\ExampleController;
 class ExamplePlugin implements PluginInterface
 {
 
-  public function boot(KarambolApp $app) {
+  public function boot(KarambolApp $app, array $options) {
 
     $app['twig.path'] = array_merge($app['twig.path'], array(__DIR__.'/views'));
 

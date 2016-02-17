@@ -12,11 +12,11 @@ abstract class Controller implements ControllerInterface {
     return $this->app[$service];
   }
 
-  public function mount(KarambolApp $app) {
+  public function bindTo(KarambolApp $app) {
     $this->app = $app;
-    $this->_mount($app);
+    $this->mount($app);
   }
 
-  abstract protected function _mount(KarambolApp $app);
+  abstract public function mount(KarambolApp $app);
 
 }

@@ -4,7 +4,8 @@ namespace Karambol\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Karambol\Service\MenuService;
+use Karambol\Menu\MenuService;
+use Karambol\Menu\MenuEvent;
 
 class MenuServiceProvider implements ServiceProviderInterface
 {
@@ -17,10 +18,14 @@ class MenuServiceProvider implements ServiceProviderInterface
       $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
         $twig->addFunction(new \Twig_SimpleFunction('menu', function ($menuName) use ($app) {
+          $menu = $app['menu']->getMenu($menuName);
+          $eventName = MenuService::getMenuEvent($menuName);
+          $event = new MenuEvent($menuName, $menu);
+          $app['menu']->dispatch($eventName, $event);
           return $app['twig']->render('menus/'.$menuName.'.html.twig', [
-            'items' => $app['menu']->getItems($menuName)
+            'items' => $menu->getItems()
           ]);
-        }, ['is_safe' => ['html']]));
+        }, ['is_safe' => ['html', 'js']]));
 
         return $twig;
 

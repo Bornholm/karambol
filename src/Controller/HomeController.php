@@ -13,7 +13,7 @@ class HomeController extends Controller {
     ]);
   }
 
-  protected function _mount(KarambolApp $app) {
+  public function mount(KarambolApp $app) {
     $app->get('/', array($this, 'showHome'))->bind('homepage');
   }
 

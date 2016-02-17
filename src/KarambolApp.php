@@ -13,6 +13,8 @@ use Silex\Provider\FormServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Karambol\Controller;
+use Karambol\Listener\AdminMenuListener;
+use Karambol\Menu\MenuService;
 
 
 class KarambolApp extends Application
@@ -68,6 +70,10 @@ class KarambolApp extends Application
       'monolog.level' => !empty($loggerConfig['level']) ? $loggerConfig['level'] : 'debug',
       'monolog.name' => 'karambol',
     ]);
+    $this['monolog'] = $this->share($this->extend('monolog', function($monolog, $app) {
+      $monolog->pushHandler(new \Monolog\Handler\ErrorLogHandler());
+      return $monolog;
+    }));
   }
 
   protected function bootstrapFormAndValidator() {
@@ -98,7 +104,18 @@ class KarambolApp extends Application
   }
 
   protected function bootstrapMenu() {
+
+    // Register menu service
     $this->register(new Provider\MenuServiceProvider());
+
+    // Init default menu listeners
+    $adminMenuListener = new AdminMenuListener();
+
+    $this['menu']->addListener(
+      MenuService::getMenuEvent('admin_main'),
+      [$adminMenuListener, 'onMainMenuRender']
+    );
+
   }
 
   protected function bootstrapSecurity() {
@@ -139,11 +156,16 @@ class KarambolApp extends Application
 
   protected function bootstrapControllers() {
 
+    // Homepage controllers
     $homeCtrl = new Controller\HomeController();
-    $homeCtrl->mount($this);
+    $homeCtrl->bindTo($this);
 
-    $adminCtrl = new Controller\AdminController();
-    $adminCtrl->mount($this);
+    // Admin controllers
+    $adminCtrl = new Controller\Admin\AdminController();
+    $adminCtrl->bindTo($this);
+
+    $adminUsersCtrl = new Controller\Admin\UsersController();
+    $adminUsersCtrl->bindTo($this);
 
   }
 
@@ -152,10 +174,15 @@ class KarambolApp extends Application
     $plugins = $this['config']['plugins'];
     $logger = $this['monolog'];
 
-    foreach($plugins as $pluginClass) {
-      $logger->addDebug(sprintf('Load plugin "%s"', $pluginClass));
-      $plugin = new $pluginClass();
-      $plugin->boot($this);
+    foreach($plugins as $pluginId => $pluginInfo) {
+      if( isset($pluginInfo['class']) ) {
+        $logger->addDebug(sprintf('Load plugin "%s" with class %s', $pluginId, $pluginInfo['class']));
+        $pluginClass = $pluginInfo['class'];
+        $plugin = new $pluginClass();
+        $plugin->boot($this, isset($pluginInfo['options']) ? $pluginInfo['options'] : []);
+      } else {
+        $logger->addWarning(sprintf('Cannot load plugin "%s". No class specified', $pluginId));
+      }
     }
 
   }

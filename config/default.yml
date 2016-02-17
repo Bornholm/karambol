@@ -17,4 +17,7 @@ database:
   dbname: karambol
 
 plugins:
-  - ExamplePlugin\ExamplePlugin
+  example_plugin:
+    class: ExamplePlugin\ExamplePlugin
+    options:
+  auth_cas:
