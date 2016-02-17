@@ -12,3 +12,4 @@ admin:
     edit: Edit
     delete: Delete
     new_user: New user
+    add_attribute: Add attribute

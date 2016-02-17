@@ -12,6 +12,10 @@ abstract class Controller implements ControllerInterface {
     return $this->app[$service];
   }
 
+  public function redirect($url, $status = 302) {
+    return $this->app->redirect($url, $status);
+  }
+
   public function bindTo(KarambolApp $app) {
     $this->app = $app;
     $this->mount($app);

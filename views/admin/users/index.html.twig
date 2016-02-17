@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-12 clearfix">
       <div class="pull-right">
-        <a href="{{ path('admin_users_new') }}" class="btn btn-primary">{{ 'admin.users.create'|trans }}</a>
+        <a href="{{ path('admin_users_user_new') }}" class="btn btn-primary">{{ 'admin.users.create'|trans }}</a>
       </div>
     </div>
   </div>
@@ -23,9 +23,9 @@
             {% for user in users %}
               <tr>
                 <td>{{user.id}}</td>
-                <td>{{user.email}}</td>
+                <td>{{user.get('email')}}</td>
                 <td>
-                  <a href="{{ path('admin_users_edit', {'id': user.id}) }}" class="btn btn-primary">{{ 'admin.users.edit'|trans }}</a>
+                  <a href="{{ path('admin_users_user_edit', {'userId': user.id}) }}" class="btn btn-primary">{{ 'admin.users.edit'|trans }}</a>
                 </td>
               </tr>
             {% else %}
