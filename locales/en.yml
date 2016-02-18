@@ -10,6 +10,12 @@ admin:
     no_users: No users yet.
     create: Create
     edit: Edit
-    delete: Delete
+    edit_user: User "%name%"
+    delete_user: Delete user
+    save_user: Save user
     new_user: New user
     add_attribute: Add attribute
+    remove_attribute: Remove attribute
+    attribute_name: Name
+    attribute_value: Value
+    user_attributes: Attributes

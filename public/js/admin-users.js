@@ -7,18 +7,18 @@ $(function() {
   var $newAttrValue = $('#new-attribute-value');
   var newAttributeTemplate = $('#new-attribute-template').prop('content');
 
-  $attributesHolder.data('index', $attributesHolder.find(':input').length/2);
+  $attributesHolder.data('index', Math.floor($attributesHolder.find(':input').length/2));
 
   $addAttribute.on('click', function(evt) {
     evt.preventDefault();
     var index = $attributesHolder.data('index') || 0;
     var $clone = $(document.importNode(newAttributeTemplate, true));
     $clone.find('td:nth-child(1) input')
-      .attr('name', 'form[attributes]['+index+'][name]')
+      .attr('name', 'user[attributes]['+index+'][name]')
       .val($newAttrName.val())
     ;
     $clone.find('td:nth-child(2) input')
-      .attr('name', 'form[attributes]['+index+'][value]')
+      .attr('name', 'user[attributes]['+index+'][value]')
       .val($newAttrValue.val())
     ;
     $newAttrName.val('');

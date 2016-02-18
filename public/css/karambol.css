@@ -10,3 +10,7 @@ body.karambol[class^="admin"],
 body.karambol[class*=" admin"] {
   padding-top: 70px;
 }
+
+.karambol-inline {
+  display: inline-block;
+}

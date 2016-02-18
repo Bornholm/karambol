@@ -85,7 +85,7 @@ class KarambolApp extends Application
 
     // Init Twig view engine
     $this->register(new TwigServiceProvider(), [
-      'twig.path' => [__DIR__.'/../views'],
+      'twig.path' => [__DIR__.'/views'],
       'twig.form.templates' => ['bootstrap_3_layout.html.twig']
     ]);
 

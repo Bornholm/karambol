@@ -9,6 +9,7 @@ use Karambol\Entity\UserAttribute;
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
+ * @ORM\HasLifecycleCallbacks
  */
 class User {
 
@@ -48,15 +49,15 @@ class User {
     return $attribute ? $attribute->getValue() : $defaultValue;
   }
 
-  public function addAttribute($attribute) {
+  public function addAttribute(UserAttribute $attribute) {
     $attribute->setUser($this);
     $this->attributes->add($attribute);
     return $this;
   }
 
-  public function removeAttribute($attribute) {
+  public function removeAttribute(UserAttribute $attribute) {
     $attribute->setUser(null);
-    $this->attributes->remove($attribute);
+    $this->attributes->removeElement($attribute);
     return $this;
   }
 
@@ -64,7 +65,7 @@ class User {
     return $this->attributes;
   }
 
-  public function setAttributes($attributes) {
+  public function setAttributes(ArrayCollection $attributes) {
     $this->attributes = $attributes;
     return $this;
   }

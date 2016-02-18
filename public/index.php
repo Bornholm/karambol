@@ -7,6 +7,9 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 
 require_once __DIR__.'/../vendor/autoload.php';
 
+use Symfony\Component\HttpFoundation\Request;
+Request::enableHttpMethodParameterOverride();
+
 $app = new Karambol\KarambolApp();
 
 $app->run();
