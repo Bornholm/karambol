@@ -7,13 +7,13 @@ use Karambol\Controller\Controller;
 
 class AdminController extends Controller {
 
+  public function mount(KarambolApp $app) {
+    $app->get('/admin', array($this, 'showAdminIndex'))->bind('admin');
+  }
+
   public function showAdminIndex() {
     $twig = $this->get('twig');
     return $twig->render('admin/index.html.twig');
-  }
-
-  public function mount(KarambolApp $app) {
-    $app->get('/admin', array($this, 'showAdminIndex'))->bind('admin');
   }
 
 }

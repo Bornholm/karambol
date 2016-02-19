@@ -12,6 +12,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class UsersController extends Controller {
 
+  public function mount(KarambolApp $app) {
+    $app->get('/admin/users', [$this, 'showUsersIndex'])->bind('admin_users');
+    $app->get('/admin/users/new', [$this, 'showNewUserForm'])->bind('admin_user_new');
+    $app->get('/admin/users/{userId}', [$this, 'showUserEditForm'])->bind('admin_user_edit');
+    $app->delete('/admin/users/{userId}', [$this, 'handleUserDelete'])
+      ->value('userId', '')
+      ->bind('admin_user_delete')
+    ;
+    $app->post('/admin/users/{userId}', [$this, 'handleUserUpsert'])
+      ->value('userId', '')
+      ->bind('admin_user_upsert')
+    ;
+  }
+
   public function showUsersIndex() {
     $twig = $this->get('twig');
     $orm = $this->get('orm');
@@ -109,20 +123,6 @@ class UsersController extends Controller {
     $urlGen = $this->get('url_generator');
     return $this->redirect($urlGen->generate('admin_users'));
 
-  }
-
-  public function mount(KarambolApp $app) {
-    $app->get('/admin/users', [$this, 'showUsersIndex'])->bind('admin_users');
-    $app->get('/admin/users/new', [$this, 'showNewUserForm'])->bind('admin_user_new');
-    $app->get('/admin/users/{userId}', [$this, 'showUserEditForm'])->bind('admin_user_edit');
-    $app->delete('/admin/users/{userId}', [$this, 'handleUserDelete'])
-      ->value('userId', '')
-      ->bind('admin_user_delete')
-    ;
-    $app->post('/admin/users/{userId}', [$this, 'handleUserUpsert'])
-      ->value('userId', '')
-      ->bind('admin_user_upsert')
-    ;
   }
 
   protected function getUserDeleteForm($userId) {

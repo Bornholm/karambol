@@ -167,6 +167,9 @@ class KarambolApp extends Application
     $adminUsersCtrl = new Controller\Admin\UsersController();
     $adminUsersCtrl->bindTo($this);
 
+    $adminRulesCtrl = new Controller\Admin\RulesController();
+    $adminRulesCtrl->bindTo($this);
+
   }
 
   protected function bootstrapPlugins() {

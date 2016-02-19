@@ -19,6 +19,13 @@ php vendor/bin/doctrine orm:schema-tool:update # Mise à jour du schema de la BD
 ./start-dev-server
 ```
 
+## Lancer les tests
+
+```bash
+cd karambol
+./vendor/bin/phpunit tests
+```
+
 ## Documentation et tutoriels
 
 Voir [ici](./doc)

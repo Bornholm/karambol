@@ -3,6 +3,7 @@ admin:
     toggle_nav: Toggle navigation
     brand: Karambol Admin
     users: Users
+    rules: Rules
   users:
     id: ID
     email: Email
