@@ -15,7 +15,7 @@ cd karambol
 touch config/local.yml # Editer/ajouter vos paramètres locaux de configuration en vous basant sur le fichier default.yml
 php vendor/bin/doctrine orm:schema-tool:create # Création du schema de la BDD
 # ou
-php vendor/bin/doctrine orm:schema-tool:update # Mise à jour du schema de la BDD
+php vendor/bin/doctrine orm:schema-tool:update --force # Mise à jour du schema de la BDD
 ./start-dev-server
 ```
 

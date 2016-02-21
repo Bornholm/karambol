@@ -61,6 +61,25 @@ class RuleSet implements RuleInterface {
 
   }
 
+  public function getOptions() {
+
+    $rules = $this->getRules();
+
+    $rulesOptions = [];
+    foreach($rules as $rule) {
+      $rulesOptions[] = [
+        'class' => get_class($rule),
+        'options' => $rule->getOptions()
+      ];
+    }
+
+    return [
+      'operator' => $this->getOperator(),
+      'rules' => $rulesOptions
+    ];
+    
+  }
+
   public function test($subject) {
 
     $rules = $this->getRules();

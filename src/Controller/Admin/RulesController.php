@@ -4,8 +4,11 @@ namespace Karambol\Controller\Admin;
 
 use Karambol\KarambolApp;
 use Karambol\Controller\Controller;
-use Karambol\Form\Type\PersistentRuleSetType;
+use Karambol\Form\Type\RuleSetType;
+use Karambol\Form\Model\RuleSetModel;
 use Karambol\Entity\PersistentRuleSet;
+use Karambol\Entity\PersistentRule;
+use Karambol\RuleEngine\Rule\PropertyTestRule;
 
 class RulesController extends Controller {
 
@@ -28,7 +31,16 @@ class RulesController extends Controller {
 
     if($set === null) $set = new PersistentRuleSet();
 
-    $formBuilder = $formFactory->createBuilder(PersistentRuleSetType::class, $set);
+    $persistentRule = new PersistentRule();
+    $rule = new PropertyTestRule();
+    $persistentRule->setInternalRule($rule);
+    $set->addRule($persistentRule);
+
+    $model = RuleSetModel::fromPersistentRuleSet($set);
+
+    dump($model);
+
+    $formBuilder = $formFactory->createBuilder(RuleSetType::class, $model);
     $action = $urlGen->generate('admin_rules');
 
     return $formBuilder->setAction($action)

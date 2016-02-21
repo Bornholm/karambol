@@ -57,6 +57,14 @@ class PropertyTestRule implements RuleInterface {
     }
   }
 
+  public function getOptions() {
+    return [
+      'propertyPath' => $this->getPropertyPath(),
+      'comparator' => $this->getComparator(),
+      'criteria' => $this->getCriteria()
+    ];
+  }
+
   public function test($subject) {
 
     $criteria = $this->getCriteria();

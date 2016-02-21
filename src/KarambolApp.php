@@ -35,6 +35,7 @@ class KarambolApp extends Application
     $this->bootstrapUrlGenerator();
     $this->bootstrapSecurity();
     $this->bootstrapTranslation();
+    $this->bootstrapRuleEngine();
     $this->bootstrapControllers();
     $this->bootstrapPlugins();
   }
@@ -152,6 +153,10 @@ class KarambolApp extends Application
       }
       return $translator;
     }));
+  }
+
+  protected function bootstrapRuleEngine() {
+    
   }
 
   protected function bootstrapControllers() {
