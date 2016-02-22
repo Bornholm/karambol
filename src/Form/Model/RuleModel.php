@@ -2,12 +2,13 @@
 
 namespace Karambol\Form\Model;
 
-use Karambol\Entity\PersistentRuleSet;
+use Karambol\Entity\PersistentRule;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class RuleModel {
 
   public static function fromPersistentRule(PersistentRule $ruleset) {
+    $model = new RuleModel();
     return $model;
   }
 

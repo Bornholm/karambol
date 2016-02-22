@@ -9,21 +9,27 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Karambol\Entity\PersistentRule;
+use Karambol\RuleEngine\Rule\PropertyTestRule;
 
 class RuleType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-      $builder->add('comparator');
-      $builder->add('comparator');
-    }
+      $builder->add('propertyPath', Type\TextType::class, [
 
-    public function preSetDataHandler(FormEvent $event) {
-
-      $form = $event->getForm();
-      $rule = $event->getData();
-
+      ]);
+      $builder->add('comparator', Type\ChoiceType::class, [
+        'choices' => [
+          'rules.comparator.lt' => PropertyTestRule::LT,
+          'rules.comparator.lte' => PropertyTestRule::LTE,
+          'rules.comparator.eq' => PropertyTestRule::EQ,
+          'rules.comparator.gt' => PropertyTestRule::GT,
+          'rules.comparator.gte' => PropertyTestRule::GTE,
+          'rules.comparator.match' => PropertyTestRule::MATCH
+        ]
+      ]);
+      $builder->add('criteria');
     }
 
     public function configureOptions(OptionsResolver $resolver)
