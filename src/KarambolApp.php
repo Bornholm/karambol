@@ -31,6 +31,7 @@ class KarambolApp extends Application
     $this->bootstrapMonolog();
     $this->bootstrapFormAndValidator();
     $this->bootstrapTwig();
+    $this->bootstrapTheme();
     $this->bootstrapMenu();
     $this->bootstrapUrlGenerator();
     $this->bootstrapSecurity();
@@ -102,6 +103,18 @@ class KarambolApp extends Application
 
     }));
 
+  }
+
+
+  protected function bootstrapTheme() {
+    // Register theme service
+    $this->register(new Provider\ThemeServiceProvider());
+    $themeListener = new Listener\ThemeListener($this);
+    $this['theme']->addListener(
+      Theme\ThemeService::THEME_CHANGE,
+      [$themeListener, 'onThemeChange']
+    );
+    $this['theme']->setSelectedTheme(null);
   }
 
   protected function bootstrapMenu() {

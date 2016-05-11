@@ -1,14 +1,9 @@
 imports:
   - { resource: assets.yml }
+  - { resource: plugins.yml }
+  - { resource: '../themes/yeti/config.yml' }
 
 debug: true
-
-logger:
-  file: ~
-  level: debug
-
-entities:
-  - src/Entity
 
 database:
   driver: pdo_mysql
@@ -16,8 +11,13 @@ database:
   password: ThisIsNotASecret
   dbname: karambol
 
-plugins:
-  example_plugin:
-    class: ExamplePlugin\ExamplePlugin
-    options:
-  auth_cas:
+theme:
+  availableThemes: [yeti]
+  defaultTheme: yeti
+
+logger:
+  file: ~
+  level: debug
+
+entities:
+  - src/Entity

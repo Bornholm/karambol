@@ -3,3 +3,4 @@
 /config/local.yml
 *.log
 /public/vendor
+/public/themes

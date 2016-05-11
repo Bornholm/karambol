@@ -1,0 +1,5 @@
+plugins:
+  example_plugin:
+    class: ExamplePlugin\ExamplePlugin
+    options:
+  auth_cas:
