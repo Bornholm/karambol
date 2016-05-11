@@ -10,20 +10,16 @@ Portail Web extensible
 ## Démarrer à partir des sources
 
 ```bash
-cd karambol
-./composer install
-touch config/local.yml # Editer/ajouter vos paramètres locaux de configuration en vous basant sur le fichier default.yml
-php vendor/bin/doctrine orm:schema-tool:create # Création du schema de la BDD
-# ou
-php vendor/bin/doctrine orm:schema-tool:update --force # Mise à jour du schema de la BDD
-./start-dev-server
+script/bootstrap
+# Compléter le fichier config/local.yml en vous basant sur config/default.yml
+# pour indiquer les informations de connexion à votre base de données
+script/setup
 ```
 
 ## Lancer les tests
 
 ```bash
-cd karambol
-./vendor/bin/phpunit tests
+./script/test
 ```
 
 ## Documentation et tutoriels

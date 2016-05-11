@@ -86,7 +86,7 @@ class KarambolApp extends Application
 
     // Init Twig view engine
     $this->register(new TwigServiceProvider(), [
-      'twig.path' => [__DIR__.'/views'],
+      'twig.path' => [__DIR__.'/Views'],
       'twig.form.templates' => ['bootstrap_3_layout.html.twig']
     ]);
 
@@ -156,7 +156,7 @@ class KarambolApp extends Application
   }
 
   protected function bootstrapRuleEngine() {
-    
+
   }
 
   protected function bootstrapControllers() {
@@ -171,9 +171,6 @@ class KarambolApp extends Application
 
     $adminUsersCtrl = new Controller\Admin\UsersController();
     $adminUsersCtrl->bindTo($this);
-
-    $adminRulesCtrl = new Controller\Admin\RulesController();
-    $adminRulesCtrl->bindTo($this);
 
   }
 

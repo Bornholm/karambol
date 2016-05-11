@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+PORT=$1
+
+php -S localhost:${PORT:-8080} -t "$DIR/../public" "$DIR/../public/index.php"

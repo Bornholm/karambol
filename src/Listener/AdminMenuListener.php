@@ -16,11 +16,6 @@ class AdminMenuListener {
       'route' => 'admin_users'
     ]);
 
-    $menu->addItem([
-      'label' => 'admin.navbar.rules',
-      'route' => 'admin_rules'
-    ]);
-
   }
 
 }

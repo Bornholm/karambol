@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+COMPOSER="$DIR/../composer"
+
+PHP_SUP_54=$(php -v | grep -oE "PHP [56789]\.[456789]")
+
+if [ -z "$PHP_SUP_54" ]; then
+  echo "Votre version de PHP doit être supérieur à 5.4."
+  exit 1
+fi
+
+$COMPOSER install
+
+
+# Editer/ajouter vos paramètres locaux de configuration en vous basant sur le fichier default.yml
+
+LOCAL_CONFIG="$DIR/../config/local.yml"
+if [ ! -e "$LOCAL_CONFIG" ]; then
+  echo "-> Creating local configuration file..."
+  touch "$LOCAL_CONFIG"
+fi
