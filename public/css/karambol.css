@@ -14,3 +14,8 @@ body.karambol[class*=" admin"] {
 .karambol-inline {
   display: inline-block;
 }
+
+.navbar-brand>img {
+  display: inline-block;
+  margin-top: -5px;
+}

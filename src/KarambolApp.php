@@ -29,6 +29,7 @@ class KarambolApp extends Application
     $this->bootstrapConfig();
     $this->bootstrapDoctrine();
     $this->bootstrapMonolog();
+    $this->bootstrapRuleEngine();
     $this->bootstrapFormAndValidator();
     $this->bootstrapTwig();
     $this->bootstrapTheme();
@@ -169,7 +170,8 @@ class KarambolApp extends Application
   }
 
   protected function bootstrapRuleEngine() {
-
+    // Register rule engine service
+    $this->register(new Provider\RuleEngineServiceProvider());
   }
 
   protected function bootstrapControllers() {
@@ -194,12 +196,12 @@ class KarambolApp extends Application
 
     foreach($plugins as $pluginId => $pluginInfo) {
       if( isset($pluginInfo['class']) ) {
-        $logger->addDebug(sprintf('Load plugin "%s" with class %s', $pluginId, $pluginInfo['class']));
+        $logger->debug(sprintf('Load plugin "%s" with class %s', $pluginId, $pluginInfo['class']));
         $pluginClass = $pluginInfo['class'];
         $plugin = new $pluginClass();
         $plugin->boot($this, isset($pluginInfo['options']) ? $pluginInfo['options'] : []);
       } else {
-        $logger->addWarning(sprintf('Cannot load plugin "%s". No class specified', $pluginId));
+        $logger->warn(sprintf('Cannot load plugin "%s". No class specified', $pluginId));
       }
     }
 

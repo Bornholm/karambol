@@ -1,0 +1,7 @@
+<ul class="nav navbar-nav">
+  {% for item in items %}
+    <li class="{{item.route is defined and item.route == app.request.get('_route') ? 'active' }}">
+      <a href="{{ item.route is defined ? path(item.route) : item.url }}">{{ item.label | trans }}</a>
+    </li>
+  {% endfor %}
+</li>
