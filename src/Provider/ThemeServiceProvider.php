@@ -1,0 +1,26 @@
+<?php
+
+namespace Karambol\Provider;
+
+use Silex\Application;
+use Silex\ServiceProviderInterface;
+use Karambol\Theme\ThemeService;
+
+class ThemeServiceProvider implements ServiceProviderInterface
+{
+
+    public function register(Application $app) {
+
+      $themeConfig = $app['config']['theme'];
+
+      $app['theme'] = new ThemeService(
+        __DIR__.'/../../themes',
+        $themeConfig['availableThemes'],
+        $themeConfig['defaultTheme']
+      );
+
+    }
+
+    public function boot(Application $app) {}
+
+}

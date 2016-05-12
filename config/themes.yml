@@ -1,0 +1,6 @@
+imports:
+  - { resource: ../themes/yeti/config.yml }
+
+theme:
+  availableThemes: [yeti]
+  defaultTheme: yeti

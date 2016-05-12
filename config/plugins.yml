@@ -1,0 +1,8 @@
+imports:
+  - { resource: ../plugins/ExamplePlugin/config.yml }
+
+plugins:
+  example_plugin:
+    class: ExamplePlugin\ExamplePlugin
+    options:
+  auth_cas:

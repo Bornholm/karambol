@@ -19,6 +19,8 @@ class AssetsLinker
     $logger = $app['monolog'];
     $baseDir = __DIR__.'/../..';
 
+    $logger->info('Linking assets...');
+
     foreach($assets as $assetItem) {
 
       $src = $baseDir.'/'.$assetItem['src'];

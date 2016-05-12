@@ -10,9 +10,9 @@ Portail Web extensible
 ## Démarrer à partir des sources
 
 ```bash
+# Vérification des dépendances système et génération du fichier de configuration local
 script/bootstrap
-# Compléter le fichier config/local.yml en vous basant sur config/default.yml
-# pour indiquer les informations de connexion à votre base de données
+# Vérification de la connexion à la base de données et mise à jour si nécessaire
 script/setup
 ```
 

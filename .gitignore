@@ -3,3 +3,6 @@
 /config/local.yml
 *.log
 /public/vendor
+/public/themes
+/config/local.d/*
+!/config/local.d/.gitkeep

@@ -1,13 +1,13 @@
 <?php
 
-namespace Karambol\Listener;
+namespace Karambol\Menu;
 
 use Karambol\KarambolApp;
 use Karambol\Menu\MenuEvent;
 
-class AdminMenuListener {
+class MenuListener {
 
-  public function onMainMenuRender(MenuEvent $event) {
+  public function onMenuRender(MenuEvent $event) {
 
     $menu = $event->getMenu();
 

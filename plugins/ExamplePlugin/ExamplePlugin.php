@@ -11,10 +11,10 @@ class ExamplePlugin implements PluginInterface
 
   public function boot(KarambolApp $app, array $options) {
 
-    $app['twig.path'] = array_merge($app['twig.path'], array(__DIR__.'/views'));
+    $app['twig.path'] = array_merge($app['twig.path'], array(__DIR__.'/Views'));
 
     $exampleCtrl = new ExampleController();
-    $exampleCtrl->mount($app);
+    $exampleCtrl->bindTo($app);
 
   }
 

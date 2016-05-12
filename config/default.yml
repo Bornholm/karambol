@@ -1,7 +1,14 @@
 imports:
-  - { resource: assets.yml }
+  - { resource: plugins.yml }
+  - { resource: themes.yml }
 
 debug: true
+
+database:
+  driver: pdo_mysql
+  user: karambol
+  password: ThisIsNotASecret
+  dbname: karambol
 
 logger:
   file: ~
@@ -10,14 +17,6 @@ logger:
 entities:
   - src/Entity
 
-database:
-  driver: pdo_mysql
-  user: karambol
-  password: ThisIsNotASecret
-  dbname: karambol
-
-plugins:
-  example_plugin:
-    class: ExamplePlugin\ExamplePlugin
-    options:
-  auth_cas:
+assets:
+  - { src: vendor/components/jquery, dest: public/vendor/jquery }
+  - { src: vendor/twbs/bootstrap/dist, dest: public/vendor/bootstrap }
