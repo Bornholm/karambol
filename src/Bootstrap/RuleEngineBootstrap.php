@@ -5,7 +5,6 @@ namespace Karambol\Bootstrap;
 use Karambol\KarambolApp;
 use Karambol\Provider;
 use Karambol\RuleEngine\RuleEngine;
-use Silex\Provider\MonologServiceProvider;
 
 class RuleEngineBootstrap implements BootstrapInterface {
 
