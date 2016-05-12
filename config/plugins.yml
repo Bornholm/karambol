@@ -1,3 +1,6 @@
+imports:
+  - { resource: ../plugins/ExamplePlugin/config.yml }
+
 plugins:
   example_plugin:
     class: ExamplePlugin\ExamplePlugin

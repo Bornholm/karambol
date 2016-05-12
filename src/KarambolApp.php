@@ -49,8 +49,8 @@ class KarambolApp extends Application
     $defaultConfig = $configDir.'/default.yml';
     $this->register(new Provider\YamlConfigServiceProvider($defaultConfig));
 
-    $localConfig = $configDir.'/local.yml';
-    if(file_exists($localConfig)) {
+    $locals = glob($configDir.'/local.d/*.yml');
+    foreach($locals as $localConfig) {
       $this->register(new Provider\YamlConfigServiceProvider($localConfig));
     }
 

@@ -1,7 +1,6 @@
 imports:
-  - { resource: assets.yml }
   - { resource: plugins.yml }
-  - { resource: '../themes/yeti/config.yml' }
+  - { resource: themes.yml }
 
 debug: true
 
@@ -11,13 +10,13 @@ database:
   password: ThisIsNotASecret
   dbname: karambol
 
-theme:
-  availableThemes: [yeti]
-  defaultTheme: yeti
-
 logger:
   file: ~
   level: debug
 
 entities:
   - src/Entity
+
+assets:
+  - { src: vendor/components/jquery, dest: public/vendor/jquery }
+  - { src: vendor/twbs/bootstrap/dist, dest: public/vendor/bootstrap }

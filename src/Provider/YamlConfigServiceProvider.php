@@ -15,15 +15,15 @@ class YamlConfigServiceProvider implements ServiceProviderInterface
     }
 
     public function register(Application $app) {
-        $config = Yaml::parse(file_get_contents($this->file));
-        if (is_array($config)) {
-            $this->importSearch($config, $app);
-            if (isset($app['config']) && is_array($app['config'])) {
-                $app['config'] = array_replace_recursive($app['config'], $config);
-            } else {
-                $app['config'] = $config;
-            }
+      $config = Yaml::parse(file_get_contents($this->file));
+      if (is_array($config)) {
+        $this->importSearch($config, $app);
+        if (isset($app['config']) && is_array($app['config'])) {
+          $app['config'] = array_replace_recursive($app['config'], $config);
+        } else {
+          $app['config'] = $config;
         }
+      }
     }
 
     /**
@@ -33,22 +33,21 @@ class YamlConfigServiceProvider implements ServiceProviderInterface
      *   The result of Yaml::parse().
      */
     public function importSearch(&$config, $app) {
-        foreach ($config as $key => $value) {
-            if ($key == 'imports') {
-                foreach ($value as $resource) {
-                    $base_dir = str_replace(basename($this->file), '', $this->file);
-                    $new_config = new YamlConfigServiceProvider($base_dir . $resource['resource']);
-                    $new_config->register($app);
-                }
-                unset($config['imports']);
-            }
+      foreach ($config as $key => $value) {
+        if ($key == 'imports') {
+          foreach ($value as $resource) {
+            $baseDir = str_replace(basename($this->file), '', $this->file);
+            $newConfig = new YamlConfigServiceProvider($baseDir . $resource['resource']);
+            $newConfig->register($app);
+          }
+          unset($config['imports']);
         }
+      }
     }
 
-    public function boot(Application $app) {
-    }
+    public function boot(Application $app) {}
 
     public function getConfigFile() {
-        return $this->file;
+      return $this->file;
     }
 }
