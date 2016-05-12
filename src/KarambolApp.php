@@ -4,7 +4,6 @@ namespace Karambol;
 
 use Silex\Application;
 use Karambol\Provider;
-use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
@@ -15,7 +14,7 @@ use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Karambol\Controller;
 use Karambol\Listener\AdminMenuListener;
 use Karambol\Menu\MenuService;
-
+use Karambol\Bootstrap;
 
 class KarambolApp extends Application
 {
@@ -26,10 +25,19 @@ class KarambolApp extends Application
   }
 
   protected function bootstrapApplication() {
-    $this->bootstrapConfig();
-    $this->bootstrapDoctrine();
-    $this->bootstrapMonolog();
-    $this->bootstrapRuleEngine();
+
+    $configBootstrap = new Bootstrap\ConfigBootstrap();
+    $configBootstrap->bootstrap($this);
+
+    $doctrineBootstrap = new Bootstrap\DoctrineBootstrap();
+    $doctrineBootstrap->bootstrap($this);
+
+    $monologBootstrap = new Bootstrap\MonologBootstrap();
+    $monologBootstrap->bootstrap($this);
+
+    $ruleEngineBootstrap = new Bootstrap\RuleEngineBootstrap();
+    $ruleEngineBootstrap->bootstrap($this);
+
     $this->bootstrapFormAndValidator();
     $this->bootstrapTwig();
     $this->bootstrapTheme();
@@ -37,46 +45,8 @@ class KarambolApp extends Application
     $this->bootstrapUrlGenerator();
     $this->bootstrapSecurity();
     $this->bootstrapTranslation();
-    $this->bootstrapRuleEngine();
     $this->bootstrapControllers();
     $this->bootstrapPlugins();
-  }
-
-  protected function bootstrapConfig() {
-
-    $configDir = __DIR__.'/../config';
-
-    $defaultConfig = $configDir.'/default.yml';
-    $this->register(new Provider\YamlConfigServiceProvider($defaultConfig));
-
-    $locals = glob($configDir.'/local.d/*.yml');
-    foreach($locals as $localConfig) {
-      $this->register(new Provider\YamlConfigServiceProvider($localConfig));
-    }
-
-    // Activate debug
-    $this['debug'] = $this['config']['debug'];
-
-  }
-
-  protected function bootstrapDoctrine() {
-    $databaseConfig = $this['config']['database'];
-    $debug = $this['config']['debug'];
-    $config['orm.entities'] = [__DIR__];
-    $this->register(new Provider\DoctrineORMServiceProvider($config['orm.entities'], $databaseConfig, $debug));
-  }
-
-  protected function bootstrapMonolog() {
-    $loggerConfig = $this['config']['logger'];
-    $this->register(new MonologServiceProvider(), [
-      'monolog.logfile' => !empty($loggerConfig['file']) ? $loggerConfig['file'] : __DIR__.'/../karambol.log',
-      'monolog.level' => !empty($loggerConfig['level']) ? $loggerConfig['level'] : 'debug',
-      'monolog.name' => 'karambol',
-    ]);
-    $this['monolog'] = $this->share($this->extend('monolog', function($monolog, $app) {
-      $monolog->pushHandler(new \Monolog\Handler\ErrorLogHandler());
-      return $monolog;
-    }));
   }
 
   protected function bootstrapFormAndValidator() {
@@ -167,11 +137,6 @@ class KarambolApp extends Application
       }
       return $translator;
     }));
-  }
-
-  protected function bootstrapRuleEngine() {
-    // Register rule engine service
-    $this->register(new Provider\RuleEngineServiceProvider());
   }
 
   protected function bootstrapControllers() {
