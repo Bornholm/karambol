@@ -4,7 +4,6 @@ namespace Karambol\Bootstrap;
 
 use Karambol\KarambolApp;
 use Karambol\Provider;
-use Karambol\Listener;
 use Karambol\Theme;
 
 class ThemeBootstrap implements BootstrapInterface {
@@ -14,7 +13,7 @@ class ThemeBootstrap implements BootstrapInterface {
     // Register theme service
     $app->register(new Provider\ThemeServiceProvider());
 
-    $themeListener = new Listener\ThemeListener($app);
+    $themeListener = new Theme\ThemeListener($app);
     $app['theme']->addListener(
       Theme\ThemeService::THEME_CHANGE,
       [$themeListener, 'onThemeChange']

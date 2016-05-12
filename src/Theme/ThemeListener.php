@@ -1,6 +1,6 @@
 <?php
 
-namespace Karambol\Listener;
+namespace Karambol\Theme;
 
 use Karambol\KarambolApp;
 use Karambol\Theme\ThemeChangeEvent;

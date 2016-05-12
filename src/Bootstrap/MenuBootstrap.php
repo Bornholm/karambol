@@ -5,7 +5,6 @@ namespace Karambol\Bootstrap;
 use Karambol\KarambolApp;
 use Karambol\Provider;
 use Karambol\Menu;
-use Karambol\Listener;
 
 class MenuBootstrap implements BootstrapInterface {
 
@@ -15,11 +14,11 @@ class MenuBootstrap implements BootstrapInterface {
     $app->register(new Provider\MenuServiceProvider());
 
     // Init default menu listeners
-    $adminMenuListener = new Listener\AdminMenuListener();
+    $menuListener = new Menu\MenuListener();
 
     $app['menu']->addListener(
       Menu\MenuService::getMenuEvent('admin_main'),
-      [$adminMenuListener, 'onMainMenuRender']
+      [$menuListener, 'onMainMenuRender']
     );
 
   }

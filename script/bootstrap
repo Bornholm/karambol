@@ -14,11 +14,10 @@ fi
 
 $COMPOSER install
 
-
 # Editer/ajouter vos paramètres locaux de configuration en vous basant sur le fichier default.yml
 
 LOCAL_CONFIG="$DIR/../config/local.d/local.yml"
 if [ ! -e "$LOCAL_CONFIG" ]; then
-  echo "-> Creating local configuration file..."
+  echo "-> Création du fichier de configuration local "$LOCAL_CONFIG"..."
   touch "$LOCAL_CONFIG"
 fi
