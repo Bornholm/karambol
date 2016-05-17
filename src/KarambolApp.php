@@ -19,6 +19,7 @@ class KarambolApp extends Application
       'Karambol\Bootstrap\DoctrineBootstrap',
       'Karambol\Bootstrap\MonologBootstrap',
       'Karambol\Bootstrap\RuleEngineBootstrap',
+      'Karambol\Bootstrap\SessionBootstrap',
       'Karambol\Bootstrap\FormBootstrap',
       'Karambol\Bootstrap\TwigBootstrap',
       'Karambol\Bootstrap\ThemeBootstrap',

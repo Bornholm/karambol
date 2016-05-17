@@ -1,7 +1,7 @@
 admin:
   navbar:
     toggle_nav: Toggle navigation
-    brand: Karambol Admin
+    brand: KarAdmin
     users: Users
     rules: Rules
   users:
@@ -20,3 +20,22 @@ admin:
     attribute_name: Name
     attribute_value: Value
     user_attributes: Attributes
+auth:
+  login_title: Login
+  login_submit: Connect
+  username: Username
+  password: Password
+menus:
+  admin:
+    admin: Admin
+    users: Users
+    pages: Pages
+    rules:
+      rules: Rules
+      roles: Roles
+      menus: Menus
+    plugins: Plugins
+    configuration: Configuration
+  logout: Logout
+  login: Login
+  home: Home

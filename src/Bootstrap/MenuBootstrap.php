@@ -14,11 +14,11 @@ class MenuBootstrap implements BootstrapInterface {
     $app->register(new Provider\MenuServiceProvider());
 
     // Init default menu listeners
-    $menuListener = new Menu\MenuListener();
+    $menuListener = new Menu\MenuListener($app);
 
     $app['menu']->addListener(
-      Menu\MenuService::getMenuEvent('admin_main'),
-      [$menuListener, 'onMainMenuRender']
+      Menu\MenuEvent::MENU_RENDER,
+      [$menuListener, 'onMenuRender']
     );
 
   }

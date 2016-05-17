@@ -6,6 +6,8 @@ use Symfony\Component\EventDispatcher\Event;
 
 class MenuEvent extends Event {
 
+  const MENU_RENDER = 'menu.render';
+
   protected $menu;
   protected $menuName;
 

@@ -8,14 +8,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="{{ path('home') }}">
         <img alt="Logo" height="30" class="karambol-inline" src="{{asset('img/logo.svg')}}"> Karambol
       </a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="karambol-header-navbar-collapse">
-      {{ menu('homepage_main') }}
+      {{ menu('home_main') }}
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

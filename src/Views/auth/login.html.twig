@@ -1,0 +1,31 @@
+{% extends 'home/index.html.twig' %}
+
+{% block body_content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        {% if  error is not empty %}
+          <div class="alert alert-danger">
+            {{ error|trans({}, 'auth') }}
+          </div>
+        {% endif %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{ 'auth.login_title' | trans }}</h3>
+          </div>
+          <div class="panel-body">
+            <form class="form" action="{{path('login_check')}}" method="post">
+              <label for="login-username">{{ 'auth.username' | trans }}</label>
+              <input id="login-username" name="_username" type="text" class="form-control" value="{{lastUsername}}" />
+              <label for="login-password">{{ 'auth.password' | trans }}</label>
+              <input id="login-password" name="_password" type="password" class="form-control" />
+              <div class="clearfix" style="margin-top:15px;">
+                <button type="submit" class="btn btn-primary pull-right">{{ 'auth.login_submit' | trans }}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

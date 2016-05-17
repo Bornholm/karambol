@@ -9,16 +9,17 @@ class ControllersBootstrap implements BootstrapInterface {
 
   public function bootstrap(KarambolApp $app) {
 
-    // Homepage controllers
-    $homeCtrl = new Controller\HomeController();
-    $homeCtrl->bindTo($app);
+    $controllers = [
+      'Karambol\Controller\HomeController',
+      'Karambol\Controller\Admin\AdminController',
+      'Karambol\Controller\Admin\UsersController',
+      'Karambol\Controller\AuthenticationController'
+    ];
 
-    // Admin controllers
-    $adminCtrl = new Controller\Admin\AdminController();
-    $adminCtrl->bindTo($app);
-
-    $adminUsersCtrl = new Controller\Admin\UsersController();
-    $adminUsersCtrl->bindTo($app);
+    foreach($controllers as $controllerClass) {
+      $ctrl = new $controllerClass();
+      $ctrl->bindTo($app);
+    }
 
   }
 

@@ -20,3 +20,5 @@ entities:
 assets:
   - { src: vendor/components/jquery, dest: public/vendor/jquery }
   - { src: vendor/twbs/bootstrap/dist, dest: public/vendor/bootstrap }
+  - { src: vendor/font-awesome/font-awesome/css, dest: public/vendor/font-awesome/css }
+  - { src: vendor/font-awesome/font-awesome/fonts, dest: public/vendor/font-awesome/fonts }

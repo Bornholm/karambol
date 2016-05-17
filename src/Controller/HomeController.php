@@ -7,7 +7,7 @@ use Karambol\KarambolApp;
 class HomeController extends Controller {
 
   public function mount(KarambolApp $app) {
-    $app->get('/', array($this, 'showHome'))->bind('homepage');
+    $app->get('/', array($this, 'showHome'))->bind('home');
   }
 
   public function showHome() {
