@@ -1,0 +1,39 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12 clearfix">
+      <div class="pull-right">
+        <a href="{{ path('admin_page_new') }}" class="btn btn-primary"><span class="fa fa-plus"></span> {{ 'admin.pages.create'|trans }}</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-hovered">
+          <thead>
+            <tr>
+              <th>{{ 'admin.pages.label'|trans }}</th>
+              <th>{{ 'admin.pages.slug'|trans }}</th>
+              <th>{{ 'admin.pages.url'|trans }}</th>
+              <th>{{ 'admin.pages.actions'|trans }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for page in pages %}
+              <tr>
+                <td>{{page.label}}</td>
+                <td>{{page.slug}}</td>
+                <td>{{page.url}}</td>
+                <td>
+                  <a href="{{ path('admin_page_edit', {'pageId': page.id}) }}" class="btn btn-primary btn-xs">{{ 'admin.pages.edit'|trans }}</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </body>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

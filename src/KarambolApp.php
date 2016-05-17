@@ -22,6 +22,8 @@ class KarambolApp extends Application
       'Karambol\Bootstrap\SessionBootstrap',
       'Karambol\Bootstrap\FormBootstrap',
       'Karambol\Bootstrap\TwigBootstrap',
+      'Karambol\Bootstrap\SlugifyBootstrap',
+      'Karambol\Bootstrap\PageBootstrap',
       'Karambol\Bootstrap\ThemeBootstrap',
       'Karambol\Bootstrap\MenuBootstrap',
       'Karambol\Bootstrap\UrlGeneratorBootstrap',

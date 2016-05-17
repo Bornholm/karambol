@@ -20,6 +20,14 @@ admin:
     attribute_name: Name
     attribute_value: Value
     user_attributes: Attributes
+  pages:
+    label: Label
+    slug: Slug
+    url: URL
+    actions: Actions
+    create: Add a new page
+    static_page: Static page
+    static_page_help: This is a static page and it have been automatically created for you by Karambol or one of its plugins. You canno't edit it.
 auth:
   login_title: Login
   login_submit: Connect
@@ -33,7 +41,7 @@ menus:
     rules:
       rules: Rules
       roles: Roles
-      menus: Menus
+      personalization: Personalization
     plugins: Plugins
     configuration: Configuration
   logout: Logout

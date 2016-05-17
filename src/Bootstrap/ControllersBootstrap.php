@@ -12,6 +12,7 @@ class ControllersBootstrap implements BootstrapInterface {
     $controllers = [
       'Karambol\Controller\HomeController',
       'Karambol\Controller\Admin\AdminController',
+      'Karambol\Controller\Admin\PagesController',
       'Karambol\Controller\Admin\UsersController',
       'Karambol\Controller\AuthenticationController'
     ];

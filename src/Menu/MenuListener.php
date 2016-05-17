@@ -40,7 +40,7 @@ class MenuListener {
     ]);
     $menu->addItem($usersItem);
 
-    $linksItem = new MenuItem(MenuItems::ADMIN_PAGES, '', [
+    $linksItem = new MenuItem(MenuItems::ADMIN_PAGES, $urlGen->generate('admin_pages'), [
       'icon_class' => 'fa fa-link'
     ]);
     $menu->addItem($linksItem);
@@ -48,7 +48,7 @@ class MenuListener {
     $rulesItem = new MenuItem(MenuItems::ADMIN_RULES, '', [
       'icon_class' => 'fa fa-gavel'
     ]);
-    $rulesItem->addItem(new MenuItem(MenuItems::ADMIN_RULES_MENUS, '', ['icon_class' => 'fa fa-bars']))
+    $rulesItem->addItem(new MenuItem(MenuItems::ADMIN_RULES_PERSONALIZATION, '', ['icon_class' => 'fa fa-rocket']))
       ->addItem(new MenuItem(MenuItems::ADMIN_RULES_ROLES, '', ['icon_class' => 'fa fa-shield']))
     ;
     $menu->addItem($rulesItem);
@@ -85,7 +85,7 @@ class MenuListener {
 
     $adminItem = new MenuItem(MenuItems::ADMIN, $urlGen->generate('admin'), [
       'align' => 'right',
-      'icon_class' => 'fa fa-flash'
+      'icon_class' => 'fa fa-wrench'
     ]);
     $menu->addItem($adminItem);
 
