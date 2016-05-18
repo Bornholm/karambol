@@ -1,0 +1,7 @@
+<ul class="karambol-cards">
+  {% for item in items %}
+  <li class="karambol-card" role="presentation">
+    <a href="{{ item.link }}" target="{{ item.attributes.target is defined ? item.attributes.target : '_blank' }}">{{ item.name }}</a>
+  </li>
+  {% endfor %}
+</ul>

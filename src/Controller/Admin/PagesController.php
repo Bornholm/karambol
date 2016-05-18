@@ -25,11 +25,6 @@ class PagesController extends Controller {
   }
 
   public function showPages() {
-
-    // $page = new Page();
-    // $page->setLabel('Hello world !');
-    // $page->setUrl('http://localhost:8080/admin/pages');
-    // Page::registerStaticPage($page);
     $pageService = $this->get('page');
     $twig = $this->get('twig');
     return $twig->render('admin/pages/index.html.twig', [
@@ -55,11 +50,11 @@ class PagesController extends Controller {
 
   }
 
-  public function showNewUserForm() {
+  public function showNewPage() {
     $twig = $this->get('twig');
-    $userForm = $this->getUserForm();
-    return $twig->render('admin/users/edit.html.twig', [
-      'userForm' => $userForm->createView()
+    $pageForm = $this->getPageForm();
+    return $twig->render('admin/pages/edit.html.twig', [
+      'pageForm' => $pageForm->createView()
     ]);
   }
 
@@ -148,15 +143,15 @@ class PagesController extends Controller {
 
   }
 
-  protected function getUserForm($user = null) {
+  protected function getPageForm($user = null) {
 
     $formFactory = $this->get('form.factory');
     $urlGen = $this->get('url_generator');
 
-    if($user === null) $user = new User();
+    if($user === null) $user = new CustomPage();
 
-    $formBuilder = $formFactory->createBuilder(UserType::class, $user);
-    $action = $urlGen->generate('admin_user_upsert', ['userId' => $user->getId()]);
+    $formBuilder = $formFactory->createBuilder(CustomPageType::class, $user);
+    $action = $urlGen->generate('admin_page_upsert', ['page' => $page->getId()]);
 
     return $formBuilder->setAction($action)
       ->setMethod('POST')

@@ -10,7 +10,10 @@ use Karambol\RuleEngine\RuleInterface;
  * @ORM\Table(name="rules")
  * @ORM\HasLifecycleCallbacks
  */
-class Rule implements RuleInterface {
+class CustomRule implements RuleInterface {
+
+  const PERSONALIZATION = 'personalization';
+  const ROLES = 'roles';
 
   /**
    * @ORM\Id
@@ -20,12 +23,12 @@ class Rule implements RuleInterface {
   protected $id;
 
   /**
-   * @ORM\Column(type="text")
+   * @ORM\Column(type="text", nullable=false)
    */
   protected $condition;
 
   /**
-   * @ORM\Column(type="text")
+   * @ORM\Column(type="text", nullable=false)
    */
   protected $action;
 

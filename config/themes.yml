@@ -3,4 +3,4 @@ imports:
 
 theme:
   availableThemes: [yeti]
-  defaultTheme: yeti
+  defaultTheme: ~

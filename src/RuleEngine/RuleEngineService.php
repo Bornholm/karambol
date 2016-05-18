@@ -2,46 +2,30 @@
 
 namespace Karambol\RuleEngine;
 
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Doctrine\ORM\EntityManager;
+use Karambol\RuleEngine\RuleEngineAPI;
+use Karambol\RuleEngine\RuleEngineEvent;
 
 class RuleEngineService extends EventDispatcher {
 
-  protected $em;
-  protected $api;
-
-  public function __construct(EntityManager $em) {
-    $this->em = $em;
-    $api = [];
-  }
-
-  public function execute(array $rules, array $vars = null) {
+  public function execute(array $rules, RuleEngineAPIFactory $apiFactory, array $vars = null) {
 
     $language = new ExpressionLanguage();
 
-    $context = array_merge($this->api, is_array($vars) ? $vars: []);
+    $event = new RuleEngineEvent($rules, $apiFactory, $vars);
+    $this->dispatch(RuleEngineEvent::BEFORE_EXECUTE_RULES, $event);
+
+    $context = array_merge(is_array($event->getVars()) ? $event->getVars(): [], ['api' => $event->getAPIFactory()->getAPI()]);
 
     foreach($rules as $r) {
       $result = $language->evaluate($r->getCondition(), $context);
-      if($result) $language->evaluate($r->getAction(), $context);
+      if($result === true) $language->evaluate($r->getAction(), $context);
     }
 
-  }
+    $this->dispatch(RuleEngineEvent::AFTER_EXECUTE_RULES, $event);
 
-  public function registerEngineMethod($methodeName, callable $callback) {
-    $this->api[$methodeName] = $callback;
-  }
-
-  public function unergisterEngineMethod($methodeName) {
-    unset($this->api[$methodeName]);
-  }
-
-  public function getEngineMethod($methodeName) {
-    return $this->isEngineMethodeRegistered($methodName) ? $this->api[$methodeName] : null;
-  }
-
-  public function isEngineMethodRegistered($methodName) {
-    return isset($this->api[$methodeName]);
   }
 
 }

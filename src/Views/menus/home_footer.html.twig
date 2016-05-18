@@ -1,0 +1,3 @@
+{% for item in items %}
+  <a title="{{item.attributes.title is defined ? item.attributes.title}}" href="{{item.link}}">{{item.label}}</a>
+{% endfor %}

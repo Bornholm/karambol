@@ -14,7 +14,7 @@ class MenuBootstrap implements BootstrapInterface {
     $app->register(new Provider\MenuServiceProvider());
 
     // Init default menu listeners
-    $menuListener = new Menu\MenuListener($app);
+    $menuListener = new Menu\DefaultMenuListener($app);
 
     $app['menu']->addListener(
       Menu\MenuEvent::MENU_RENDER,

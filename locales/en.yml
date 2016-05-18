@@ -26,8 +26,8 @@ admin:
     url: URL
     actions: Actions
     create: Add a new page
-    static_page: Static page
-    static_page_help: This is a static page and it have been automatically created for you by Karambol or one of its plugins. You canno't edit it.
+    default_page: Default page
+    default_page_help: This is a default page and it have been automatically created for you by Karambol or one of its plugins. You cannot edit it.
 auth:
   login_title: Login
   login_submit: Connect
@@ -46,4 +46,9 @@ menus:
     configuration: Configuration
   logout: Logout
   login: Login
+  home: Home
+pages:
+  admin: Administration
+  login: Login
+  logout: Logout
   home: Home

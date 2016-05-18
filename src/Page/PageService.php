@@ -19,4 +19,12 @@ class PageService extends EventDispatcher {
     return $event->getPages();
   }
 
+  public function findPageBySlug($pageSlug) {
+    $pages = $this->getPages();
+    foreach($pages as $p) {
+      if($p->getSlug() === $pageSlug) return $p;
+    }
+    return null;
+  }
+
 }

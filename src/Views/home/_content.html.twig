@@ -1,7 +1,10 @@
-<div class="container">
-  <div class="row">
-    <div class="karambol-content col-md-12">
-
-    </div>
+<div class="karambol-content">
+  <div class="karambol-desktop">
+    {{ menu('home_content') }}
+  </div>
+  <div class="karambol-footer">
+    {% block body_footer %}
+      {{ menu('home_footer') }}
+    {% endblock %}
   </div>
 </div>

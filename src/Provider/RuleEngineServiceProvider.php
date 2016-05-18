@@ -10,7 +10,7 @@ class RuleEngineServiceProvider implements ServiceProviderInterface
 {
 
     public function register(Application $app) {
-      $app['rule.engine'] = new RuleEngineService($app['orm']);
+      $app['rule_engine'] = new RuleEngineService();
     }
 
     public function boot(Application $app) {}

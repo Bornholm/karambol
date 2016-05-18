@@ -61,10 +61,6 @@ class CustomPage implements PageInterface {
     return $this->slug;
   }
 
-  public function isEditable() {
-    return true;
-  }
-
   protected function updateSlug() {
     $slugify = new Slugify();
     $this->slug = $slugify->slugify($this->label);

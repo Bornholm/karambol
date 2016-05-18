@@ -27,7 +27,11 @@
                 <td>{{page.slug}}</td>
                 <td>{{page.url}}</td>
                 <td>
-                  <a href="{{ path('admin_page_edit', {'pageId': page.id}) }}" class="btn btn-primary btn-xs">{{ 'admin.pages.edit'|trans }}</a>
+                  {% if page.id is defined %}
+                    <a href="{{ path('admin_page_edit', {'pageId': page.id}) }}" class="btn btn-primary btn-xs">{{ 'admin.pages.edit'|trans }}</a>
+                  {% else %}
+                    <span title="{{'admin.pages.default_page_help'|trans}}" class="fa fa-question-circle"></span> <i>{{'admin.pages.default_page'|trans}}</i>
+                  {% endif %}
                 </td>
               </tr>
             {% endfor %}

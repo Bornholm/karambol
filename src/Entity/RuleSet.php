@@ -11,6 +11,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class RuleSet {
 
+  const PERSONALIZATION = 'personalization';
+  const ROLES = 'roles';
+
   /**
    * @ORM\Id
    * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -19,12 +22,12 @@ class RuleSet {
   protected $id;
 
   /**
-   * @ORM\Column(type="text", length=128)
+   * @ORM\Column(type="string", length=128)
    */
   protected $name;
 
   /**
-   * @ORM\OneToMany(targetEntity="Karambol\Entity\Rule", mappedBy="ruleset", orphanRemoval=true, cascade="all")
+   * @ORM\OneToMany(targetEntity="Karambol\Entity\CustomRule", mappedBy="ruleset", orphanRemoval=true, cascade="all")
    */
   protected $rules;
 
@@ -46,13 +49,13 @@ class RuleSet {
     return $this;
   }
 
-  public function addRule(Rule $rule) {
+  public function addRule(CustomRule $rule) {
     $rule->setRuleset($this);
     $this->rules->add($rule);
     return $this;
   }
 
-  public function removeRule(Rule $rule) {
+  public function removeRule(CustomRule $rule) {
     $rule->setRuleset(null);
     $this->rules->removeElement($rule);
     return $this;

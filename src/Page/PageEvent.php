@@ -16,6 +16,7 @@ class PageEvent extends Event {
 
   public function addPage(PageInterface $page) {
     $this->pages[] = $page;
+    return $this;
   }
 
   public function removePage(PageInterface $page) {

@@ -9,7 +9,7 @@ use Karambol\Menu\Menu;
 use Karambol\Menu\Menus;
 use Karambol\Menu\MenuItems;
 
-class MenuListener {
+class DefaultMenuListener {
 
   protected $app;
 
@@ -26,7 +26,7 @@ class MenuListener {
         $this->configureAdminMainMenu($menu);
         break;
       case Menus::HOME_MAIN:
-        $this->configureHomepageMainMenu($menu);
+        //$this->configureHomepageMainMenu($menu);
     }
 
   }
@@ -53,10 +53,15 @@ class MenuListener {
     ;
     $menu->addItem($rulesItem);
 
+    $configItem = new MenuItem(MenuItems::ADMIN_CONFIGURATION, '', [
+      'icon_class' => 'fa fa-cog'
+    ]);
+    $menu->addItem($configItem);
+
     $pluginsItem = new MenuItem(MenuItems::ADMIN_PLUGINS, '', [
       'icon_class' => 'fa fa-cubes'
     ]);
-    $pluginsItem->addItem(new MenuItem('Foo Plugin'));
+    $pluginsItem->addItem(new MenuItem('Foo Plugin', ''));
     $menu->addItem($pluginsItem);
 
     $homeItem = new MenuItem(MenuItems::HOME, $urlGen->generate('home'), [
@@ -64,12 +69,6 @@ class MenuListener {
       'icon_class' => 'fa fa-home'
     ]);
     $menu->addItem($homeItem);
-
-    $configItem = new MenuItem(MenuItems::ADMIN_CONFIGURATION, '', [
-      'align' => 'right',
-      'icon_class' => 'fa fa-cog'
-    ]);
-    $menu->addItem($configItem);
 
     $logoutItem = new MenuItem(MenuItems::LOGOUT, $urlGen->generate('logout'), [
       'align' => 'right',

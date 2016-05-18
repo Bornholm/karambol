@@ -13,9 +13,10 @@ class MenuService extends EventDispatcher {
   }
 
   public function getMenu($menuName) {
-    $menus = $this->menus;
-    $menu = isset($menus[$menuName]) ? $menus[$menuName] : ($menus[$menuName] = new Menu());
-    return $menu;
+    return isset($this->menus[$menuName]) ?
+      $this->menus[$menuName] :
+      ( $this->menus[$menuName] = new Menu() )
+    ;
   }
 
   public function setMenu(Menu $menu) {

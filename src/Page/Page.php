@@ -5,21 +5,16 @@ namespace Karambol\Page;
 use Cocur\Slugify\Slugify;
 use Karambol\Page\PageInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="custom_pages")
- */
 class Page implements PageInterface {
 
   protected $url;
   protected $slug;
   protected $label;
-  protected $editable;
 
-  public function __construct($label, $url, $editable = false) {
+  public function __construct($label, $url) {
     $this->label = $label;
     $this->url = $url;
-    $this->editable = $editable;
+    $this->updateSlug();
   }
 
   public function getLabel() {
@@ -43,10 +38,6 @@ class Page implements PageInterface {
 
   public function getSlug() {
     return $this->slug;
-  }
-
-  public function isEditable() {
-    return $this->editable;
   }
 
   protected function updateSlug() {
