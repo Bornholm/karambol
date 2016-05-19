@@ -4,6 +4,7 @@ namespace Karambol\Bootstrap;
 
 use Karambol\KarambolApp;
 use Karambol\Controller;
+use Karambol\Entity\RuleSet;
 
 class ControllersBootstrap implements BootstrapInterface {
 
@@ -21,6 +22,9 @@ class ControllersBootstrap implements BootstrapInterface {
       $ctrl = new $controllerClass();
       $ctrl->bindTo($app);
     }
+
+    $personalizationRulesCtrl = new Controller\Admin\RulesController(RuleSet::PERSONALIZATION);
+    $personalizationRulesCtrl->bindTo($app);
 
   }
 

@@ -8,6 +8,7 @@ use Karambol\Menu\MenuItem;
 use Karambol\Menu\Menu;
 use Karambol\Menu\Menus;
 use Karambol\Menu\MenuItems;
+use Karambol\Entity\RuleSet;
 
 class DefaultMenuListener {
 
@@ -48,7 +49,12 @@ class DefaultMenuListener {
     $rulesItem = new MenuItem(MenuItems::ADMIN_RULES, '', [
       'icon_class' => 'fa fa-gavel'
     ]);
-    $rulesItem->addItem(new MenuItem(MenuItems::ADMIN_RULES_PERSONALIZATION, '', ['icon_class' => 'fa fa-rocket']))
+    $rulesItem
+      ->addItem(new MenuItem(
+        MenuItems::ADMIN_RULES_PERSONALIZATION,
+        $urlGen->generate(sprintf('admin_rules_%s', RuleSet::PERSONALIZATION)),
+        ['icon_class' => 'fa fa-rocket']
+      ))
       ->addItem(new MenuItem(MenuItems::ADMIN_RULES_ROLES, '', ['icon_class' => 'fa fa-shield']))
     ;
     $menu->addItem($rulesItem);

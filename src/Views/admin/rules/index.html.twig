@@ -1,0 +1,27 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-8">
+      <h3>{{ 'admin.rules.rules'|trans }}</h3>
+      {{ form_start(rulesetForm) }}
+      {% include 'admin/rules/_rules.html.twig' %}
+      {% do rulesetForm.rules.setRendered %}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="pull-right clearfix">
+            {{ form_end(rulesetForm, {"render_rest": true}) }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <h3>{{ 'admin.rules.documentation'|trans }}</h3>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascript %}
+  {{ parent() }}
+  <script src="{{ asset('js/admin-rules.js') }}"></script>
+{% endblock %}

@@ -13,13 +13,10 @@ class RuleSetType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-      ->add('label', Type\TextType::class, [
-        'required' => true
-      ])
       ->add('rules', Type\CollectionType::class, [
         'allow_add' => true,
         'allow_delete' => true,
-        'entry_type' => RuleType::class,
+        'entry_type' => CustomRuleType::class,
         'by_reference' => false
       ])
       ->add('submit', Type\SubmitType::class, [
@@ -34,7 +31,7 @@ class RuleSetType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-      'data_class' => 'Karambol\Form\Model\RuleSetModel',
+      'data_class' => 'Karambol\Entity\RuleSet',
       'cascade_validation' => true
     ]);
   }
