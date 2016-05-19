@@ -3,7 +3,7 @@
 namespace Karambol\RuleEngine;
 
 use Symfony\Component\EventDispatcher\Event;
-use Karambol\RuleEngine\RuleEngineAPIFactory;
+use Karambol\RuleEngine\ExpressionFunctionProvider;
 
 
 class RuleEngineEvent extends Event {
@@ -11,21 +11,21 @@ class RuleEngineEvent extends Event {
   const BEFORE_EXECUTE_RULES = 'rule_engine.before_execute';
   const AFTER_EXECUTE_RULES = 'rule_engine.after_execute';
 
-  protected $apiFactory;
+  protected $provider;
   protected $vars;
   protected $rules;
 
-  public function __construct(array $rules, RuleEngineAPIFactory $apiFactory, array $vars = []) {
+  public function __construct(array $rules, array $vars = [], ExpressionFunctionProvider $provider = null) {
     $this->rules = $rules;
     $this->vars = $vars;
-    $this->apiFactory = $apiFactory;
+    $this->provider = $provider;
   }
 
-  public function getAPIFactory() {
-    return $this->apiFactory;
+  public function &getFunctionProvider() {
+    return $this->provider;
   }
 
-  public function getVars() {
+  public function &getVars() {
     return $this->vars;
   }
 

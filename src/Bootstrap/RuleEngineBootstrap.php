@@ -6,7 +6,8 @@ use Karambol\KarambolApp;
 use Karambol\Provider;
 use Karambol\RuleEngine;
 use Karambol\RuleEngine\Rule;
-use Karambol\RuleEngine\RuleEngineAPIFactory;
+use Karambol\RuleEngine\RuleEngineEvent;
+use Karambol\RuleEngine\ExpressionFunctionProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 use Karambol\Entity\RuleSet;
@@ -37,92 +38,100 @@ class RuleEngineBootstrap implements BootstrapInterface {
     //if(!$ruleset) return;
 
     $rules = [
-      new Rule('not api.isConnected()', 'api.addPageToMenu("login", "home_main", {"align":"right", "icon_class": "fa fa-sign-in"})'),
-      new Rule('api.isConnected()', 'api.useTheme("yeti")'),
-      new Rule('api.isGranted("ROLE_ADMIN")', 'api.addPageToMenu("administration", "home_main", {"align":"right", "icon_class": "fa fa-wrench"})'),
-      new Rule('api.isConnected()', 'api.addPageToMenu("logout", "home_main", {"align":"right", "icon_class": "fa fa-sign-out"})'),
-      new Rule('api.isConnected()', 'api.addPageToMenu("linux-fr", "home_content")'),
-      new Rule('api.isConnected()', 'api.addPageToMenu(api.asFrame("linux-fr"), "home_content", {"target": "_self"})')
+      new Rule('not isConnected()', 'addPageToMenu("login", "home_main", {"align":"right", "icon_class": "fa fa-sign-in"})'),
+      new Rule('isConnected()', 'useTheme("yeti")'),
+      new Rule('isGranted("ROLE_ADMIN")', 'addPageToMenu("administration", "home_main", {"align":"right", "icon_class": "fa fa-wrench"})'),
+      new Rule('isConnected()', 'addPageToMenu("logout", "home_main", {"align":"right", "icon_class": "fa fa-sign-out"})'),
+      new Rule('isConnected()', 'addPageToMenu("linux-fr", "home_content")'),
+      new Rule('isConnected()', 'addPageToMenu(asFrame("linux-fr"), "home_content", {"target": "_self"})')
     ];
+
+    //$rules = $ruleset->getRules();
 
     $vars = [
       'user' => $app['user']
     ];
 
-    $apiFactory = $this->getPersonalizationAPIFactory();
-
-    $ruleEngine->execute($rules, $apiFactory, $vars);
+    $configurePersonalizationAPI =  [$this, 'configurePersonalizationAPI'];
+    $ruleEngine->addListener(RuleEngineEvent::BEFORE_EXECUTE_RULES, $configurePersonalizationAPI);
+    $ruleEngine->execute($rules, $vars);
+    $ruleEngine->removeListener(RuleEngineEvent::BEFORE_EXECUTE_RULES, $configurePersonalizationAPI);
 
   }
 
-  protected function getPersonalizationAPIFactory() {
+  public function configurePersonalizationAPI(RuleEngineEvent $event) {
 
     $app = $this->app;
-    $apiFactory = new RuleEngine\RuleEngineAPIFactory();
 
-    $apiFactory->registerMethod('isConnected', function() use ($app){
-      return $app['user'] !== null;
-    });
+    $provider = $event->getFunctionProvider();
 
-    $apiFactory->registerMethod('isGranted', function($authorization) use ($app){
-      $authCheck = $app['security.authorization_checker'];
-      return $authCheck->isGranted($authorization);
-    });
-
-    $apiFactory->registerMethod('addPageToMenu', function($pageSlug, $menuName, $menuItemAttrs = []) use ($app){
-
-      $pageService = $app['page'];
-      $menuService = $app['menu'];
-
-      $menu = $menuService->getMenu($menuName);
-
-      if($pageSlug instanceof PageInterface) {
-        $page = $pageSlug;
-      } else {
-        $page = $pageService->findPageBySlug($pageSlug);
+    $provider->registerFunction(
+      'isGranted',
+      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
+      function($vars, $authorization) use ($app) {
+        return $app['security.authorization_checker']->isGranted($authorization);
       }
+    );
 
-      if(!$page) return;
+    $provider->registerFunction(
+      'isConnected',
+      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
+      function($vars) use ($app) {
+        return $app['user'] !== null;
+      }
+    );
 
-      $menuItem = new MenuItem($page->getLabel(), $page->getURL(), $menuItemAttrs);
-      $menu->addItem($menuItem);
+    $provider->registerFunction(
+      'addPageToMenu',
+      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
+      function($vars, $pageSlug, $menuName, $menuItemAttrs = []) use ($app) {
 
-    });
+        $menu = $app['menu']->getMenu($menuName);
 
-    $apiFactory->registerMethod('asFrame', function($pageSlug) use ($app){
+        if($pageSlug instanceof PageInterface) {
+          $page = $pageSlug;
+        } else {
+          $page = $app['page']->findPageBySlug($pageSlug);
+        }
 
-      $urlGen = $app['url_generator'];
-      $pageService = $app['page'];
+        if(!$page) return;
 
-      $page = $pageService->findPageBySlug($pageSlug);
+        $menuItem = new MenuItem($page->getLabel(), $page->getURL(), $menuItemAttrs);
+        $menu->addItem($menuItem);
 
-      if(!$page) return;
+        return $menuItem;
 
-      return new Page($page->getLabel(), $urlGen->generate('framed-page', ['pageSlug' => $pageSlug]));
+      }
+    );
 
-    });
+    $provider->registerFunction(
+      'useTheme',
+      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
+      function($vars, $themeName) use ($app) {
+        $app['theme']->setSelectedTheme($themeName);
+      }
+    );
 
-    $apiFactory->registerMethod('useTheme', function($themeName) use ($app){
-      $themeService = $app['theme'];
-      $themeService->setSelectedTheme($themeName);
-    });
+    $provider->registerFunction(
+      'asFrame',
+      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
+      function($vars, $pageSlug) use ($app) {
+        $urlGen = $app['url_generator'];
+        $pageService = $app['page'];
+        $page = $pageService->findPageBySlug($pageSlug);
+        if(!$page) return;
+        return new Page($page->getLabel(), $urlGen->generate('framed-page', ['pageSlug' => $pageSlug]));
+      }
+    );
 
-    $this->registerCommonAPI($apiFactory);
-
-    return $apiFactory;
-
-  }
-
-  protected function registerCommonAPI(RuleEngineAPIFactory $apiFactory) {
-
-    $app = $this->app;
-
-    $apiFactory->registerMethod('log', function($message) use ($app){
-      $logger = $app['monolog'];
-      $logger->info($message);
-    });
-
-    return $apiFactory;
+    $provider->registerFunction(
+      'log',
+      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
+      function($vars, $message) use ($app) {
+        $logger = $app['monolog'];
+        $logger->info($message);
+      }
+    );
 
   }
 

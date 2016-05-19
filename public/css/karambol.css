@@ -30,7 +30,11 @@ body.karambol[class*=" admin"] {
   margin-top: -5px;
 }
 
-.karambol-content {
+.karambol-spacedup {
+  margin-top: 25px;
+}
+
+.karambol-flex-container {
   display: flex;
   flex-flow: column;
   width: 100%;
@@ -40,9 +44,11 @@ body.karambol[class*=" admin"] {
   z-index: 0;
 }
 
-.karambol-desktop {
+.karambol-flex-item {
   flex: 1 1 auto;
 }
+
+/* Homepage */
 
 .karambol-cards {
   list-style: none;
@@ -67,8 +73,9 @@ body.karambol[class*=" admin"] {
   vertical-align: middle;
 }
 
-body.karambol[class^="framed-page"] .karambol-desktop,
-body.karambol[class*=" framed-page"] .karambol-desktop {
+/* Page */
+
+.karambol-page-container {
   display: flex;
 }
 
