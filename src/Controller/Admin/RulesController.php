@@ -51,6 +51,45 @@ class RulesController extends Controller {
 
   }
 
+  public function handleRulesetUpsert() {
+
+    $twig = $this->get('twig');
+    $orm = $this->get('orm');
+    $request = $this->get('request');
+
+    $ruleset = $orm->getRepository('Karambol\Entity\RuleSet')
+      ->findOneByName($this->rulesetName)
+    ;
+
+    if($ruleset === null) {
+      $ruleset = new RuleSet();
+      $ruleset->setName($this->rulesetName);
+    }
+
+    $rulesetForm = $this->getRuleSetForm($ruleset);
+
+    $rulesetForm->handleRequest($request);
+
+    if( !$rulesetForm->isValid() ) {
+      return $twig->render('admin/rules/index.html.twig', [
+        'rulesetForm' => $rulesetForm->createView(),
+        'ruleset' => $ruleset
+      ]);
+    }
+
+    $ruleset = $rulesetForm->getData();
+
+    if( $ruleset->getId() === null ) {
+      $orm->persist($ruleset);
+    }
+
+    $orm->flush();
+
+    $urlGen = $this->get('url_generator');
+    return $this->redirect($urlGen->generate(sprintf('admin_rules_%s', $this->rulesetName)));
+
+  }
+
   public function getRuleSetForm(RuleSet $ruleset) {
 
     $formFactory = $this->get('form.factory');

@@ -28,6 +28,15 @@ admin:
     create: Add a new page
     system_page: System page
     system_page_help: This is a system page and it have been automatically created for you by Karambol or one of its plugins. You cannot edit it.
+  rules:
+    customization_rules: Customization rules
+    condition: Condition
+    action: Action
+    actions: Actions
+    documentation: Documentation
+form:
+  rules:
+    save_ruleset: Save
 auth:
   login_title: Login
   login_submit: Connect
@@ -41,7 +50,7 @@ menus:
     rules:
       rules: Rules
       roles: Roles
-      personalization: Personalization
+      customization: Customization
     plugins: Plugins
     configuration: Configuration
   logout: Logout

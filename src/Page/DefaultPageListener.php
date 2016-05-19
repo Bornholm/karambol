@@ -24,14 +24,11 @@ class DefaultPageListener {
     $loginPage = new Page($translator->trans('pages.login'), $urlGen->generate('login'));
     $logoutPage = new Page($translator->trans('pages.logout'), $urlGen->generate('logout'));
 
-    $linuxfrPage = new Page('Linux-FR', 'https://linuxfr.org');
-
     $event
       ->addPage($homePage)
       ->addPage($adminPage)
       ->addPage($loginPage)
       ->addPage($logoutPage)
-      ->addPage($linuxfrPage)
     ;
 
   }

@@ -15,8 +15,22 @@ class CustomRuleType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-      $builder->add('condition');
-      $builder->add('action');
+
+      $codeMirrorOpts = json_encode([
+        'lineNumbers' => true,
+        'mode' => 'expression-language'
+      ]);
+
+      $builder->add('condition', Type\TextAreaType::class, [
+        'attr' => [
+          'data-codemirror' => $codeMirrorOpts
+        ]
+      ]);
+      $builder->add('action', Type\TextAreaType::class, [
+        'attr' => [
+          'data-codemirror' => $codeMirrorOpts
+        ]
+      ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

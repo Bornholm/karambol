@@ -25,41 +25,56 @@ class RuleEngineBootstrap implements BootstrapInterface {
 
     // Register rule engine service
     $app->register(new Provider\RuleEngineServiceProvider());
-    $app->before([$this, 'applyPersonalizationRules']);
+    $app->before([$this, 'applyCustomizationRules']);
 
   }
 
-  public function applyPersonalizationRules(Request $request, Application $app) {
+  public function applyCustomizationRules(Request $request, Application $app) {
 
+    $logger = $app['monolog'];
     $ruleEngine = $app['rule_engine'];
     $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
 
-    $ruleset = $rulesetRepo->findOneByName(RuleSet::PERSONALIZATION);
-    //if(!$ruleset) return;
+    $ruleset = $rulesetRepo->findOneByName(RuleSet::CUSTOMIZATION);
 
-    $rules = [
-      new Rule('not isConnected()', 'addPageToMenu("login", "home_main", {"align":"right", "icon_class": "fa fa-sign-in"})'),
-      new Rule('isConnected()', 'useTheme("yeti")'),
-      new Rule('isGranted("ROLE_ADMIN")', 'addPageToMenu("administration", "home_main", {"align":"right", "icon_class": "fa fa-wrench"})'),
-      new Rule('isConnected()', 'addPageToMenu("logout", "home_main", {"align":"right", "icon_class": "fa fa-sign-out"})'),
-      new Rule('isConnected()', 'addPageToMenu("linux-fr", "home_content")'),
-      new Rule('isConnected()', 'addPageToMenu(asFrame("linux-fr"), "home_content", {"target": "_self"})')
-    ];
+    $baseRules = $this->getBaseRules($app, RuleSet::CUSTOMIZATION);
 
-    //$rules = $ruleset->getRules();
+    if($ruleset) {
+      $rules = array_merge($baseRules, $ruleset->getRules()->toArray());
+    } else {
+      $rules = $baseRules;
+    }
 
     $vars = [
       'user' => $app['user']
     ];
 
-    $configurePersonalizationAPI =  [$this, 'configurePersonalizationAPI'];
-    $ruleEngine->addListener(RuleEngineEvent::BEFORE_EXECUTE_RULES, $configurePersonalizationAPI);
-    $ruleEngine->execute($rules, $vars);
-    $ruleEngine->removeListener(RuleEngineEvent::BEFORE_EXECUTE_RULES, $configurePersonalizationAPI);
+    $configureCustomizationAPI =  [$this, 'configureCustomizationAPI'];
+    $ruleEngine->addListener(RuleEngineEvent::BEFORE_EXECUTE_RULES, $configureCustomizationAPI);
+
+    try {
+      $ruleEngine->execute($rules, $vars);
+    } catch(\Exception $ex) {
+      $logger->error($ex);
+    }
+
+    $ruleEngine->removeListener(RuleEngineEvent::BEFORE_EXECUTE_RULES, $configureCustomizationAPI);
 
   }
 
-  public function configurePersonalizationAPI(RuleEngineEvent $event) {
+  public function getBaseRules(Application $app, $rulesetName) {
+    $config = $app['config'];
+    $rules = [];
+    if( isset($config['base_rules'][$rulesetName]) ) {
+      $configBaseRules = $config['base_rules'][$rulesetName];
+      foreach($configBaseRules as $ruleData) {
+        $rules[] = new Rule($ruleData['condition'], $ruleData['action']);
+      }
+    }
+    return $rules;
+  }
+
+  public function configureCustomizationAPI(RuleEngineEvent $event) {
 
     $app = $this->app;
 

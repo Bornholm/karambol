@@ -12,9 +12,6 @@ use Karambol\RuleEngine\RuleInterface;
  */
 class CustomRule implements RuleInterface {
 
-  const PERSONALIZATION = 'personalization';
-  const ROLES = 'roles';
-
   /**
    * @ORM\Id
    * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -23,7 +20,7 @@ class CustomRule implements RuleInterface {
   protected $id;
 
   /**
-   * @ORM\Column(type="text", nullable=false)
+   * @ORM\Column(name="`condition`", type="text", nullable=false)
    */
   protected $condition;
 

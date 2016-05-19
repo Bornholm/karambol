@@ -10,6 +10,17 @@
           "type": "zip"
         }
       }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "codemirror/codemirror",
+        "version": "5.13.4",
+        "dist": {
+          "url": "https://github.com/codemirror/CodeMirror/archive/5.13.4.zip",
+          "type": "zip"
+        }
+      }
     }
   ],
   "require": {
@@ -31,7 +42,8 @@
     "symfony/property-access": "^3.0",
     "symfony/expression-language": "^3.0",
     "font-awesome/font-awesome": "4.6.3",
-    "cocur/slugify": "^2.1"
+    "cocur/slugify": "^2.1",
+    "codemirror/codemirror": "5.13.4"
   },
   "autoload": {
     "psr-4": {

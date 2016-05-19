@@ -13,23 +13,40 @@ $(function() {
     evt.preventDefault();
     var index = $rulesHolder.data('index') || 0;
     var $clone = $(document.importNode(newRuleTemplate, true));
-    $clone.find('td:nth-child(1) input')
-      .attr('name', 'user[rules]['+index+'][name]')
+    var $conditionTextarea = $clone.find('td:nth-child(1) textarea');
+    $conditionTextarea.attr('name', 'rule_set[rules]['+index+'][condition]')
       .val($newRuleCondition.val())
     ;
-    $clone.find('td:nth-child(2) input')
-      .attr('name', 'user[rules]['+index+'][value]')
+    var $actionTextarea = $clone.find('td:nth-child(2) textarea');
+    $actionTextarea.attr('name', 'rule_set[rules]['+index+'][action]')
       .val($newRuleAction.val())
     ;
-    $newRuleCondition.val('');
-    $newRuleAction.val('');
+    $newRuleCondition.val('').trigger('change');
+    $newRuleAction.val('').trigger('change');
     $rulesHolder.append($clone);
     $rulesHolder.data('index', index+1);
+    transformToCodeMirror($conditionTextarea[0]);
+    transformToCodeMirror($actionTextarea[0]);
   });
 
   $rulesHolder.on('click', '.remove-rule', function(evt) {
     evt.preventDefault();
     $(this).parents('tr').remove();
   });
+
+  // CodeMirror bootstrapping
+
+  $('textarea[data-codemirror]').each(function(i, textarea) {
+    transformToCodeMirror(textarea);
+  });
+
+  function transformToCodeMirror(textarea) {
+    var $textarea = $(textarea);
+    var opts = $textarea.data('codemirror');
+    opts.viewportMargin = Infinity;
+    var cm = CodeMirror.fromTextArea(textarea, opts);
+    cm.on('change', function() { cm.save(); });
+    $textarea.on('change', function() { cm.setValue($textarea.val()); });
+  }
 
 }());

@@ -1,5 +1,5 @@
 <div class="table-responsive">
-  <table class="table table-hovered">
+  <table class="table table-hovered table-condensed">
     <thead>
       <tr>
         <th>{{ 'admin.rules.condition'|trans }}</th>
@@ -10,25 +10,25 @@
     <tbody id="rules-holder">
       {% for rule in rulesetForm.rules %}
         <tr>
-          <td>{{form_widget(attr.name)}}</td>
-          <td>{{form_widget(attr.value)}}</td>
-          <td><button class="remove-rule btn btn-danger">{{ 'admin.rules.remove_rule'|trans }}</button></td>
+          <td>{{form_widget(rule.condition)}}</td>
+          <td>{{form_widget(rule.action)}}</td>
+          <td><button class="remove-rule btn btn-danger"><span class="fa fa-trash"></span></button></td>
         </tr>
       {% endfor %}
     </tbody>
     <tfoot>
       <tr>
-        <td><input id="new-rule-condition" class="form-control" type="text" /></td>
-        <td><input id="new-rule-action" class="form-control" type="text" /></td>
-        <td><button id="add-rule" class="btn btn-primary">{{ 'admin.rules.add_rule'|trans }}</button></td>
+        <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' id="new-rule-condition"></textarea></td>
+        <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' id="new-rule-action"></textarea></td>
+        <td><button id="add-rule" class="btn btn-primary"><span class="fa fa-plus"></span></button></td>
       </tr>
     </tfoot>
   </table>
   <template id="new-rule-template">
     <tr>
-      <td><input class="form-control" type="text" name="ruleset[rules][__index__][name]" /></td>
-      <td><input class="form-control" type="text" name="ruleset[rules][__index__][value]" /></td>
-      <td><button class="remove-rule btn btn-danger">{{ 'admin.rules.remove_rule'|trans }}</button></td>
+      <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' name="rule_set[rules][__index__][condition]"></textarea></td>
+      <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' name="rule_set[rules][__index__][action]"></textarea></td>
+      <td><button class="remove-rule btn btn-danger"><span class="fa fa-trash"></span></button></td>
     </tr>
   </template>
 </div>

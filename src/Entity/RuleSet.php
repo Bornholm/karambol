@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class RuleSet {
 
-  const PERSONALIZATION = 'personalization';
+  const CUSTOMIZATION = 'customization';
   const ROLES = 'roles';
 
   /**

@@ -1,9 +1,15 @@
 {% extends 'admin/index.html.twig' %}
 
+{% block style %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('vendor/codemirror/lib/codemirror.css') }}">
+{% endblock %}
+
 {% block content %}
   <div class="row">
     <div class="col-md-8">
-      <h3>{{ 'admin.rules.rules'|trans }}</h3>
+      {% set ruleset_title = 'admin.rules.' ~ ruleset.name ~ '_rules' %}
+      <h3>{{ ruleset_title|trans }}</h3>
       {{ form_start(rulesetForm) }}
       {% include 'admin/rules/_rules.html.twig' %}
       {% do rulesetForm.rules.setRendered %}
@@ -23,5 +29,8 @@
 
 {% block javascript %}
   {{ parent() }}
+  <script src="{{ asset('vendor/codemirror/lib/codemirror.js') }}"></script>
+  <script src="{{ asset('vendor/codemirror/addon/mode/simple.js') }}"></script>
+  <script src="{{ asset('js/codemirror-expression-language-mode.js') }}"></script>
   <script src="{{ asset('js/admin-rules.js') }}"></script>
 {% endblock %}

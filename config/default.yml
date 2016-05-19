@@ -22,3 +22,16 @@ assets:
   - { src: vendor/twbs/bootstrap/dist, dest: public/vendor/bootstrap }
   - { src: vendor/font-awesome/font-awesome/css, dest: public/vendor/font-awesome/css }
   - { src: vendor/font-awesome/font-awesome/fonts, dest: public/vendor/font-awesome/fonts }
+  - { src: vendor/codemirror/codemirror/lib, dest: public/vendor/codemirror/lib }
+  - { src: vendor/codemirror/codemirror/mode, dest: public/vendor/codemirror/mode }
+  - { src: vendor/codemirror/codemirror/addon, dest: public/vendor/codemirror/addon }
+
+base_rules:
+  customization:
+    # Home main menu default configuration
+    - condition: 'not isConnected()'
+      action: 'addPageToMenu("login", "home_main", {"align":"right", "icon_class": "fa fa-sign-in"})'
+    - condition: 'isGranted("ROLE_ADMIN")'
+      action: 'addPageToMenu("administration", "home_main", {"align":"right", "icon_class": "fa fa-wrench"})'
+    - condition: 'isConnected()'
+      action: 'addPageToMenu("logout", "home_main", {"align":"right", "icon_class": "fa fa-sign-out"})'

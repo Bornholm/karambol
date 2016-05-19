@@ -23,8 +23,8 @@ class ControllersBootstrap implements BootstrapInterface {
       $ctrl->bindTo($app);
     }
 
-    $personalizationRulesCtrl = new Controller\Admin\RulesController(RuleSet::PERSONALIZATION);
-    $personalizationRulesCtrl->bindTo($app);
+    $customRulesCtrl = new Controller\Admin\RulesController(RuleSet::CUSTOMIZATION);
+    $customRulesCtrl->bindTo($app);
 
   }
 

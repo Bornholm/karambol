@@ -84,3 +84,9 @@ body.karambol[class*=" admin"] {
   flex: 1 1 100%;
   display: block;
 }
+
+/* Admin - Rules */
+
+body.karambol.admin_rules_customization .CodeMirror {
+  height: auto;
+}

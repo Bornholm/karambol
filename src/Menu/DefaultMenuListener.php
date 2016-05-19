@@ -26,8 +26,6 @@ class DefaultMenuListener {
       case Menus::ADMIN_MAIN:
         $this->configureAdminMainMenu($menu);
         break;
-      case Menus::HOME_MAIN:
-        //$this->configureHomepageMainMenu($menu);
     }
 
   }
@@ -51,8 +49,8 @@ class DefaultMenuListener {
     ]);
     $rulesItem
       ->addItem(new MenuItem(
-        MenuItems::ADMIN_RULES_PERSONALIZATION,
-        $urlGen->generate(sprintf('admin_rules_%s', RuleSet::PERSONALIZATION)),
+        MenuItems::ADMIN_RULES_CUSTOMIZATION,
+        $urlGen->generate(sprintf('admin_rules_%s', RuleSet::CUSTOMIZATION)),
         ['icon_class' => 'fa fa-rocket']
       ))
       ->addItem(new MenuItem(MenuItems::ADMIN_RULES_ROLES, '', ['icon_class' => 'fa fa-shield']))
@@ -81,24 +79,6 @@ class DefaultMenuListener {
       'icon_class' => 'fa fa-sign-out'
     ]);
     $menu->addItem($logoutItem);
-
-  }
-
-  protected function configureHomepageMainMenu(Menu $menu) {
-
-    $urlGen = $this->app['url_generator'];
-
-    $adminItem = new MenuItem(MenuItems::ADMIN, $urlGen->generate('admin'), [
-      'align' => 'right',
-      'icon_class' => 'fa fa-wrench'
-    ]);
-    $menu->addItem($adminItem);
-
-    $loginItem = new MenuItem(MenuItems::LOGIN, $urlGen->generate('login'), [
-      'align' => 'right',
-      'icon_class' => 'fa fa-sign-in'
-    ]);
-    $menu->addItem($loginItem);
 
   }
 
