@@ -25,12 +25,12 @@
       <h3>{{ 'admin.rules.documentation'|trans }}</h3>
     </div>
   </div>
-{% endblock %}
-
-{% block javascript %}
-  {{ parent() }}
-  <script src="{{ asset('vendor/codemirror/lib/codemirror.js') }}"></script>
-  <script src="{{ asset('vendor/codemirror/addon/mode/simple.js') }}"></script>
-  <script src="{{ asset('js/codemirror-expression-language-mode.js') }}"></script>
-  <script src="{{ asset('js/admin-rules.js') }}"></script>
+  {{
+    appendScript([
+      'vendor/codemirror/lib/codemirror.js',
+      'vendor/codemirror/addon/mode/simple.js',
+      'js/codemirror-expression-language-mode.js',
+      'js/admin-rules.js'
+    ])
+  }}
 {% endblock %}

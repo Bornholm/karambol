@@ -11,10 +11,10 @@ class Page implements PageInterface {
   protected $slug;
   protected $label;
 
-  public function __construct($label, $url) {
+  public function __construct($label, $url, $slug) {
     $this->label = $label;
     $this->url = $url;
-    $this->updateSlug();
+    $this->slug = $slug;
   }
 
   public function getLabel() {
@@ -23,7 +23,6 @@ class Page implements PageInterface {
 
   public function setLabel($label) {
     $this->label = $label;
-    $this->updateSlug();
     return $this;
   }
 
@@ -40,9 +39,9 @@ class Page implements PageInterface {
     return $this->slug;
   }
 
-  protected function updateSlug() {
-    $slugify = new Slugify();
-    $this->slug = $slugify->slugify($this->label);
+  public function setSlug($slug) {
+    $this->slug = $slug;
+    return $this;
   }
 
 }

@@ -32,6 +32,6 @@ base_rules:
     - condition: 'not isConnected()'
       action: 'addPageToMenu("login", "home_main", {"align":"right", "icon_class": "fa fa-sign-in"})'
     - condition: 'isGranted("ROLE_ADMIN")'
-      action: 'addPageToMenu("administration", "home_main", {"align":"right", "icon_class": "fa fa-wrench"})'
+      action: 'addPageToMenu("admin", "home_main", {"align":"right", "icon_class": "fa fa-wrench"})'
     - condition: 'isConnected()'
       action: 'addPageToMenu("logout", "home_main", {"align":"right", "icon_class": "fa fa-sign-out"})'

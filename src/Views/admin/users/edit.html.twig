@@ -43,10 +43,5 @@
       </div>
     </div>
   </div>
-
-{% endblock %}
-
-{% block javascript %}
-  {{ parent() }}
-  <script src="{{ asset('js/admin-users.js') }}"></script>
+  {{ appendScript('js/admin-users.js') }}
 {% endblock %}

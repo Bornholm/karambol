@@ -24,7 +24,7 @@ admin:
     label: Label
     slug: Slug
     url: URL
-    actions: Actions
+    operations: Operations
     create: Add a new page
     system_page: System page
     system_page_help: This is a system page and it have been automatically created for you by Karambol or one of its plugins. You cannot edit it.
@@ -32,7 +32,7 @@ admin:
     customization_rules: Customization rules
     condition: Condition
     action: Action
-    actions: Actions
+    operations: Operations
     documentation: Documentation
 form:
   rules:

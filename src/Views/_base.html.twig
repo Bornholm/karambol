@@ -11,10 +11,15 @@
     {% endblock %}
   </head>
   <body class="karambol {{  app.request.get('_route') }}">
+    {{
+      appendScript([
+        'vendor/jquery/jquery.min.js',
+        'vendor/bootstrap/js/bootstrap.min.js'
+      ])
+    }}
     {{ block('body') }}
     {% block javascript %}
-      <script type="text/javascript" src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-      <script type="text/javascript" src="{{ asset('vendor/bootstrap/js/bootstrap.min.js', true) }}"></script>
+      {{ renderScripts() }}
     {% endblock %}
   </body>
 </html>

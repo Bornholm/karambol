@@ -135,7 +135,7 @@ class RuleEngineBootstrap implements BootstrapInterface {
         $pageService = $app['page'];
         $page = $pageService->findPageBySlug($pageSlug);
         if(!$page) return;
-        return new Page($page->getLabel(), $urlGen->generate('framed-page', ['pageSlug' => $pageSlug]));
+        return new Page($page->getLabel(), $urlGen->generate('framed-page', ['pageSlug' => $pageSlug]), $pageSlug);
       }
     );
 

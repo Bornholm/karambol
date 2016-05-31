@@ -18,7 +18,6 @@ class ParserCache implements ParserCacheInterface {
     } else {
       $this->cache = new Cache\ArrayCache();
     }
-    $this->cache = new Cache\ArrayCache();
   }
 
   public function fetch($key) {

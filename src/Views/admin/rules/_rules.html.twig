@@ -2,14 +2,16 @@
   <table class="table table-hovered table-condensed">
     <thead>
       <tr>
+        <td>#</td>
         <th>{{ 'admin.rules.condition'|trans }}</th>
         <th>{{ 'admin.rules.action'|trans }}</th>
-        <th>{{ 'admin.rules.actions'|trans }}</th>
+        <th>{{ 'admin.rules.operations'|trans }}</th>
       </tr>
     </thead>
     <tbody id="rules-holder">
       {% for rule in rulesetForm.rules %}
         <tr>
+          <td>--</td>
           <td>{{form_widget(rule.condition)}}</td>
           <td>{{form_widget(rule.action)}}</td>
           <td><button class="remove-rule btn btn-danger"><span class="fa fa-trash"></span></button></td>
@@ -18,6 +20,7 @@
     </tbody>
     <tfoot>
       <tr>
+        <td></td>
         <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' id="new-rule-condition"></textarea></td>
         <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' id="new-rule-action"></textarea></td>
         <td><button id="add-rule" class="btn btn-primary"><span class="fa fa-plus"></span></button></td>
