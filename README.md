@@ -14,6 +14,8 @@ Portail web extensible
 script/bootstrap
 # Vérification de la connexion à la base de données et mise à jour si nécessaire
 script/setup
+# Lancement du serveur de développement, vous pouvez ajouter l'argument <port> si vous voulez modifier le port d'écoute par défaut (8080)
+script/server
 ```
 
 ## Lancer les tests
