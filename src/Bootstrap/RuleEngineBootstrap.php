@@ -82,7 +82,6 @@ class RuleEngineBootstrap implements BootstrapInterface {
 
     $provider->registerFunction(
       'isGranted',
-      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
       function($vars, $authorization) use ($app) {
         return $app['security.authorization_checker']->isGranted($authorization);
       }
@@ -90,7 +89,6 @@ class RuleEngineBootstrap implements BootstrapInterface {
 
     $provider->registerFunction(
       'isConnected',
-      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
       function($vars) use ($app) {
         return $app['user'] !== null;
       }
@@ -98,7 +96,6 @@ class RuleEngineBootstrap implements BootstrapInterface {
 
     $provider->registerFunction(
       'addPageToMenu',
-      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
       function($vars, $pageSlug, $menuName, $menuItemAttrs = []) use ($app) {
 
         $menu = $app['menu']->getMenu($menuName);
@@ -121,15 +118,30 @@ class RuleEngineBootstrap implements BootstrapInterface {
 
     $provider->registerFunction(
       'useTheme',
-      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
       function($vars, $themeName) use ($app) {
         $app['theme']->setSelectedTheme($themeName);
       }
     );
 
     $provider->registerFunction(
+      'setHomepage',
+      function($vars, $pageSlug) use ($app) {
+
+        if($pageSlug instanceof PageInterface) {
+          $page = $pageSlug;
+        } else {
+          $page = $app['page']->findPageBySlug($pageSlug);
+        }
+
+        if(!$page) return;
+
+        $app['page']->setHomepage($page);
+
+      }
+    );
+
+    $provider->registerFunction(
       'asFrame',
-      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
       function($vars, $pageSlug) use ($app) {
         $urlGen = $app['url_generator'];
         $pageService = $app['page'];
@@ -141,7 +153,6 @@ class RuleEngineBootstrap implements BootstrapInterface {
 
     $provider->registerFunction(
       'log',
-      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
       function($vars, $message) use ($app) {
         $logger = $app['monolog'];
         $logger->info($message);

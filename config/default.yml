@@ -14,17 +14,18 @@ logger:
   file: ~
   level: debug
 
-entities:
-  - src/Entity
-
 assets:
-  - { src: vendor/components/jquery, dest: public/vendor/jquery }
-  - { src: vendor/twbs/bootstrap/dist, dest: public/vendor/bootstrap }
-  - { src: vendor/font-awesome/font-awesome/css, dest: public/vendor/font-awesome/css }
-  - { src: vendor/font-awesome/font-awesome/fonts, dest: public/vendor/font-awesome/fonts }
-  - { src: vendor/codemirror/codemirror/lib, dest: public/vendor/codemirror/lib }
-  - { src: vendor/codemirror/codemirror/mode, dest: public/vendor/codemirror/mode }
-  - { src: vendor/codemirror/codemirror/addon, dest: public/vendor/codemirror/addon }
+  jquery:
+    - { src: vendor/components/jquery, dest: public/vendor/jquery }
+  bootstrap:
+    - { src: vendor/twbs/bootstrap/dist, dest: public/vendor/bootstrap }
+  font-awesome:
+    - { src: vendor/font-awesome/font-awesome/css, dest: public/vendor/font-awesome/css }
+    - { src: vendor/font-awesome/font-awesome/fonts, dest: public/vendor/font-awesome/fonts }
+  code-mirror:
+    - { src: vendor/codemirror/codemirror/lib, dest: public/vendor/codemirror/lib }
+    - { src: vendor/codemirror/codemirror/mode, dest: public/vendor/codemirror/mode }
+    - { src: vendor/codemirror/codemirror/addon, dest: public/vendor/codemirror/addon }
 
 base_rules:
   customization:

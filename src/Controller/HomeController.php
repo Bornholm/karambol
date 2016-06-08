@@ -3,19 +3,27 @@
 namespace Karambol\Controller;
 
 use Karambol\KarambolApp;
+use Karambol\Page\PageInterface;
 
 class HomeController extends Controller {
 
   public function mount(KarambolApp $app) {
     $app->get('/', array($this, 'showHome'))->bind('home');
+    $app->get('/home', array($this, 'showDefaultHome'))->bind('default-home');
     $app->get('/p/{pageSlug}', array($this, 'showFramedPage'))->bind('framed-page');
   }
 
   public function showHome() {
+    $homePage = $this->get('page')->getHomepage();
+    if($homePage instanceof PageInterface) {
+      return $this->redirect($homePage->getUrl());
+    }
+    return $this->showDefaultHome();
+  }
+
+  public function showDefaultHome() {
     $twig = $this->get('twig');
-    return $twig->render('home/index.html.twig', [
-      'test' => 'hello world !'
-    ]);
+    return $twig->render('home/index.html.twig');
   }
 
   public function showFramedPage($pageSlug) {
