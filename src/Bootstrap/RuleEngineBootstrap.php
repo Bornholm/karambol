@@ -124,9 +124,19 @@ class RuleEngineBootstrap implements BootstrapInterface {
     );
 
     $provider->registerFunction(
-      'useTheme',
-      function($vars, $themeName) use ($app) {
-        $app['theme']->setSelectedTheme($themeName);
+      'setHomepage',
+      function($vars, $pageSlug) use ($app) {
+
+        if($pageSlug instanceof PageInterface) {
+          $page = $pageSlug;
+        } else {
+          $page = $app['page']->findPageBySlug($pageSlug);
+        }
+
+        if(!$page) return;
+
+        $app['page']->setHomepage($page);
+
       }
     );
 
