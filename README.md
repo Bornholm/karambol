@@ -1,4 +1,4 @@
-# Karambol
+# <img src="https://cdn.rawgit.com/Bornholm/karambol/develop/public/img/logo.svg" width="50" /> Karambol
 
 Portail web extensible
 
