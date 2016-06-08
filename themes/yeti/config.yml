@@ -1,2 +1,3 @@
 assets:
-  - { src: themes/yeti/assets, dest: public/themes/yeti }
+  yeti-theme:
+    - { src: themes/yeti/assets, dest: public/themes/yeti }
