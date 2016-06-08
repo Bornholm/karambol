@@ -9,7 +9,7 @@ abstract class Controller implements ControllerInterface {
   protected $app;
 
   public function get($service) {
-    return $this->app[$service];
+    return isset($this->app[$service]) ? $this->app[$service] : null;
   }
 
   public function redirect($url, $status = 302) {

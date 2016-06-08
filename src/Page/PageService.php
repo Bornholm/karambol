@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class PageService extends EventDispatcher {
 
   protected $app;
+  protected $homepage;
 
   public function __construct(KarambolApp $app) {
     $this->app = $app;
@@ -25,6 +26,14 @@ class PageService extends EventDispatcher {
       if($p->getSlug() === $pageSlug) return $p;
     }
     return null;
+  }
+
+  public function getHomepage() {
+    return $this->homepage;
+  }
+
+  public function setHomepage(PageInterface $homepage) {
+    $this->homepage = $homepage;
   }
 
 }
