@@ -10,8 +10,12 @@ class ExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 
   protected $functions = [];
 
-  public function registerFunction($functionName, $compilerCallback, $evaluateCallback) {
-    $this->functions[] = new ExpressionFunction($functionName, $compilerCallback, $evaluateCallback);
+  public function registerFunction($functionName, $evaluateCallback) {
+    $this->functions[] = new ExpressionFunction(
+      $functionName,
+      function() { return 'throw new \Exception(\'This expression is not meant to be compiled !\')'; },
+      $evaluateCallback
+    );
     return $this;
   }
 
