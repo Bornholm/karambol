@@ -4,9 +4,9 @@ namespace Karambol\Controller\Admin;
 
 use Karambol\KarambolApp;
 use Karambol\Controller\Controller;
-use Karambol\Entity\Page;
+use Karambol\Entity\CustomPage;
+use Karambol\Form\Type\CustomPageType;
 use Symfony\Component\Form\Extension\Core\Type as Type;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class PagesController extends Controller {
 
@@ -25,11 +25,21 @@ class PagesController extends Controller {
   }
 
   public function showPages() {
+
     $pageService = $this->get('page');
     $twig = $this->get('twig');
+
+    $systemPages = $pageService->getSystemPages();
+    $customPages = $this->get('orm')
+      ->getRepository('Karambol\Entity\CustomPage')
+      ->findAll()
+    ;
+
     return $twig->render('admin/pages/index.html.twig', [
-      'pages' => $pageService->getPages()
+      'systemPages' => $systemPages,
+      'customPages' => $customPages
     ]);
+
   }
 
   public function showPageEdit($pageId) {
@@ -37,15 +47,15 @@ class PagesController extends Controller {
     $twig = $this->get('twig');
     $orm = $this->get('orm');
 
-    $user = $orm->getRepository('Karambol\Entity\User')->find($userId);
+    $page = $orm->getRepository('Karambol\Entity\CustomPage')->find($pageId);
 
-    $userForm = $this->getUserForm($user);
-    $deleteForm = $this->getUserDeleteForm($user->getId());
+    $pageForm = $this->getPageForm($page);
+    $deleteForm = $this->getPageDeleteForm($page->getId());
 
-    return $twig->render('admin/users/edit.html.twig', [
-      'userForm' => $userForm->createView(),
+    return $twig->render('admin/pages/edit.html.twig', [
+      'pageForm' => $pageForm->createView(),
       'deleteForm' => $deleteForm->createView(),
-      'user' => $user
+      'page' => $page
     ]);
 
   }
@@ -58,71 +68,71 @@ class PagesController extends Controller {
     ]);
   }
 
-  public function handleUserUpsert($userId) {
+  public function handlePageUpsert($pageId) {
 
     $twig = $this->get('twig');
     $orm = $this->get('orm');
     $request = $this->get('request');
 
-    $user = null;
-    if(!empty($userId)) {
-      $user = $orm->getRepository('Karambol\Entity\User')->find($userId);
+    $page = null;
+    if(!empty($pageId)) {
+      $user = $orm->getRepository('Karambol\Entity\CustomPage')->find($pageId);
     }
 
-    $form = $this->getUserForm($user);
+    $form = $this->getPageForm($page);
 
     $form->handleRequest($request);
 
     if( !$form->isValid() ) {
-      return $twig->render('admin/users/edit.html.twig', [
-        'userForm' => $form->createView(),
-        'deleteForm' => $user ? $this->getUserDeleteForm($user->getId())->createView() : null,
-        'user' => $user
+      return $twig->render('admin/pages/edit.html.twig', [
+        'pageForm' => $form->createView(),
+        'deleteForm' => $page ? $this->getPageDeleteForm($page->getId())->createView() : null,
+        'page' => $page
       ]);
     }
 
-    $user = $form->getData();
+    $page = $form->getData();
     $orm = $this->get('orm');
 
-    if( $user->getId() === null ) {
-      $orm->persist($user);
+    if( $page->getId() === null ) {
+      $orm->persist($page);
     }
 
     $orm->flush();
 
     $urlGen = $this->get('url_generator');
-    return $this->redirect($urlGen->generate('admin_user_edit', ['userId' => $user->getId()]));
+    return $this->redirect($urlGen->generate('admin_page_edit', ['pageId' => $page->getId()]));
 
   }
 
-  public function handleUserDelete($userId) {
+  public function handlePageDelete($pageId) {
 
     $twig = $this->get('twig');
     $orm = $this->get('orm');
     $request = $this->get('request');
 
-    $user = $orm->getRepository('Karambol\Entity\User')->find($userId);
-    $deleteForm = $this->getUserDeleteForm($userId);
+    $page = $orm->getRepository('Karambol\Entity\CustomPage')->find($pageId);
+    $deleteForm = $this->getPageDeleteForm($pageId);
 
     $deleteForm->handleRequest($request);
 
     if(!$deleteForm->isValid()) {
       return $twig->render('admin/users/edit.html.twig', [
-        'userForm' => $form->createView(),
+        'pageForm' => $form->createView(),
         'deleteForm' => $deleteForm->createView(),
-        'user' => $user
+        'page' => $page
       ]);
     }
 
-    $orm->remove($user);
+    $orm->remove($page);
     $orm->flush();
 
     $urlGen = $this->get('url_generator');
-    return $this->redirect($urlGen->generate('admin_users'));
+    return $this->redirect($urlGen->generate('admin_pages'));
 
   }
 
-  protected function getUserDeleteForm($userId) {
+  protected function getPageDeleteForm($pageId) {
 
     $formFactory = $this->get('form.factory');
     $urlGen = $this->get('url_generator');
@@ -131,26 +141,26 @@ class PagesController extends Controller {
 
     return $formBuilder
       ->add('submit', Type\SubmitType::class, [
-        'label' => 'admin.users.delete_user',
+        'label' => 'admin.pages.delete_page',
         'attr' => [
           'class' => 'btn-danger'
         ]
       ])
-      ->setAction($urlGen->generate('admin_user_delete', ['userId' => $userId]))
+      ->setAction($urlGen->generate('admin_page_delete', ['pageId' => $pageId]))
       ->setMethod('DELETE')
       ->getForm()
     ;
 
   }
 
-  protected function getPageForm($user = null) {
+  protected function getPageForm($page = null) {
 
     $formFactory = $this->get('form.factory');
     $urlGen = $this->get('url_generator');
 
-    if($user === null) $user = new CustomPage();
+    if($page === null) $page = new CustomPage();
 
-    $formBuilder = $formFactory->createBuilder(CustomPageType::class, $user);
+    $formBuilder = $formFactory->createBuilder(CustomPageType::class, $page);
     $action = $urlGen->generate('admin_page_upsert', ['page' => $page->getId()]);
 
     return $formBuilder->setAction($action)

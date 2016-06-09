@@ -4,49 +4,23 @@
 
   <div class="row">
     <div class="col-md-push-8  col-md-4 text-right">
-      {% if user is defined %}
+      {% if page is defined %}
         {{ form(deleteForm, {'attr': {'class': 'form-inline'}}) }}
       {% endif %}
     </div>
     <div class="col-md-pull-4 col-md-8">
-      <h2>{{ user is defined ? 'admin.pages.edit_page'|trans({ '%name%': page.get('name') }) : 'admin.users.new_user'|trans }}</h2>
+      <h2>{{ page is defined ? 'admin.pages.edit_page'|trans : 'admin.pages.new_page'|trans }}</h2>
     </div>
   </div>
-  {{ form_start(userForm) }}
-  <div class="row">
-    <div class="col-md-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">{{'admin.users.base_info'|trans}}</h3>
-        </div>
-        <div class="panel-body">
-
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">{{'admin.users.user_attributes'|trans}}</h3>
-        </div>
-        <div class="panel-body">
-          {% include 'admin/users/_user_attributes.html.twig' %}
-          {% do userForm.attributes.setRendered %}
-        </div>
-      </div>
-    </div>
-  </div>
+  {{ form_start(pageForm) }}
   <div class="row">
     <div class="col-md-12">
+      {{ form_row(pageForm.label) }}
+      {{ form_row(pageForm.url) }}
       <div class="pull-right clearfix">
-        {{ form_end(userForm, {"render_rest": true}) }}
+        {{ form_end(pageForm, {"render_rest": true}) }}
       </div>
     </div>
   </div>
 
-{% endblock %}
-
-{% block javascript %}
-  {{ parent() }}
-  <script src="{{ asset('js/admin-users.js') }}"></script>
 {% endblock %}

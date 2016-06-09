@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class PageEvent extends Event {
 
-  const PAGES_LIST = 'pages.list';
+  const LIST_SYSTEM_PAGES = 'list_system_pages';
 
   protected $pages = [];
 

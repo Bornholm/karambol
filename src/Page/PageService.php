@@ -14,18 +14,25 @@ class PageService extends EventDispatcher {
     $this->app = $app;
   }
 
-  public function getPages() {
+  public function getSystemPages() {
     $event = new PageEvent();
-    $this->dispatch(PageEvent::PAGES_LIST, $event);
+    $this->dispatch(PageEvent::LIST_SYSTEM_PAGES, $event);
     return $event->getPages();
   }
 
   public function findPageBySlug($pageSlug) {
-    $pages = $this->getPages();
+
+    $systemPages = $this->getSystemPages();
+
     foreach($pages as $p) {
       if($p->getSlug() === $pageSlug) return $p;
     }
-    return null;
+
+    return $this->app['orm']
+      ->getRepository('Karambol\Entity\CustomPage')
+      ->findOneBySlug($pageSlug)
+    ;
+
   }
 
   public function getHomepage() {

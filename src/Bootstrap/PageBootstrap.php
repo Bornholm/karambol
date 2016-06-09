@@ -16,7 +16,7 @@ class PageBootstrap implements BootstrapInterface {
     $pageListener = new Page\DefaultPageListener($app);
 
     $app['page']->addListener(
-      Page\PageEvent::PAGES_LIST,
+      Page\PageEvent::LIST_SYSTEM_PAGES,
       [$pageListener, 'onPageList']
     );
 
