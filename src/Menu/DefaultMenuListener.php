@@ -8,7 +8,7 @@ use Karambol\Menu\MenuItem;
 use Karambol\Menu\Menu;
 use Karambol\Menu\Menus;
 use Karambol\Menu\MenuItems;
-use Karambol\Entity\RuleSet;
+use Karambol\RuleEngine\RuleEngineService;
 
 class DefaultMenuListener {
 
@@ -50,10 +50,10 @@ class DefaultMenuListener {
     $rulesItem
       ->addItem(new MenuItem(
         MenuItems::ADMIN_RULES_CUSTOMIZATION,
-        $urlGen->generate(sprintf('admin_rules_%s', RuleSet::CUSTOMIZATION)),
+        $urlGen->generate(sprintf('admin_rules_%s', RuleEngineService::CUSTOMIZATION)),
         ['icon_class' => 'fa fa-rocket']
       ))
-      ->addItem(new MenuItem(MenuItems::ADMIN_RULES_ROLES, '', ['icon_class' => 'fa fa-shield']))
+      ->addItem(new MenuItem(MenuItems::ADMIN_RULES_ACCES_CONTROL, '', ['icon_class' => 'fa fa-shield']))
     ;
     $menu->addItem($rulesItem);
 

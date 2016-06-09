@@ -49,7 +49,7 @@ menus:
     pages: Pages
     rules:
       rules: Rules
-      roles: Roles
+      access_control: Access Control
       customization: Customization
     plugins: Plugins
     configuration: Configuration

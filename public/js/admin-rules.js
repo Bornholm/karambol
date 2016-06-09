@@ -13,11 +13,11 @@ $(function() {
     evt.preventDefault();
     var index = $rulesHolder.data('index') || 0;
     var $clone = $(document.importNode(newRuleTemplate, true));
-    var $conditionTextarea = $clone.find('td:nth-child(1) textarea');
+    var $conditionTextarea = $clone.find('td:nth-child(2) textarea');
     $conditionTextarea.attr('name', 'rule_set[rules]['+index+'][condition]')
       .val($newRuleCondition.val())
     ;
-    var $actionTextarea = $clone.find('td:nth-child(2) textarea');
+    var $actionTextarea = $clone.find('td:nth-child(3) textarea');
     $actionTextarea.attr('name', 'rule_set[rules]['+index+'][action]')
       .val($newRuleAction.val())
     ;

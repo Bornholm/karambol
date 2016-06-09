@@ -14,8 +14,10 @@ class RuleEngineEvent extends Event {
   protected $provider;
   protected $vars;
   protected $rules;
+  protected $type;
 
-  public function __construct(array $rules, array $vars = [], ExpressionFunctionProvider $provider = null) {
+  public function __construct($type, array $rules, array $vars = [], ExpressionFunctionProvider $provider = null) {
+    $this->type = $type;
     $this->rules = $rules;
     $this->vars = $vars;
     $this->provider = $provider;
@@ -29,8 +31,12 @@ class RuleEngineEvent extends Event {
     return $this->vars;
   }
 
-  public function getRules() {
+  public function &getRules() {
     return $this->rules;
+  }
+
+  public function getType() {
+    return $this->type;
   }
 
 }

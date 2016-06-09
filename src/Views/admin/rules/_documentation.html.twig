@@ -1,0 +1,30 @@
+<h3>{{ 'admin.rules.documentation'|trans }}</h3>
+{% set api_doc_block = 'api_doc_' ~ ruleset.name %}
+{% block api_doc_block %}
+
+{% set api = [
+    { "name": "isConnected", args: [], description: 'rules.doc.customization.isConnected' },
+    { "name": "useTheme", args: ["themeName"], description: 'rules.doc.customization.useTheme' },
+    { "name": "setHomepage", args: ["page"], description: 'rules.doc.customization.setHomepage' },
+    { "name": "addPageToMenu", args: ["page", "menuName"], description: 'rules.doc.customization.addPageToMenu' },
+    { "name": "asFrame", args: ["page"], description: 'rules.doc.customization.asFrame' }
+  ]
+%}
+
+<div class="panel-group" id="api-doc" role="tablist" aria-multiselectable="true">
+  {% for method in api %}
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="api-method-heading-{{loop.index}}">
+        <h4 class="panel-title">
+          <a role="button" data-toggle="collapse" data-parent="#api-doc" href="#api-method-collapse-{{loop.index}}" aria-expanded="true" aria-controls="api-method-collapse-{{loop.index}}">
+            {{method.name}}( {{method.args|join(', ')}} )
+          </a>
+        </h4>
+      </div>
+      <div id="api-method-collapse-{{loop.index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="api-method-heading-{{loop.index}}">
+        <div class="panel-body">{{ method.description | trans }}</div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

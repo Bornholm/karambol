@@ -11,9 +11,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class RuleSet {
 
-  const CUSTOMIZATION = 'customization';
-  const ROLES = 'roles';
-
   /**
    * @ORM\Id
    * @ORM\GeneratedValue(strategy="IDENTITY")

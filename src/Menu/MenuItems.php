@@ -9,7 +9,7 @@ class MenuItems {
   const ADMIN_PAGES = 'menus.admin.pages';
   const ADMIN_RULES = 'menus.admin.rules.rules';
   const ADMIN_RULES_CUSTOMIZATION = 'menus.admin.rules.customization';
-  const ADMIN_RULES_ROLES = 'menus.admin.rules.roles';
+  const ADMIN_RULES_ACCES_CONTROL = 'menus.admin.rules.access_control';
   const ADMIN_PLUGINS = 'menus.admin.plugins';
   const ADMIN_CONFIGURATION = 'menus.admin.configuration';
 

@@ -7,7 +7,7 @@
 
 {% block content %}
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-9">
       {% set ruleset_title = 'admin.rules.' ~ ruleset.name ~ '_rules' %}
       <h3>{{ ruleset_title|trans }}</h3>
       {{ form_start(rulesetForm) }}
@@ -21,8 +21,8 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <h3>{{ 'admin.rules.documentation'|trans }}</h3>
+    <div class="col-md-3">
+      {% include 'admin/rules/_documentation.html.twig' %}
     </div>
   </div>
   {{
