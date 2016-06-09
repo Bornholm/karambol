@@ -3,14 +3,17 @@
 {% block api_doc_block %}
 
 {% set api = [
-    { "name": "isConnected", args: [], description: 'rules.doc.customization.isConnected' },
-    { "name": "useTheme", args: ["themeName"], description: 'rules.doc.customization.useTheme' },
-    { "name": "setHomepage", args: ["page"], description: 'rules.doc.customization.setHomepage' },
-    { "name": "addPageToMenu", args: ["page", "menuName"], description: 'rules.doc.customization.addPageToMenu' },
-    { "name": "asFrame", args: ["page"], description: 'rules.doc.customization.asFrame' }
+    { "name": "isConnected", args: [], description: 'admin.rules.doc.customization.isConnected' },
+    { "name": "useTheme", args: ["themeName"], description: 'admin.rules.doc.customization.useTheme' },
+    { "name": "setHomepage", args: ["page"], description: 'admin.rules.doc.customization.setHomepage' },
+    { "name": "addPageToMenu", args: ["page", "menuName", "options"], description: 'admin.rules.doc.customization.addPageToMenu' },
+    { "name": "asFrame", args: ["page"], description: 'admin.rules.doc.customization.asFrame' }
   ]
 %}
 
+<div>{{ ('admin.rules.' ~ api_doc_block)|trans }}</div>
+
+<h4>{{ 'admin.rules.methods'|trans }}</h4>
 <div class="panel-group" id="api-doc" role="tablist" aria-multiselectable="true">
   {% for method in api %}
     <div class="panel panel-default">

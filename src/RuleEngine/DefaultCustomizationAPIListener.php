@@ -92,7 +92,7 @@ class DefaultCustomizationAPIListener {
         $pageService = $app['page'];
         $page = $pageService->findPageBySlug($pageSlug);
         if(!$page) return;
-        return new Page($page->getLabel(), $urlGen->generate('framed-page', ['pageSlug' => $pageSlug]), $pageSlug);
+        return new Page($page->getLabel(), $urlGen->generate('framed_page', ['pageSlug' => $pageSlug]), $pageSlug);
       }
     );
 

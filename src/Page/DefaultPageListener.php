@@ -14,7 +14,7 @@ class DefaultPageListener {
     $this->app = $app;
   }
 
-  public function onPageList(PageEvent $event) {
+  public function onSystemPagesList(PageEvent $event) {
 
     $translator = $this->app['translator'];
     $urlGen = $this->app['url_generator'];
@@ -24,14 +24,11 @@ class DefaultPageListener {
     $loginPage = new Page($translator->trans('pages.login'), $urlGen->generate('login'), 'login');
     $logoutPage = new Page($translator->trans('pages.logout'), $urlGen->generate('logout'), 'logout');
 
-    $linuxfrPage = new Page($translator->trans('Linux-fr'), 'https://linuxfr.org', 'linux-fr');
-
     $event
       ->addPage($homePage)
       ->addPage($adminPage)
       ->addPage($loginPage)
       ->addPage($logoutPage)
-      ->addPAge($linuxfrPage)
     ;
 
   }

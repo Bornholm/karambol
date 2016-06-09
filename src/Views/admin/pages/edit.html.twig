@@ -9,7 +9,7 @@
       {% endif %}
     </div>
     <div class="col-md-pull-4 col-md-8">
-      <h2>{{ page is defined ? 'admin.pages.edit_page'|trans : 'admin.pages.new_page'|trans }}</h2>
+      <h2>{{ page is defined ? 'admin.pages.edit_page'|trans({'%label%': page.label}) : 'admin.pages.new_page'|trans }}</h2>
     </div>
   </div>
   {{ form_start(pageForm) }}

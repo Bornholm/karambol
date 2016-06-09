@@ -15,7 +15,7 @@ class CustomPageType extends AbstractType
         ->add('url', Type\TextType::class)
         ->add('label', Type\TextType::class)
         ->add('submit', Type\SubmitType::class, [
-          'label' => 'form.page.save_page',
+          'label' => 'form.pages.save_page',
           'attr' => [
             'class' => 'btn-success'
           ]

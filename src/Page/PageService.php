@@ -24,7 +24,7 @@ class PageService extends EventDispatcher {
 
     $systemPages = $this->getSystemPages();
 
-    foreach($pages as $p) {
+    foreach($systemPages as $p) {
       if($p->getSlug() === $pageSlug) return $p;
     }
 

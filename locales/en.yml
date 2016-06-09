@@ -24,6 +24,9 @@ admin:
     label: Label
     slug: Slug
     url: URL
+    edit: Edit
+    edit_page: 'Edit: %label%'
+    delete_page: Delete
     operations: Operations
     create: Add a new page
     system_page: System page
@@ -34,9 +37,13 @@ admin:
     action: Action
     operations: Operations
     documentation: Documentation
+    methods: Methods
+    api_doc_customization: Here will be documentation !
 form:
   rules:
     save_ruleset: Save
+  pages:
+    save_page: Save
 auth:
   login_title: Login
   login_submit: Connect

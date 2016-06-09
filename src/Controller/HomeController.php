@@ -9,8 +9,8 @@ class HomeController extends Controller {
 
   public function mount(KarambolApp $app) {
     $app->get('/', array($this, 'showHome'))->bind('home');
-    $app->get('/home', array($this, 'showDefaultHome'))->bind('default-home');
-    $app->get('/p/{pageSlug}', array($this, 'showFramedPage'))->bind('framed-page');
+    $app->get('/home', array($this, 'showDefaultHome'))->bind('default_home');
+    $app->get('/p/{pageSlug}', array($this, 'showFramedPage'))->bind('framed_page');
   }
 
   public function showHome() {

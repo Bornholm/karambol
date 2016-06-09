@@ -65,7 +65,6 @@ class DefaultMenuListener {
     $pluginsItem = new MenuItem(MenuItems::ADMIN_PLUGINS, '', [
       'icon_class' => 'fa fa-cubes'
     ]);
-    $pluginsItem->addItem(new MenuItem('Foo Plugin', ''));
     $menu->addItem($pluginsItem);
 
     $homeItem = new MenuItem(MenuItems::HOME, $urlGen->generate('home'), [
