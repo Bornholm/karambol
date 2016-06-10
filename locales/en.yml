@@ -70,3 +70,9 @@ pages:
   home: Home
 home:
   powered_by_karambol: Powered by Karambol
+commands:
+  user:
+    create:
+      enter_user_email: "Please enter the new user's email: "
+      enter_user_password: "Please enter the new user's password: "
+      confirm_user_password: "Please confirm the new user's password: "

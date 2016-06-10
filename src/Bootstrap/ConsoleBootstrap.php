@@ -4,7 +4,7 @@ namespace Karambol\Bootstrap;
 
 use Karambol\KarambolApp;
 use Karambol\Provider\ConsoleServiceProvider;
-use Karambol\Command\LinkAssetsCommand;
+use Karambol\Command;
 
 class ConsoleBootstrap implements BootstrapInterface {
 
@@ -13,7 +13,8 @@ class ConsoleBootstrap implements BootstrapInterface {
     $app->register(new ConsoleServiceProvider());
 
     // Register default commands
-    $app['console']->add(new LinkAssetsCommand($app));
+    $app['console']->add(new Command\LinkAssetsCommand($app));
+    $app['console']->add(new Command\CreateUserCommand($app));
 
   }
 
