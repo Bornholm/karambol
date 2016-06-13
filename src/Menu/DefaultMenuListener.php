@@ -53,7 +53,11 @@ class DefaultMenuListener {
         $urlGen->generate(sprintf('admin_rules_%s', RuleEngineService::CUSTOMIZATION)),
         ['icon_class' => 'fa fa-rocket']
       ))
-      ->addItem(new MenuItem(MenuItems::ADMIN_RULES_ACCES_CONTROL, '', ['icon_class' => 'fa fa-shield']))
+      ->addItem(new MenuItem(
+        MenuItems::ADMIN_RULES_ACCES_CONTROL,
+        $urlGen->generate(sprintf('admin_rules_%s', RuleEngineService::ACCESS_CONTROL)),
+        ['icon_class' => 'fa fa-shield']
+      ))
     ;
     $menu->addItem($rulesItem);
 
