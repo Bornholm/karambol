@@ -22,9 +22,9 @@ class User implements UserInterface {
   protected $id;
 
   /**
-   * @ORM\Column(type="string", length=128, unique=true)
+   * @ORM\Column(type="string", length=254, unique=true)
    */
-  protected $username;
+  protected $email;
 
   /**
    * @ORM\Column(type="text")
@@ -51,8 +51,13 @@ class User implements UserInterface {
     return $this->id;
   }
 
-  public function getUsername() {
+  public function getEmail() {
+    return $this->email;
+  }
 
+  public function setEmail($email) {
+    $this->email = $email;
+    return $this;
   }
 
   public function set($attrName, $attrValue) {
@@ -90,6 +95,10 @@ class User implements UserInterface {
   public function setAttributes(ArrayCollection $attributes) {
     $this->attributes = $attributes;
     return $this;
+  }
+
+  public function getUsername() {
+    return $this->getEmail();
   }
 
   public function getPassword() {

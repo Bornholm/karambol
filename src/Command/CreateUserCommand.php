@@ -25,26 +25,23 @@ class CreateUserCommand extends Command
     $this
       ->setName('karambol:user:create')
       ->setDescription('Create a new user')
+      ->addArgument(
+        'email',
+        InputArgument::REQUIRED,
+        'The user\'s email'
+      )
+      ->addArgument(
+        'password',
+        InputArgument::REQUIRED,
+        'The user\'s password'
+      )
     ;
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-
-    $translator = $this->app['translator'];
-    $helper = $this->getHelper('question');
-
-    $question = new Question($translator->trans('commands.user.create.enter_user_email'), false);
-    $email = $helper->ask($input, $output, $question);
-
-    $question = new Question($translator->trans('commands.user.create.enter_user_password'), false);
-    $question->setHidden(true);
-    $password = $helper->ask($input, $output, $question);
-
-    $question = new Question($translator->trans('commands.user.create.confirm_user_password'), false);
-    $question->setHidden(true);
-    $passwordConfirm = $helper->ask($input, $output, $question);
-
+    $email = $input->getArgument('email');
+    $password = $input->getArgument('password');
   }
 
 }
