@@ -32,11 +32,6 @@ class User implements UserInterface {
   protected $password;
 
   /**
-   * @ORM\Column(type="text")
-   */
-  protected $salt;
-
-  /**
    * @ORM\OneToMany(targetEntity="Karambol\Entity\UserAttribute", mappedBy="user", orphanRemoval=true, cascade="all")
    */
   protected $attributes;
@@ -101,16 +96,26 @@ class User implements UserInterface {
     return $this->getEmail();
   }
 
-  public function getPassword() {
+  public function changePassword($hash, $salt) {
+    $this->password = base64_encode($salt).':'.base64_encode($hash);
+  }
 
+  public function getPassword() {
+    return base64_decode($this->getPasswordPart(1));
   }
 
   public function getSalt() {
+    return base64_decode($this->getPasswordPart(0));
+  }
 
+  protected function getPasswordPart($partIndex) {
+    $parts = explode(':', $this->password);
+    return count($parts) >= $partIndex+1 ? $parts[$partIndex] : null;
   }
 
   public function eraseCredentials() {
-
+    $this->password = null;
+    return $this;
   }
 
   public function getRoles() {

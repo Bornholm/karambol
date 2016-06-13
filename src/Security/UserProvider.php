@@ -19,7 +19,7 @@ class UserProvider implements UserProviderInterface {
 
     $orm = $this->app['orm'];
     $usersRepo = $orm->getRepository('Karambol\Entity\User');
-    $user = $usersRepo->findOneByUsername($username);
+    $user = $usersRepo->findOneByEmail($username);
 
     if(!$user) {
       throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
@@ -36,7 +36,7 @@ class UserProvider implements UserProviderInterface {
     }
 
     return $this->loadUserByUsername($user->getUsername());
-    
+
   }
 
   public function supportsClass($class) {
