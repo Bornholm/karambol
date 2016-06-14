@@ -46,7 +46,7 @@ class UserProvider implements UserProviderInterface {
     return $class === 'Karambol\Entity\User';
   }
 
-  protected function executeAccessControlRules($user) {
+  protected function executeAccessControlRules(User $user) {
 
     $app = $this->app;
 
@@ -55,12 +55,15 @@ class UserProvider implements UserProviderInterface {
     $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
 
     $ruleset = $rulesetRepo->findOneByName(RuleEngineService::ACCESS_CONTROL);
-    $rules = $ruleset->getRules()->toArray();
+    
+    if(!$ruleset) return;
 
     $vars = [
       '_user' => $user,
       'user' => $user->toAPIObject()
     ];
+
+    $rules = $ruleset->getRules()->toArray();
 
     try {
       $ruleEngine->execute(RuleEngineService::ACCESS_CONTROL, $rules, $vars);

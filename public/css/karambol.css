@@ -87,6 +87,7 @@ body.karambol[class*=" admin"] {
 
 /* Admin - Rules */
 
-body.karambol.admin_rules_customization .CodeMirror {
+body.karambol.admin_rules_customization .CodeMirror,
+body.karambol.admin_rules_access_control .CodeMirror {
   height: auto;
 }
