@@ -23,9 +23,9 @@
             {% for user in users %}
               <tr>
                 <td>{{user.id}}</td>
-                <td>{{user.get('email')}}</td>
+                <td>{{user.email}}</td>
                 <td>
-                  <a href="{{ path('admin_user_edit', {'userId': user.id}) }}" class="btn btn-primary">{{ 'admin.users.edit'|trans }}</a>
+                  <a href="{{ path('admin_user_edit', {'userId': user.id}) }}" class="btn btn-primary btn-xs">{{ 'admin.users.edit'|trans }}</a>
                 </td>
               </tr>
             {% else %}

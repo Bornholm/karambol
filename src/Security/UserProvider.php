@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Karambol\Entity\User;
 use Karambol\KarambolApp;
+use Karambol\RuleEngine\RuleEngineService;
 
 class UserProvider implements UserProviderInterface {
 
@@ -25,6 +26,8 @@ class UserProvider implements UserProviderInterface {
       throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
     }
 
+    $this->executeAccessControlRules($user);
+
     return $user;
 
   }
@@ -41,6 +44,30 @@ class UserProvider implements UserProviderInterface {
 
   public function supportsClass($class) {
     return $class === 'Karambol\Entity\User';
+  }
+
+  protected function executeAccessControlRules($user) {
+
+    $app = $this->app;
+
+    $logger = $app['monolog'];
+    $ruleEngine = $app['rule_engine'];
+    $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
+
+    $ruleset = $rulesetRepo->findOneByName(RuleEngineService::ACCESS_CONTROL);
+    $rules = $ruleset->getRules()->toArray();
+
+    $vars = [
+      '_user' => $user,
+      'user' => $user->toAPIObject()
+    ];
+
+    try {
+      $ruleEngine->execute(RuleEngineService::ACCESS_CONTROL, $rules, $vars);
+    } catch(\Exception $ex) {
+      $logger->error($ex);
+    }
+
   }
 
 }

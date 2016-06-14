@@ -92,6 +92,14 @@ class User implements UserInterface {
     return $this;
   }
 
+  public function getAttrs() {
+    $attrs = [];
+    foreach($this->attributes as $attr) {
+      $attrs[$attr->getName()] = $attr->getValue();
+    }
+    return $attrs;
+  }
+
   public function getUsername() {
     return $this->getEmail();
   }
@@ -114,7 +122,7 @@ class User implements UserInterface {
   }
 
   public function eraseCredentials() {
-    $this->password = null;
+    // No plain text credentials to remove
     return $this;
   }
 
@@ -139,6 +147,14 @@ class User implements UserInterface {
         return $attr;
       }
     }
+  }
+
+  public function toAPIObject() {
+    $user = new \stdClass();
+    $user->id = $this->getId();
+    $user->email = $this->getEmail();
+    $user->attrs = $this->getAttrs();
+    return $user;
   }
 
 }

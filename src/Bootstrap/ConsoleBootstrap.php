@@ -13,8 +13,11 @@ class ConsoleBootstrap implements BootstrapInterface {
     $app->register(new ConsoleServiceProvider());
 
     // Register default commands
-    $app['console']->add(new Command\LinkAssetsCommand($app));
-    $app['console']->add(new Command\CreateUserCommand($app));
+    $console = $app['console'];
+
+    $console->add(new Command\LinkAssetsCommand($app));
+    $console->add(new Command\CreateUserCommand($app));
+    $console->add(new Command\PromoteUserCommand($app));
 
   }
 
