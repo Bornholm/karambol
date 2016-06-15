@@ -1,0 +1,72 @@
+admin:
+  navbar:
+    toggle_nav: Basculer la navigation
+    brand: KarAdmin
+    users: Utilisateurs
+    rules: Règles
+  users:
+    id: Identifiant
+    email: Courriel
+    actions: Actions
+    no_users: Auncu utilisateur pour le moment.
+    create: Créer
+    edit: Éditer
+    edit_user: Utilisateur "%name%"
+    delete_user: Supprimer
+    save_user: Enregistrer
+    new_user: Nouvel utilisateur
+    add_attribute: Ajout un attribut
+    remove_attribute: Supprimer l'attribut
+    attribute_name: Nom
+    attribute_value: Valeur
+    user_attributes: Attributs
+  pages:
+    label: Label
+    slug: Identifiant textuel
+    url: URL
+    edit: Éditer
+    edit_page: 'Éditer: %label%'
+    delete_page: Supprimer
+    operations: Opérations
+    create: Ajouter une page
+    system_page: Page système
+    system_page_help: Ceci est un page "système", créée automatiquement pour vous par Karambol ou un de ses plugins. Vous ne pouvez pas l'éditer.
+  rules:
+    customization_rules: Règles de personnalisation
+    access_control_rules: Règles de contrôle d'accès
+    condition: Condition
+    action: Action
+    operations: Opérations
+    documentation: Documentation
+    methods: Méthodes
+form:
+  rules:
+    save_ruleset: Enregistrer
+  pages:
+    save_page: Enregistrer
+auth:
+  login_title: Se connecter
+  login_submit: S'identifier
+  username: Nom d'utilisateur
+  password: Mot de passe
+menus:
+  admin:
+    admin: Administration
+    users: Utilisateurs
+    pages: Pages
+    rules:
+      rules: Règles
+      access_control: Contrôle des accès
+      customization: Personnalisation
+    plugins: Plugins
+    configuration: Configuration
+  logout: Se déconnecter
+  login: Se connecter
+  home: Accueil
+pages:
+  admin: Administration
+  login: Connexion
+  logout: Déconnexion
+  home: Accueil
+home:
+  powered_by_karambol: Propulsé par Karambol
