@@ -4,13 +4,13 @@ namespace Karambol\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Karambol\Page\PageService;
+use Symfony\Component\Console\Application as ConsoleApplication;
 
-class PageServiceProvider implements ServiceProviderInterface
+class ConsoleServiceProvider implements ServiceProviderInterface
 {
 
   public function register(Application $app) {
-    $app['page'] = new PageService($app);
+    $app['console'] = new ConsoleApplication();
   }
 
   public function boot(Application $app) {}

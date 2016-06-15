@@ -31,6 +31,7 @@ class KarambolApp extends Application
       'Karambol\Bootstrap\SecurityBootstrap',
       'Karambol\Bootstrap\LocalizationBootstrap',
       'Karambol\Bootstrap\ControllersBootstrap',
+      'Karambol\Bootstrap\ConsoleBootstrap',
       'Karambol\Bootstrap\PluginsBootstrap'
     ];
 

@@ -14,6 +14,8 @@ fi
 
 $COMPOSER install
 
+$DIR/console karambol:link-assets
+
 # Editer/ajouter vos paramètres locaux de configuration en vous basant sur le fichier default.yml
 
 LOCAL_CONFIG="$DIR/../config/local.d/local.yml"

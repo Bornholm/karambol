@@ -26,6 +26,9 @@ class ControllersBootstrap implements BootstrapInterface {
     $customRulesCtrl = new Controller\Admin\RulesController(RuleEngineService::CUSTOMIZATION);
     $customRulesCtrl->bindTo($app);
 
+    $accesControlCtrl = new Controller\Admin\RulesController(RuleEngineService::ACCESS_CONTROL);
+    $accesControlCtrl->bindTo($app);
+
   }
 
 }

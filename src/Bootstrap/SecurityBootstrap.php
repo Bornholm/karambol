@@ -4,6 +4,7 @@ namespace Karambol\Bootstrap;
 
 use Karambol\KarambolApp;
 use Silex\Provider\SecurityServiceProvider;
+use Karambol\Security\UserProvider;
 
 class SecurityBootstrap implements BootstrapInterface {
 
@@ -13,10 +14,9 @@ class SecurityBootstrap implements BootstrapInterface {
         'main' => [
           'pattern' => '^.*$',
           'anonymous' => true,
-          'users' => [
-            // raw password is foo
-            'admin' => ['ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='],
-          ],
+          'users' => function() use ($app) {
+            return new UserProvider($app);
+          },
           'form' => [
             'login_path' => '/login',
             'check_path' => '/login_check'

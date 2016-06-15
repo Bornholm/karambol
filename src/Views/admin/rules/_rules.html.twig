@@ -14,7 +14,7 @@
           <td>--</td>
           <td>{{form_widget(rule.condition)}}</td>
           <td>{{form_widget(rule.action)}}</td>
-          <td><button class="remove-rule btn btn-danger"><span class="fa fa-trash"></span></button></td>
+          <td><button class="remove-rule btn btn-danger btn-sm"><span class="fa fa-trash"></span></button></td>
         </tr>
       {% endfor %}
     </tbody>
@@ -23,7 +23,7 @@
         <td></td>
         <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' id="new-rule-condition"></textarea></td>
         <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' id="new-rule-action"></textarea></td>
-        <td><button id="add-rule" class="btn btn-primary"><span class="fa fa-plus"></span></button></td>
+        <td><button id="add-rule" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span></button></td>
       </tr>
     </tfoot>
   </table>
@@ -32,7 +32,7 @@
       <td></td>
       <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' name="rule_set[rules][__index__][condition]"></textarea></td>
       <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' name="rule_set[rules][__index__][action]"></textarea></td>
-      <td><button class="remove-rule btn btn-danger"><span class="fa fa-trash"></span></button></td>
+      <td><button class="remove-rule btn btn-danger btn-sm"><span class="fa fa-trash"></span></button></td>
     </tr>
   </template>
 </div>

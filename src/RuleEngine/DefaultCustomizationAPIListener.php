@@ -9,13 +9,7 @@ use Karambol\Menu\MenuItem;
 use Karambol\Page\PageInterface;
 use Karambol\Page\Page;
 
-class DefaultCustomizationAPIListener {
-
-  protected $app;
-
-  public function __construct(KarambolApp $app) {
-    $this->app = $app;
-  }
+class DefaultCustomizationAPIListener extends CommonAPIConfigurator {
 
   public function onBeforeExecuteRules(RuleEngineEvent $event) {
 
@@ -25,19 +19,7 @@ class DefaultCustomizationAPIListener {
 
     $provider = $event->getFunctionProvider();
 
-    $provider->registerFunction(
-      'isGranted',
-      function($vars, $authorization) use ($app) {
-        return $app['security.authorization_checker']->isGranted($authorization);
-      }
-    );
-
-    $provider->registerFunction(
-      'isConnected',
-      function($vars) use ($app) {
-        return $app['user'] !== null;
-      }
-    );
+    $this->registerCommonAPI($provider);
 
     $provider->registerFunction(
       'addPageToMenu',
@@ -93,14 +75,6 @@ class DefaultCustomizationAPIListener {
         $page = $pageService->findPageBySlug($pageSlug);
         if(!$page) return;
         return new Page($page->getLabel(), $urlGen->generate('framed_page', ['pageSlug' => $pageSlug]), $pageSlug);
-      }
-    );
-
-    $provider->registerFunction(
-      'log',
-      function($vars, $message) use ($app) {
-        $logger = $app['monolog'];
-        $logger->info($message);
       }
     );
 

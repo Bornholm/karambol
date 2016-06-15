@@ -33,6 +33,7 @@ admin:
     system_page_help: This is a system page and it have been automatically created for you by Karambol or one of its plugins. You cannot edit it.
   rules:
     customization_rules: Customization rules
+    access_control_rules: Access control rules
     condition: Condition
     action: Action
     operations: Operations
@@ -70,3 +71,9 @@ pages:
   home: Home
 home:
   powered_by_karambol: Powered by Karambol
+commands:
+  user:
+    create:
+      enter_user_email: "Please enter the new user's email: "
+      enter_user_password: "Please enter the new user's password: "
+      confirm_user_password: "Please confirm the new user's password: "

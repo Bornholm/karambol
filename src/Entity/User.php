@@ -5,13 +5,14 @@ namespace Karambol\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Karambol\Entity\UserAttribute;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
  * @ORM\HasLifecycleCallbacks
  */
-class User {
+class User implements UserInterface {
 
   /**
    * @ORM\Id
@@ -21,9 +22,21 @@ class User {
   protected $id;
 
   /**
+   * @ORM\Column(type="string", length=254, unique=true)
+   */
+  protected $email;
+
+  /**
+   * @ORM\Column(type="text")
+   */
+  protected $password;
+
+  /**
    * @ORM\OneToMany(targetEntity="Karambol\Entity\UserAttribute", mappedBy="user", orphanRemoval=true, cascade="all")
    */
   protected $attributes;
+
+  protected $roles = [];
 
   public function __construct() {
     $this->attributes = new ArrayCollection();
@@ -31,6 +44,15 @@ class User {
 
   public function getId() {
     return $this->id;
+  }
+
+  public function getEmail() {
+    return $this->email;
+  }
+
+  public function setEmail($email) {
+    $this->email = $email;
+    return $this;
   }
 
   public function set($attrName, $attrValue) {
@@ -70,12 +92,69 @@ class User {
     return $this;
   }
 
+  public function getAttrs() {
+    $attrs = [];
+    foreach($this->attributes as $attr) {
+      $attrs[$attr->getName()] = $attr->getValue();
+    }
+    return $attrs;
+  }
+
+  public function getUsername() {
+    return $this->getEmail();
+  }
+
+  public function changePassword($hash, $salt) {
+    $this->password = base64_encode($salt).':'.base64_encode($hash);
+  }
+
+  public function getPassword() {
+    return base64_decode($this->getPasswordPart(1));
+  }
+
+  public function getSalt() {
+    return base64_decode($this->getPasswordPart(0));
+  }
+
+  protected function getPasswordPart($partIndex) {
+    $parts = explode(':', $this->password);
+    return count($parts) >= $partIndex+1 ? $parts[$partIndex] : null;
+  }
+
+  public function eraseCredentials() {
+    // No plain text credentials to remove
+    return $this;
+  }
+
+  public function getRoles() {
+    return $this->roles;
+  }
+
+  public function addRole($role) {
+    if(!in_array($role, $this->roles)) $this->roles[] = $role;
+    return $this;
+  }
+
+  public function removeRole($role) {
+    $roleIndex = array_search($role, $this->roles);
+    if($roleIndex !== false) array_splice($this->roles, $roleIndex, 1);
+    return $this;
+  }
+
   protected function findAttributeByName($attrName) {
     foreach($this->attributes as $attr) {
       if($attr->getName() === $attrName) {
         return $attr;
       }
     }
+  }
+
+  public function toAPIObject() {
+    $user = new \stdClass();
+    $user->id = $this->getId();
+    $user->email = $this->getEmail();
+    $user->attrs = $this->getAttrs();
+    return $user;
   }
 
 }
