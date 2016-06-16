@@ -7,19 +7,19 @@ use Karambol\RuleEngine\RuleInterface;
 class Rule implements RuleInterface {
 
   protected $condition;
-  protected $action;
+  protected $actions;
 
-  public function __construct($condition, $action) {
+  public function __construct($condition, array $actions) {
     $this->condition = $condition;
-    $this->action = $action;
+    $this->actions = $actions;
   }
 
   public function getCondition() {
     return $this->condition;
   }
 
-  public function getAction() {
-    return $this->action;
+  public function getActions() {
+    return $this->actions;
   }
 
 }

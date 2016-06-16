@@ -55,6 +55,10 @@ class CustomRule implements RuleInterface {
     $this->action = $action;
   }
 
+  public function getActions() {
+    return preg_split('/(\n)+|(\r\n)+/', $this->action);
+  }
+
   public function getRuleset() {
     return $this->ruleset;
   }

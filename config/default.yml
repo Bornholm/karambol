@@ -12,7 +12,7 @@ database:
 
 logger:
   file: ~
-  level: debug
+  level: WARNING
 
 assets:
   jquery:

@@ -13,16 +13,11 @@ class MonologBootstrap implements BootstrapInterface {
     $loggerConfig = $app['config']['logger'];
 
     $app->register(new MonologServiceProvider(), [
-      'monolog.logfile' => !empty($loggerConfig['file']) ? $loggerConfig['file'] : __DIR__.'/../karambol.log',
-      'monolog.level' => !empty($loggerConfig['level']) ? $loggerConfig['level'] : 'debug',
+      'monolog.logfile' => empty($loggerConfig['file']) ? 'php://stdout' : $loggerConfig['file'],
+      'monolog.level' => $loggerConfig['level'],
       'monolog.name' => 'karambol',
+      'monolog.use_error_handler' => true
     ]);
-
-    $app['monolog'] = $app->share($app->extend('monolog', function($monolog, $app) {
-      $monolog->pushHandler(new \Monolog\Handler\ErrorLogHandler());
-      return $monolog;
-    }));
-
   }
 
 }
