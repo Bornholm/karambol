@@ -25,7 +25,8 @@ class MenuServiceProvider implements ServiceProviderInterface
           $app['menu']->dispatch(MenuEvent::MENU_RENDER, $event);
 
           return $app['twig']->render('menus/'.$menuName.'.html.twig', [
-            'items' => $menu->getItems()
+            'items' => $menu->getItems(),
+            'menuName' => $menuName
           ]);
 
         }, ['is_safe' => ['html', 'js']]));

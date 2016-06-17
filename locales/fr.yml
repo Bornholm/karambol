@@ -22,7 +22,7 @@ admin:
     user_attributes: Attributs
   pages:
     label: Label
-    slug: Identifiant textuel
+    slug: Identifiant textuel (slug)
     url: URL
     edit: Éditer
     edit_page: 'Éditer: %label%'
@@ -54,6 +54,7 @@ menus:
     admin: Administration
     users: Utilisateurs
     pages: Pages
+    content: Contenus
     rules:
       rules: Règles
       access_control: Contrôle des accès

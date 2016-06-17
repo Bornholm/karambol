@@ -1,7 +1,11 @@
-<ul class="karambol-cards">
+<ul class="karambol-cards" data-karambol-menu="{{menuName}}">
+  {{ reset_color(1200) }}
   {% for item in items %}
-  <li class="karambol-card" role="presentation">
-    <a href="{{ item.link }}" target="{{ item.attributes.target is defined ? item.attributes.target : '_blank' }}">{{ item.name }}</a>
+  <li data-ratio="16:9" class="karambol-card" role="presentation" style="background-color:{{ random_color('bright') }}">
+    <a href="{{ item.link }}" target="{{ item.attributes.target is defined ? item.attributes.target : '_blank' }}">
+      <i class="{{ item.attributes.icon is defined ? item.attributes.icon }}"></i> {{ item.name }}
+    </a>
   </li>
   {% endfor %}
 </ul>
+{{ appendScript('js/card-ratio.js') }}

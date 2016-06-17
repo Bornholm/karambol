@@ -46,6 +46,10 @@ body.karambol[class*=" admin"] {
 
 .karambol-flex-item {
   flex: 1 1 auto;
+  align-items: stretch;
+  flex-flow: column;
+  align-items: stretch;
+  display: flex;
 }
 
 /* Homepage */
@@ -58,19 +62,30 @@ body.karambol[class*=" admin"] {
   flex-flow: row;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  flex-grow: 1;
 }
 
 .karambol-card {
-  height: 100px;
-  min-width: 20%;
+  min-width: 15%;
   background-color: #ccc;
-  line-height: 100px;
+  line-height: 100%;
   text-align: center;
   margin: 5px;
+  padding: 0 25px;
+  opacity: 0;
+  transition: opacity 1000ms;
 }
 
 .karambol-card > a {
   vertical-align: middle;
+  color: #fff;
+  font-weight: bold;
+  font-size: 2.3em;
+}
+
+.karambol-card > a:hover, .karambol-card > a:focus {
+  text-decoration: none;
 }
 
 /* Page */
@@ -83,6 +98,8 @@ body.karambol[class*=" admin"] {
   border: none;
   flex: 1 1 100%;
   display: block;
+  opacity: 0;
+  transition: opacity 250ms;
 }
 
 /* Admin - Rules */

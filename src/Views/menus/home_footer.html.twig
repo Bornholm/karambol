@@ -1,4 +1,6 @@
-{% for item in items %}
-  <small><a title="{{item.attributes.title is defined ? item.attributes.title}}" href="{{item.link}}">{{item.label}}</a></small>&nbsp;
-{% endfor %}
-<small>{{ 'home.powered_by_karambol'|trans }}</small>
+<div data-karambol-menu="{{menuName}}">
+  {% for item in items %}
+    <small><a title="{{item.attributes.title is defined ? item.attributes.title}}" href="{{item.link}}">{{item.label}}</a></small>&nbsp;
+  {% endfor %}
+  <small>{{ 'home.powered_by_karambol'|trans }}</small>
+<div>

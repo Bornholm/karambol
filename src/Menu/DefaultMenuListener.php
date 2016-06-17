@@ -39,10 +39,15 @@ class DefaultMenuListener {
     ]);
     $menu->addItem($usersItem);
 
+    $contentItem = new MenuItem(MenuItems::ADMIN_CONTENT, '#', [
+      'icon_class' => 'fa fa-puzzle-piece'
+    ]);
+    $menu->addItem($contentItem);
+
     $linksItem = new MenuItem(MenuItems::ADMIN_PAGES, $urlGen->generate('admin_pages'), [
       'icon_class' => 'fa fa-link'
     ]);
-    $menu->addItem($linksItem);
+    $contentItem->addItem($linksItem);
 
     $rulesItem = new MenuItem(MenuItems::ADMIN_RULES, '', [
       'icon_class' => 'fa fa-gavel'
@@ -67,7 +72,7 @@ class DefaultMenuListener {
     $menu->addItem($configItem);
 
     $pluginsItem = new MenuItem(MenuItems::ADMIN_PLUGINS, '', [
-      'icon_class' => 'fa fa-cubes'
+      'icon_class' => 'fa fa-plug'
     ]);
     $menu->addItem($pluginsItem);
 

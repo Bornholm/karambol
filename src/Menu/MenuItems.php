@@ -6,6 +6,7 @@ class MenuItems {
 
   const ADMIN = 'menus.admin.admin';
   const ADMIN_USERS = 'menus.admin.users';
+  const ADMIN_CONTENT = 'menus.admin.content';
   const ADMIN_PAGES = 'menus.admin.pages';
   const ADMIN_RULES = 'menus.admin.rules.rules';
   const ADMIN_RULES_CUSTOMIZATION = 'menus.admin.rules.customization';

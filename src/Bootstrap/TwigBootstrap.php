@@ -5,6 +5,7 @@ namespace Karambol\Bootstrap;
 use Karambol\KarambolApp;
 use Silex\Provider\TwigServiceProvider;
 use League\CommonMark\CommonMarkConverter;
+use Colors\RandomColor;
 
 class TwigBootstrap implements BootstrapInterface {
 
@@ -36,6 +37,18 @@ class TwigBootstrap implements BootstrapInterface {
 
       $twig->addFunction(new \Twig_SimpleFunction('file_exists', function($filePath) {
         return file_exists(realpath(__DIR__.'/../../'.$filePath));
+      }));
+
+      $twig->addFunction(new \Twig_SimpleFunction('reset_color', function($seed = 0) {
+        mt_srand($seed);
+      }));
+
+      $twig->addFunction(new \Twig_SimpleFunction('random_color', function($luminosity = 'light', $hue = null, $format = 'rgbCss') {
+        return RandomColor::one(array(
+          'luminosity' => $luminosity,
+          'hue' => $hue,
+          'format' => $format
+        ));
       }));
 
       return $twig;
