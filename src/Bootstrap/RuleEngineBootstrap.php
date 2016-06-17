@@ -61,7 +61,7 @@ class RuleEngineBootstrap implements BootstrapInterface {
     try {
       $ruleEngine->execute(RuleEngineService::CUSTOMIZATION, $rules, $vars);
     } catch(\Exception $ex) {
-      // TODO Handle rules error
+      // TODO Store rule exception and provide the debugging information to the administrator
       $logger->error($ex);
     }
 

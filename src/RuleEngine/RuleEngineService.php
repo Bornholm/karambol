@@ -27,14 +27,18 @@ class RuleEngineService extends EventDispatcher {
     $language->registerProvider($provider);
 
     foreach($event->getRules() as $r) {
-      $result = $language->evaluate($r->getCondition(), $vars);
+      try {
+        $result = $language->evaluate($r->getCondition(), $vars);
+      } catch(\Exception $ex) {
+        throw new Exception\RuleConditionException($r, $ex);
+      }
       if($result === true) {
         try {
           foreach($r->getActions() as $i => $action) {
             if(!empty($action)) $language->evaluate($action, $vars);
           }
         } catch(\Exception $ex) {
-          throw new InvalidActionException($r, $i, $ex);
+          throw new Exception\RuleActionException($r, $i, $ex);
         }
       }
     }

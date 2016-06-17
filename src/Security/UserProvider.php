@@ -55,7 +55,7 @@ class UserProvider implements UserProviderInterface {
     $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
 
     $ruleset = $rulesetRepo->findOneByName(RuleEngineService::ACCESS_CONTROL);
-    
+
     if(!$ruleset) return;
 
     $vars = [

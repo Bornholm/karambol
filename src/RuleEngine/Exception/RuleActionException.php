@@ -1,10 +1,10 @@
 <?php
 
-namespace Karambol\RuleEngine;
+namespace Karambol\RuleEngine\Exception;
 
 use Karambol\RuleEngine\RuleInterface;
 
-class InvalidActionException extends \Exception
+class RuleActionException extends \Exception
 {
 
   protected $rule;
