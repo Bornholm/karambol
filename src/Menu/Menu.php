@@ -1,37 +1,18 @@
 <?php
 
 namespace Karambol\Menu;
+use Karambol\VirtualSet\VirtualSet;
 
-class Menu {
+class Menu extends VirtualSet {
 
-  protected $items;
+  protected $name;
 
-  public function __construct() {
-    $this->items = [];
+  public function __construct($name) {
+    $this->name = $name;
   }
 
-  public function addItem(MenuItem $menuItem) {
-    $this->items[] = $menuItem;
-    return $this;
-  }
-
-  public function removeItem(MenuItem $item) {
-    if(!in_array($item)) return $this;
-    array_splice($this->items, array_search($item, $this->items));
-    return $this;
-  }
-
-  public function getItemByName($itemName) {
-    foreach($items as $item) {
-      if($item->getName() === $itemName) return $item;
-      $subResult = $item->getItemByName($itemName);
-      if($subResult) return $subResult;
-    }
-    return null;
-  }
-
-  public function getItems() {
-    return $this->items;
+  public function getName() {
+    return $this->name;
   }
 
 }

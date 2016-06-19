@@ -3,14 +3,14 @@
 namespace Karambol\Menu;
 
 use Karambol\KarambolApp;
-use Karambol\Menu\MenuEvent;
 use Karambol\Menu\MenuItem;
 use Karambol\Menu\Menu;
-use Karambol\Menu\Menus;
 use Karambol\Menu\MenuItems;
 use Karambol\RuleEngine\RuleEngineService;
+use Karambol\VirtualSet\ItemIterateEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class DefaultMenuListener {
+class AdminMainMenuSubscriber implements EventSubscriberInterface {
 
   protected $app;
 
@@ -18,31 +18,31 @@ class DefaultMenuListener {
     $this->app = $app;
   }
 
-  public function onMenuRender(MenuEvent $event) {
-
-    $menu = $event->getMenu();
-
-    switch($event->getMenuName()) {
-      case Menus::ADMIN_MAIN:
-        $this->configureAdminMainMenu($menu);
-        break;
-    }
-
+  public static function getSubscribedEvents() {
+    return [
+      ItemIterateEvent::NAME => 'onMenuItemsIterate'
+    ];
   }
 
-  protected function configureAdminMainMenu(Menu $menu) {
+  public function onMenuItemsIterate(ItemIterateEvent $event) {
+    $menuItems = $this->getBaseItems();
+    $event->addIterator(new \ArrayIterator($menuItems));
+  }
 
+  protected function getBaseItems() {
+
+    $items = [];
     $urlGen = $this->app['url_generator'];
 
     $usersItem = new MenuItem(MenuItems::ADMIN_USERS, $urlGen->generate('admin_users'), [
       'icon_class' => 'fa fa-users'
     ]);
-    $menu->addItem($usersItem);
+    $items[] = $usersItem;
 
     $contentItem = new MenuItem(MenuItems::ADMIN_CONTENT, '#', [
       'icon_class' => 'fa fa-puzzle-piece'
     ]);
-    $menu->addItem($contentItem);
+    $items[] = $contentItem;
 
     $linksItem = new MenuItem(MenuItems::ADMIN_PAGES, $urlGen->generate('admin_pages'), [
       'icon_class' => 'fa fa-link'
@@ -64,29 +64,31 @@ class DefaultMenuListener {
         ['icon_class' => 'fa fa-shield']
       ))
     ;
-    $menu->addItem($rulesItem);
+    $items[] = $rulesItem;
 
     $configItem = new MenuItem(MenuItems::ADMIN_CONFIGURATION, '', [
       'icon_class' => 'fa fa-cog'
     ]);
-    $menu->addItem($configItem);
+    $items[] = $configItem;
 
     $pluginsItem = new MenuItem(MenuItems::ADMIN_PLUGINS, '', [
       'icon_class' => 'fa fa-plug'
     ]);
-    $menu->addItem($pluginsItem);
+    $items[] = $pluginsItem;
 
     $homeItem = new MenuItem(MenuItems::HOME, $urlGen->generate('home'), [
       'align' => 'right',
       'icon_class' => 'fa fa-home'
     ]);
-    $menu->addItem($homeItem);
+    $items[] = $homeItem;
 
     $logoutItem = new MenuItem(MenuItems::LOGOUT, $urlGen->generate('logout'), [
       'align' => 'right',
       'icon_class' => 'fa fa-sign-out'
     ]);
-    $menu->addItem($logoutItem);
+    $items[] = $logoutItem;
+
+    return $items;
 
   }
 

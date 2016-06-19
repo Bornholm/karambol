@@ -14,12 +14,20 @@ class MenuBootstrap implements BootstrapInterface {
     $app->register(new Provider\MenuServiceProvider());
 
     // Init default menu listeners
-    $menuListener = new Menu\DefaultMenuListener($app);
+    $mainAdminMenuSubscriber = new Menu\AdminMainMenuSubscriber($app);
+    $mainAdminMenu = $app['menus']->getMenu(Menu\Menus::ADMIN_MAIN);
+    $mainAdminMenu->addSubscriber($mainAdminMenuSubscriber);
 
-    $app['menu']->addListener(
-      Menu\MenuEvent::MENU_RENDER,
-      [$menuListener, 'onMenuRender']
-    );
+    $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+
+      $twig->addFunction(new \Twig_SimpleFunction('menu', function ($menuName) use ($app) {
+        $menu = $app['menus']->getMenu($menuName);
+        return $app['twig']->render('menus/'.$menuName.'.html.twig', [ 'menu' => $menu ]);
+      }, ['is_safe' => ['html', 'js']]));
+
+      return $twig;
+
+    }));
 
   }
 

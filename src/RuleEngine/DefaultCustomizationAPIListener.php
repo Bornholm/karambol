@@ -8,6 +8,9 @@ use Karambol\KarambolApp;
 use Karambol\Menu\MenuItem;
 use Karambol\Page\PageInterface;
 use Karambol\Page\Page;
+use Karambol\VirtualSet\ItemCountEvent;
+use Karambol\VirtualSet\ItemSearchEvent;
+use Karambol\VirtualSet\ItemIterateEvent;
 
 class DefaultCustomizationAPIListener extends CommonAPIConfigurator {
 
@@ -23,9 +26,9 @@ class DefaultCustomizationAPIListener extends CommonAPIConfigurator {
 
     $provider->registerFunction(
       'addPageToMenu',
-      function($vars, $pageSlug, $menuName, $menuItemAttrs = []) use ($app) {
+      function($vars, $pageSlug, $menuName, $itemAttrs = []) use ($app) {
 
-        $menu = $app['menu']->getMenu($menuName);
+        $menu = $app['menus']->getMenu($menuName);
 
         if($pageSlug instanceof PageInterface) {
           $page = $pageSlug;
@@ -35,10 +38,19 @@ class DefaultCustomizationAPIListener extends CommonAPIConfigurator {
 
         if(!$page) return;
 
-        $menuItem = new MenuItem($page->getLabel(), $page->getURL(), $menuItemAttrs);
-        $menu->addItem($menuItem);
+        $menuItem = new MenuItem($page->getLabel(), $page->getURL(), $itemAttrs);
 
-        return $menuItem;
+        $menu->addListener(ItemSearchEvent::NAME, function(ItemSearchEvent $event) use ($menuItem) {
+          $event->addResult($menuItem);
+        });
+
+        $menu->addListener(ItemIterateEvent::NAME, function(ItemIterateEvent $event) use ($menuItem) {
+          $event->addIterator(new \ArrayIterator([$menuItem]));
+        });
+
+        $menu->addListener(ItemCountEvent::NAME, function(ItemCountEvent $event) {
+          $event->add(1);
+        });
 
       }
     );

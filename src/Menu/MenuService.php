@@ -2,9 +2,7 @@
 
 namespace Karambol\Menu;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
-
-class MenuService extends EventDispatcher {
+class MenuService {
 
   protected $menus = [];
 
@@ -15,7 +13,7 @@ class MenuService extends EventDispatcher {
   public function getMenu($menuName) {
     return isset($this->menus[$menuName]) ?
       $this->menus[$menuName] :
-      ( $this->menus[$menuName] = new Menu() )
+      ( $this->menus[$menuName] = new Menu($menuName) )
     ;
   }
 

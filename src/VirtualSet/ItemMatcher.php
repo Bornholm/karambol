@@ -2,26 +2,62 @@
 
 namespace Karambol\VirtualSet;
 
-use Symfony\Component\PropertyAccess\PropertyAccess;
-
 class ItemMatcher {
 
-  protected $propertyAccessor;
   protected $criteria;
 
   public function __construct(array $criteria) {
-    $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     $this->criteria = $criteria;
   }
 
   public function matches($item) {
-    $isArray = is_array($item);
-    $accessor = $this->propertyAccessor;
+    $item = is_array($item) ? ((object) $item) : $item;
     foreach($this->criteria as $key => $value) {
-      $propertyPath = $isArray ? '['.$key.']' : $key;
-      if($value !== $accessor->getValue($item, $propertyPath)) return false;
+      if($value !== $this->getPropertyValue($item, $key)) return false;
     }
     return true;
+  }
+
+  protected function getPropertyValue($item, $propertyPath) {
+
+    $position = 0;
+    $parts = explode('.', $propertyPath);
+    $partsLength = count($parts);
+
+    while($position < $partsLength) {
+
+      $key = $parts[$position];
+
+      if(is_array($item) && isset($item[$key])) {
+      $item = $item[$parts[$position++]];
+        continue;
+      }
+
+      if(isset($item->$key)) {
+        $item = $item->$parts[$position++];
+        continue;
+      }
+
+      $getter = [$item, 'get'.ucfirst($key)];
+      if(is_callable($getter)) {
+        $item = $item->$getter[1]();
+        $position++;
+        continue;
+      }
+
+      $tester = [$item, 'has'.ucfirst($key)];
+      if(is_callable($tester)) {
+        $item = $item->$tester[1]();
+        $position++;
+        continue;
+      }
+
+      return null;
+
+    }
+
+    return $item;
+
   }
 
 }

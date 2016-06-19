@@ -29,19 +29,17 @@
   {% endif %}
 {% endmacro %}
 
-<div data-karambol-menu="{{menuName}}">
+<div data-karambol-menu="{{menu.name}}">
   <ul class="nav navbar-nav">
-    {% for item in items %}
+    {% for item in menu %}
       {% if item.attributes.align is not defined or item.attributes.align != 'right' %}
         {{ admin_main_menu.menu_item(item) }}
       {% endif %}
     {% endfor %}
   </ul>
   <ul class="nav navbar-nav navbar-right">
-    {% for item in items %}
-      {% if item.attributes.align is defined and item.attributes.align == 'right' %}
-        {{ admin_main_menu.menu_item(item) }}
-      {% endif %}
+    {% for item in menu.findAll({'attributes.align': 'right'}) %}
+      {{ admin_main_menu.menu_item(item) }}
     {% endfor %}
   </ul>
 </div>
