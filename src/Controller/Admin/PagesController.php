@@ -25,21 +25,10 @@ class PagesController extends Controller {
   }
 
   public function showPages() {
-
-    $pageService = $this->get('page');
     $twig = $this->get('twig');
-
-    $systemPages = $pageService->getSystemPages();
-    $customPages = $this->get('orm')
-      ->getRepository('Karambol\Entity\CustomPage')
-      ->findAll()
-    ;
-
     return $twig->render('admin/pages/index.html.twig', [
-      'systemPages' => $systemPages,
-      'customPages' => $customPages
+      'pages' => $this->get('pages')
     ]);
-
   }
 
   public function showPageEdit($pageId) {

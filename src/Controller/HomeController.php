@@ -14,7 +14,7 @@ class HomeController extends Controller {
   }
 
   public function showHome() {
-    $homePage = $this->get('page')->getHomepage();
+    $homePage = $this->get('pages')->getHomepage();
     if($homePage instanceof PageInterface) {
       return $this->redirect($homePage->getUrl());
     }
@@ -29,9 +29,9 @@ class HomeController extends Controller {
   public function showFramedPage($pageSlug) {
 
     $twig = $this->get('twig');
-    $pageService = $this->get('page');
+    $pagesSvc = $this->get('pages');
 
-    $page = $pageService->findPageBySlug($pageSlug);
+    $page = $pagesSvc->findOne(['slug' => $pageSlug]);
 
     if(!$page) return $this->app->abort(404, 'Page not found !');
 

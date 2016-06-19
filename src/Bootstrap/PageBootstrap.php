@@ -3,23 +3,14 @@
 namespace Karambol\Bootstrap;
 
 use Karambol\KarambolApp;
-use Karambol\Provider\PageServiceProvider;
-use Karambol\Page;
+use Karambol\Provider\PagesServiceProvider;
+use Karambol\Page\BasePagesSubscriber;
 
 class PageBootstrap implements BootstrapInterface {
 
   public function bootstrap(KarambolApp $app) {
-
-    $app->register(new PageServiceProvider());
-
-    // Init default menu listeners
-    $pageListener = new Page\DefaultPageListener($app);
-
-    $app['page']->addListener(
-      Page\PageEvent::LIST_SYSTEM_PAGES,
-      [$pageListener, 'onSystemPagesList']
-    );
-
+    $app->register(new PagesServiceProvider());
+    $app['pages']->addSubscriber(new BasePagesSubscriber($app));
   }
 
 }

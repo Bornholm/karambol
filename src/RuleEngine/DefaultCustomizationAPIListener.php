@@ -30,7 +30,7 @@ class DefaultCustomizationAPIListener extends CommonAPIConfigurator {
         if($pageSlug instanceof PageInterface) {
           $page = $pageSlug;
         } else {
-          $page = $app['page']->findPageBySlug($pageSlug);
+          $page = $app['pages']->findOne(['slug' => $pageSlug]);
         }
 
         if(!$page) return;
@@ -57,12 +57,12 @@ class DefaultCustomizationAPIListener extends CommonAPIConfigurator {
         if($pageSlug instanceof PageInterface) {
           $page = $pageSlug;
         } else {
-          $page = $app['page']->findPageBySlug($pageSlug);
+          $page = $app['pages']->findOne(['slug' => $pageSlug]);
         }
 
         if(!$page) return;
 
-        $app['page']->setHomepage($page);
+        $app['pages']->setHomepage($page);
 
       }
     );
@@ -71,8 +71,8 @@ class DefaultCustomizationAPIListener extends CommonAPIConfigurator {
       'asFrame',
       function($vars, $pageSlug) use ($app) {
         $urlGen = $app['url_generator'];
-        $pageService = $app['page'];
-        $page = $pageService->findPageBySlug($pageSlug);
+        $pageService = $app['pages'];
+        $page = $pageService->findOne(['slug' => $pageSlug]);
         if(!$page) return;
         return new Page($page->getLabel(), $urlGen->generate('framed_page', ['pageSlug' => $pageSlug]), $pageSlug);
       }

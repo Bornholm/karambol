@@ -20,7 +20,7 @@ class ItemSearchEvent extends Event {
   }
 
   public function addResult($item) {
-    if($this->isLimitReached()) return;
+    if($this->isLimitReached()) return $this;
     if($this->getResultIndex($item) === false && $this->matchesCriteria($item))  {
       $this->results[] = $item;
       if($this->isLimitReached()) $this->stopPropagation();
@@ -29,7 +29,7 @@ class ItemSearchEvent extends Event {
   }
 
   public function removeResult($item) {
-    if($this->isLimitReached()) return;
+    if($this->isLimitReached()) return $this;
     $itemIndex = $this->getItemIndex($item);
     if($itemIndex !== false) array_splice($this->results, $itemIndex);
     return $this;

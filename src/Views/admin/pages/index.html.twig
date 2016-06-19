@@ -21,7 +21,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for page in customPages|merge(systemPages) %}
+            {% for page in pages %}
               <tr>
                 <td>{{page.label}}</td>
                 <td>{{page.slug}}</td>
