@@ -39,7 +39,7 @@
     "symfony/validator": "^3.0",
     "symfony/security-csrf": "^3.0",
     "symfony/event-dispatcher": "^3.0",
-    "symfony/property-access": "^3.0",
+    "symfony/property-access": "^3.1",
     "symfony/expression-language": "^3.0",
     "font-awesome/font-awesome": "4.6.3",
     "cocur/slugify": "^2.1",
