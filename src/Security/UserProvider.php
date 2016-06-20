@@ -6,11 +6,14 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Karambol\Entity\User;
 use Karambol\KarambolApp;
 use Karambol\RuleEngine\RuleEngineService;
+use Karambol\Security\UserFoundEvent;
+use Karambol\Security\UserNotFoundEvent;
 
-class UserProvider implements UserProviderInterface {
+class UserProvider extends EventDispatcher implements UserProviderInterface {
 
   public function __construct(KarambolApp $app) {
     $this->app = $app;
@@ -23,10 +26,13 @@ class UserProvider implements UserProviderInterface {
     $user = $usersRepo->findOneByEmail($username);
 
     if(!$user) {
+      $event = new UserNotFoundEvent($username);
+      $this->dispatch(UserNotFoundEvent::NAME, $event);
       throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
     }
 
-    $this->executeAccessControlRules($user);
+    $event = new UserFoundEvent($user);
+    $this->dispatch(UserFoundEvent::NAME, $event);
 
     return $user;
 
@@ -44,33 +50,6 @@ class UserProvider implements UserProviderInterface {
 
   public function supportsClass($class) {
     return $class === 'Karambol\Entity\User';
-  }
-
-  protected function executeAccessControlRules(User $user) {
-
-    $app = $this->app;
-
-    $logger = $app['monolog'];
-    $ruleEngine = $app['rule_engine'];
-    $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
-
-    $ruleset = $rulesetRepo->findOneByName(RuleEngineService::ACCESS_CONTROL);
-
-    if(!$ruleset) return;
-
-    $vars = [
-      '_user' => $user,
-      'user' => $user->toAPIObject()
-    ];
-
-    $rules = $ruleset->getRules()->toArray();
-
-    try {
-      $ruleEngine->execute(RuleEngineService::ACCESS_CONTROL, $rules, $vars);
-    } catch(\Exception $ex) {
-      $logger->error($ex);
-    }
-
   }
 
 }

@@ -7,6 +7,7 @@ use Karambol\Menu\MenuItem;
 use Karambol\Menu\Menu;
 use Karambol\Menu\MenuItems;
 use Karambol\RuleEngine\RuleEngineService;
+use Karambol\VirtualSet\ItemSearchEvent;
 use Karambol\VirtualSet\ItemIterateEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -20,13 +21,21 @@ class AdminMainMenuSubscriber implements EventSubscriberInterface {
 
   public static function getSubscribedEvents() {
     return [
-      ItemIterateEvent::NAME => 'onMenuItemsIterate'
+      ItemIterateEvent::NAME => 'onMenuItemsIterate',
+      ItemSearchEvent::NAME => 'onMenuItemsSearch'
     ];
   }
 
   public function onMenuItemsIterate(ItemIterateEvent $event) {
     $menuItems = $this->getBaseItems();
     $event->addIterator(new \ArrayIterator($menuItems));
+  }
+
+  public function onMenuItemsSearch(ItemSearchEvent $event) {
+    $menuItems = $this->getBaseItems();
+    foreach($menuItems as $item) {
+      $event->addResult($item);
+    }
   }
 
   protected function getBaseItems() {
