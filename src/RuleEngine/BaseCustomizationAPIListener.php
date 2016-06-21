@@ -11,7 +11,7 @@ use Karambol\Page\Page;
 use Karambol\VirtualSet\ItemCountEvent;
 use Karambol\VirtualSet\ItemSearchEvent;
 
-class DefaultCustomizationAPIListener extends CommonAPIConfigurator {
+class BaseCustomizationAPIListener extends CommonAPIConfigurator {
 
   public function onBeforeExecuteRules(RuleEngineEvent $event) {
 
@@ -53,7 +53,7 @@ class DefaultCustomizationAPIListener extends CommonAPIConfigurator {
     $provider->registerFunction(
       'useTheme',
       function($vars, $themeName) use ($app) {
-        $app['theme']->setSelectedTheme($themeName);
+        $app['themes']->setSelectedTheme($themeName);
       }
     );
 

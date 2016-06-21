@@ -10,7 +10,7 @@ use Karambol\Page\PageInterface;
 use Karambol\Page\Page;
 use Karambol\Entity\User;
 
-class DefaultAccessControlAPIListener extends CommonAPIConfigurator {
+class BaseAccessControlAPIListener extends CommonAPIConfigurator {
 
   public function onBeforeExecuteRules(RuleEngineEvent $event) {
 

@@ -14,12 +14,12 @@ class ThemeBootstrap implements BootstrapInterface {
     $app->register(new Provider\ThemeServiceProvider());
 
     $themeListener = new Theme\ThemeListener($app);
-    $app['theme']->addListener(
+    $app['themes']->addListener(
       Theme\ThemeService::THEME_CHANGE,
       [$themeListener, 'onThemeChange']
     );
 
-    $app['theme']->setSelectedTheme(null);
+    $app['themes']->setSelectedTheme(null);
 
   }
 

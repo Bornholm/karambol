@@ -18,7 +18,7 @@ class ThemeListener {
   public function onThemeChange(ThemeChangeEvent $event) {
 
     $app = $this->app;
-    $theme = $app['theme'];
+    $themesSvc = $app['themes'];
     $previousThemePath = $this->previousThemePath;
     $twigPaths = $app['twig.path'];
 
@@ -28,7 +28,7 @@ class ThemeListener {
     }
 
     // Prepend new theme path to Twig loader
-    $newThemePath = $theme->getSelectedThemeDir();
+    $newThemePath = $themesSvc->getSelectedThemeDir();
     array_unshift($twigPaths, $newThemePath);
     $app['twig.path'] = $twigPaths;
 

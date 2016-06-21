@@ -14,8 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 use Karambol\Entity\User;
 use Karambol\Entity\RuleSet;
-use Karambol\RuleEngine\DefaultCustomizationAPIListener;
-use Karambol\RuleEngine\DefaultAccessControlAPIListener;
+use Karambol\RuleEngine\BaseCustomizationAPIListener;
+use Karambol\RuleEngine\BaseAccessControlAPIListener;
 use Karambol\RuleEngine\DefaultCustomizationRulesListener;
 
 
@@ -29,10 +29,10 @@ class RuleEngineBootstrap implements BootstrapInterface {
     $ruleEngine = $app['rule_engine'];
 
     // Add default api listeners
-    $customizationAPIListener = new DefaultCustomizationAPIListener($app);
+    $customizationAPIListener = new BaseCustomizationAPIListener($app);
     $ruleEngine->addListener(RuleEngineEvent::BEFORE_EXECUTE_RULES, [$customizationAPIListener, 'onBeforeExecuteRules']);
 
-    $accessControlAPIListener = new DefaultAccessControlAPIListener($app);
+    $accessControlAPIListener = new BaseAccessControlAPIListener($app);
     $ruleEngine->addListener(RuleEngineEvent::BEFORE_EXECUTE_RULES, [$accessControlAPIListener, 'onBeforeExecuteRules']);
 
     // Add default rules listeners

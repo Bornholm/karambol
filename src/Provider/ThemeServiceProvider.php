@@ -13,7 +13,7 @@ class ThemeServiceProvider implements ServiceProviderInterface
 
       $themeConfig = $app['config']['theme'];
 
-      $app['theme'] = new ThemeService(
+      $app['themes'] = new ThemeService(
         __DIR__.'/../../themes',
         $themeConfig['availableThemes'],
         $themeConfig['defaultTheme']
