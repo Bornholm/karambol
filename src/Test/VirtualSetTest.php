@@ -5,7 +5,6 @@ namespace Karambol\Test;
 use Karambol\VirtualSet\VirtualSet;
 use Karambol\VirtualSet\ItemCountEvent;
 use Karambol\VirtualSet\ItemSearchEvent;
-use Karambol\VirtualSet\ItemIterateEvent;
 
 class VirtualSetTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,8 +14,8 @@ class VirtualSetTest extends \PHPUnit_Framework_TestCase
     $set = new VirtualSet();
 
     $set->addListener(ItemSearchEvent::NAME, function(ItemSearchEvent $event) {
-      $event->addResult(['key' => 'foo', 'val' => 1]);
-      $event->addResult(['key' => 'bar', 'val' => 1]);
+      $event->addItem(['key' => 'foo', 'val' => 1]);
+      $event->addItem(['key' => 'bar', 'val' => 1]);
     });
 
     $results = $set->findAll();
@@ -38,18 +37,18 @@ class VirtualSetTest extends \PHPUnit_Framework_TestCase
   {
     $set = new VirtualSet();
 
-    $set->addListener(ItemIterateEvent::NAME, function(ItemIterateEvent $event) {
-      $event->addIterator(new \ArrayIterator([
+    $set->addListener(ItemSearchEvent::NAME, function(ItemSearchEvent $event) {
+      $event->addItems([
         ['key' => 'foo'],
         ['key' => 'bar'],
         ['key' => 'baz']
-      ]));
+      ]);
     });
 
-    $set->addListener(ItemIterateEvent::NAME, function(ItemIterateEvent $event) {
-      $event->addIterator(new \ArrayIterator([
+    $set->addListener(ItemSearchEvent::NAME, function(ItemSearchEvent $event) {
+      $event->addItems([
         ['key' => 'doh']
-      ]));
+      ]);
     });
 
     $this->assertInstanceOf('IteratorAggregate', $set);
