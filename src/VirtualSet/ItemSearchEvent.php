@@ -19,7 +19,14 @@ class ItemSearchEvent extends Event {
     $this->matcher = new ItemMatcher($criteria);
   }
 
-  public function addResult($item) {
+  public function addItems(array $items) {
+    foreach($items as $item) {
+      $this->addItem($item);
+    }
+    return $this;
+  }
+
+  public function addItem($item) {
     if($this->isLimitReached()) return $this;
     if($this->getResultIndex($item) === false && $this->matchesCriteria($item))  {
       $this->results[] = $item;
@@ -28,14 +35,14 @@ class ItemSearchEvent extends Event {
     return $this;
   }
 
-  public function removeResult($item) {
+  public function removeItem($item) {
     if($this->isLimitReached()) return $this;
     $itemIndex = $this->getItemIndex($item);
     if($itemIndex !== false) array_splice($this->results, $itemIndex);
     return $this;
   }
 
-  public function hasResult($item) {
+  public function hasItem($item) {
     return $this->getItemIndex($item) !== false;
   }
 

@@ -6,7 +6,6 @@ use Karambol\KarambolApp;
 use Karambol\Page\Page;
 use Karambol\VirtualSet\ItemCountEvent;
 use Karambol\VirtualSet\ItemSearchEvent;
-use Karambol\VirtualSet\ItemIterateEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class BasePagesSubscriber implements EventSubscriberInterface {
@@ -20,7 +19,6 @@ class BasePagesSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return [
       ItemSearchEvent::NAME => 'onSearchPages',
-      ItemIterateEvent::NAME => 'onIteratePages',
       ItemCountEvent::NAME => 'onCountPages'
     ];
   }
@@ -30,24 +28,10 @@ class BasePagesSubscriber implements EventSubscriberInterface {
     $criteria = $event->getCriteria();
 
     $customPages = $this->getCustomPages($criteria);
-    foreach($customPages as $page) {
-      $event->addResult($page);
-    }
+    $event->addItems($customPages);
 
     $systemPages = $this->getBaseSystemPages();
-    foreach($systemPages as $page) {
-      $event->addResult($page);
-    }
-
-  }
-
-  public function onIteratePages(ItemIterateEvent $event) {
-
-    $customPages = $this->getCustomPages();
-    $event->addIterator(new \ArrayIterator($customPages));
-
-    $systemPages = $this->getBaseSystemPages();
-    $event->addIterator(new \ArrayIterator($systemPages));
+    $event->addItems($systemPages);
 
   }
 

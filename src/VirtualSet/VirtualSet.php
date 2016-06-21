@@ -8,8 +8,6 @@ use Karambol\VirtualSet\ItemSearchEvent;
 
 class VirtualSet extends EventDispatcher implements \Countable, \IteratorAggregate {
 
-  protected $position;
-
   public function findAll(array $criteria = []) {
     return $this->find($criteria);
   }
@@ -26,9 +24,8 @@ class VirtualSet extends EventDispatcher implements \Countable, \IteratorAggrega
   }
 
   public function getIterator() {
-    $event = new ItemIterateEvent();
-    $this->dispatch(ItemIterateEvent::NAME, $event);
-    return $event->getIteratorAggregate();
+    $items = $this->find();
+    return new \ArrayIterator($items);
   }
 
   public function count() {

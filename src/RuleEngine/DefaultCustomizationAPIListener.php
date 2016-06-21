@@ -10,7 +10,6 @@ use Karambol\Page\PageInterface;
 use Karambol\Page\Page;
 use Karambol\VirtualSet\ItemCountEvent;
 use Karambol\VirtualSet\ItemSearchEvent;
-use Karambol\VirtualSet\ItemIterateEvent;
 
 class DefaultCustomizationAPIListener extends CommonAPIConfigurator {
 
@@ -41,11 +40,7 @@ class DefaultCustomizationAPIListener extends CommonAPIConfigurator {
         $menuItem = new MenuItem($page->getLabel(), $page->getURL(), $itemAttrs);
 
         $menu->addListener(ItemSearchEvent::NAME, function(ItemSearchEvent $event) use ($menuItem) {
-          $event->addResult($menuItem);
-        });
-
-        $menu->addListener(ItemIterateEvent::NAME, function(ItemIterateEvent $event) use ($menuItem) {
-          $event->addIterator(new \ArrayIterator([$menuItem]));
+          $event->addItem($menuItem);
         });
 
         $menu->addListener(ItemCountEvent::NAME, function(ItemCountEvent $event) {
