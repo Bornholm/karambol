@@ -6,13 +6,27 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class ProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-      $builder->add('submit', Type\SubmitType::class, [
-          'label' => 'form.user.save_profile',
+      $builder
+        ->add('email', Type\TextType::class, [
+          'label' => 'profile.email'
+        ])
+        ->add('password', Type\PasswordType::class, [
+          'label' => 'profile.password',
+          'always_empty' => true
+        ])
+        ->add('passwordConfirm', Type\PasswordType::class, [
+          'label' => 'profile.password_confirm',
+          'always_empty' => true,
+          'mapped' => false
+        ])
+        ->add('submit', Type\SubmitType::class, [
+          'label' => 'profile.save_profile',
           'attr' => [
             'class' => 'btn-success'
           ]

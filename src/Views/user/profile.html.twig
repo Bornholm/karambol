@@ -1,5 +1,42 @@
 {% extends 'home/index.html.twig' %}
 
 {% block body_content %}
-  {{ form(profileForm) }}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>{{ 'profile.my_profile'|trans }}</h2>
+      </div>
+    </div>
+    {{ form_start(profileForm) }}
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{'profile.personal_informations'|trans}}</h3>
+          </div>
+          <div class="panel-body">
+            {{ form_row(profileForm.email) }}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{'profile.change_password'|trans}}</h3>
+          </div>
+          <div class="panel-body">
+            {{ form_row(profileForm.password) }}
+            {{ form_row(profileForm.passwordConfirm) }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="pull-right clearfix">
+          {{ form_end(profileForm, {"render_rest": true}) }}
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

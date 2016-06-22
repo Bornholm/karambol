@@ -35,7 +35,8 @@ class SecurityBootstrap implements BootstrapInterface {
         ]
       ],
       'security.access_rules' => [
-        ['^/admin', 'ROLE_ADMIN']
+        ['^/admin', 'ROLE_ADMIN'],
+        ['^/profile', 'IS_AUTHENTICATED_FULLY']
       ]
     ]);
 

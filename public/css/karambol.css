@@ -16,8 +16,7 @@ html, body {
   line-height: 25px;
 }
 
-body.karambol[class^="admin"],
-body.karambol[class*=" admin"] {
+body.karambol {
   padding-top: 70px;
 }
 

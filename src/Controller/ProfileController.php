@@ -14,7 +14,7 @@ class ProfileController extends Controller {
 
   public function showProfile() {
     $twig = $this->get('twig');
-    $user = $app['user'];
+    $user = $this->get('user');
     $form = $this->getProfileForm($user);
     return $twig->render('user/profile.html.twig', [
       'profileForm' => $form->createView()

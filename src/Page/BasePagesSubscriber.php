@@ -64,7 +64,7 @@ class BasePagesSubscriber implements EventSubscriberInterface {
       new Page($translator->trans('pages.admin'), $urlGen->generate('admin'), 'admin'),
       new Page($translator->trans('pages.login'), $urlGen->generate('login'), 'login'),
       new Page($translator->trans('pages.logout'), $urlGen->generate('logout'), 'logout'),
-      new Page($translator->trans('pages.register'), $urlGen->generate('register'), 'register'),
+      //new Page($translator->trans('pages.register'), $urlGen->generate('register'), 'register'),
       new Page($translator->trans('pages.profile'), $urlGen->generate('profile'), 'profile')
     ];
 

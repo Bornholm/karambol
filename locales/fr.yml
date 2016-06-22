@@ -73,3 +73,11 @@ pages:
   register: Créer un compte
 home:
   powered_by_karambol: Propulsé par Karambol
+profile:
+  my_profile: Mon profil
+  email: Adresse courriel
+  personal_informations: Mes informations personnelles
+  change_password: Changer mon mot de passe
+  password: Nouveau mot de passe
+  password_confirm: Confirmation du mot de passe
+  save_profile: Enregistrer
