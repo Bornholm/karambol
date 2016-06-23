@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProfileType extends AbstractType
 {
@@ -14,17 +14,18 @@ class ProfileType extends AbstractType
     {
       $builder
         ->add('email', Type\TextType::class, [
-          'label' => 'profile.email'
+          'label' => 'profile.email',
+          'constraints' => [
+            new Assert\Email()
+          ]
         ])
-        ->add('password', Type\PasswordType::class, [
-          'label' => 'profile.password',
-          'always_empty' => true
-        ])
-        ->add('passwordConfirm', Type\PasswordType::class, [
-          'label' => 'profile.password_confirm',
-          'always_empty' => true,
-          'mapped' => false
-        ])
+        ->add('password', Type\RepeatedType::class, array(
+          'type' => Type\PasswordType::class,
+          'required' => false,
+          'mapped' => false,
+          'first_options'  => ['label' => 'profile.password'],
+          'second_options' => ['label' => 'profile.password_confirm']
+        ))
         ->add('submit', Type\SubmitType::class, [
           'label' => 'profile.save_profile',
           'attr' => [

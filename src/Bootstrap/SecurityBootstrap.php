@@ -58,7 +58,7 @@ class SecurityBootstrap implements BootstrapInterface {
 
     $vars = [
       '_user' => $user,
-      'user' => $user->toAPIObject()
+      'user' => $user->toPOPO()
     ];
 
     $rules = $ruleset->getRules()->toArray();

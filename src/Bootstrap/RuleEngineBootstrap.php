@@ -55,7 +55,7 @@ class RuleEngineBootstrap implements BootstrapInterface {
 
     $user = $app['user'] ? $app['user'] : new User();
     $vars = [
-      'user' => $user->toAPIObject()
+      'user' => $user->toPOPO()
     ];
 
     try {

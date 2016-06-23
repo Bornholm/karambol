@@ -22,8 +22,10 @@ class UserProvider extends EventDispatcher implements UserProviderInterface {
   public function loadUserByUsername($username) {
 
     $orm = $this->app['orm'];
-    $usersRepo = $orm->getRepository('Karambol\Entity\User');
-    $user = $usersRepo->findOneByEmail($username);
+    $userEntity = $this->app['user_entity'];
+
+    $usersRepo = $orm->getRepository($userEntity);
+    $user = $usersRepo->findOneByUsername($username);
 
     if(!$user) {
       $event = new UserNotFoundEvent($username);

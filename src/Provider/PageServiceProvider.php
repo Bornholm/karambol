@@ -6,7 +6,7 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Karambol\Page\PagesService;
 
-class PagesServiceProvider implements ServiceProviderInterface
+class PageServiceProvider implements ServiceProviderInterface
 {
 
   public function register(Application $app) {

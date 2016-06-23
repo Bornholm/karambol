@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Karambol\KarambolApp;
 use Karambol\Entity\User;
 
-class CreateUserCommand extends Command
+class CreateAccountCommand extends Command
 {
 
   protected $app;
@@ -23,17 +23,17 @@ class CreateUserCommand extends Command
   protected function configure()
   {
     $this
-      ->setName('karambol:user:create')
-      ->setDescription('Create a new user')
+      ->setName('karambol:account:create')
+      ->setDescription('Create a new account')
       ->addArgument(
-        'email',
+        'username',
         InputArgument::REQUIRED,
-        'The user\'s email'
+        'The account\'s username'
       )
       ->addArgument(
         'password',
         InputArgument::REQUIRED,
-        'The user\'s password'
+        'The account\'s password'
       )
     ;
   }
@@ -41,21 +41,11 @@ class CreateUserCommand extends Command
   protected function execute(InputInterface $input, OutputInterface $output)
   {
 
-    $email = $input->getArgument('email');
+    $username = $input->getArgument('username');
     $password = $input->getArgument('password');
 
-    $encoder = $this->app['security.encoder.digest'];
-
-    $salt = base64_encode(random_bytes(8));
-    $hash = $encoder->encodePassword($password, $salt);
-
-    $user = new User();
-    $user->setEmail($email);
-    $user->changePassword($hash, $salt);
-
-    $orm = $this->app['orm'];
-    $orm->persist($user);
-    $orm->flush();
+    $accounts = $this->app['accounts'];
+    $accounts->createAccount($username, $password);
 
     $output->writeln('<info>Account created.</info>');
 

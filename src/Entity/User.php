@@ -12,47 +12,23 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="users")
  * @ORM\HasLifecycleCallbacks
  */
-class User implements UserInterface {
-
-  /**
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="IDENTITY")
-   * @ORM\Column(type="integer")
-   */
-  protected $id;
-
-  /**
-   * @ORM\Column(type="string", length=254, unique=true)
-   */
-  protected $email;
-
-  /**
-   * @ORM\Column(type="text")
-   */
-  protected $password;
+class User extends BaseUser {
 
   /**
    * @ORM\OneToMany(targetEntity="Karambol\Entity\UserAttribute", mappedBy="user", orphanRemoval=true, cascade="all")
    */
   protected $attributes;
 
-  protected $roles = [];
-
   public function __construct() {
     $this->attributes = new ArrayCollection();
   }
 
-  public function getId() {
-    return $this->id;
-  }
-
   public function getEmail() {
-    return $this->email;
+    return $this->getUsername();
   }
 
   public function setEmail($email) {
-    $this->email = $email;
-    return $this;
+    return $this->setUsername($email);
   }
 
   public function set($attrName, $attrValue) {
@@ -100,47 +76,6 @@ class User implements UserInterface {
     return $attrs;
   }
 
-  public function getUsername() {
-    return $this->getEmail();
-  }
-
-  public function changePassword($hash, $salt) {
-    $this->password = base64_encode($salt).':'.base64_encode($hash);
-  }
-
-  public function getPassword() {
-    return base64_decode($this->getPasswordPart(1));
-  }
-
-  public function getSalt() {
-    return base64_decode($this->getPasswordPart(0));
-  }
-
-  protected function getPasswordPart($partIndex) {
-    $parts = explode(':', $this->password);
-    return count($parts) >= $partIndex+1 ? $parts[$partIndex] : null;
-  }
-
-  public function eraseCredentials() {
-    // No plain text credentials to remove
-    return $this;
-  }
-
-  public function getRoles() {
-    return $this->roles;
-  }
-
-  public function addRole($role) {
-    if(!in_array($role, $this->roles)) $this->roles[] = $role;
-    return $this;
-  }
-
-  public function removeRole($role) {
-    $roleIndex = array_search($role, $this->roles);
-    if($roleIndex !== false) array_splice($this->roles, $roleIndex, 1);
-    return $this;
-  }
-
   protected function findAttributeByName($attrName) {
     foreach($this->attributes as $attr) {
       if($attr->getName() === $attrName) {
@@ -149,10 +84,8 @@ class User implements UserInterface {
     }
   }
 
-  public function toAPIObject() {
-    $user = new \stdClass();
-    $user->id = $this->getId();
-    $user->email = $this->getEmail();
+  public function toPOPO() {
+    $user = parent::toPOPO();
     $user->attrs = $this->getAttrs();
     return $user;
   }
