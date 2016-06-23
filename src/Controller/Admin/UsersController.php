@@ -29,7 +29,8 @@ class UsersController extends Controller {
   public function showUsersIndex() {
     $twig = $this->get('twig');
     $orm = $this->get('orm');
-    $users = $orm->getRepository('Karambol\Entity\User')->findAll();
+    $userEntity = $this->get('user_entity');
+    $users = $orm->getRepository($userEntity)->findAll();
     return $twig->render('admin/users/index.html.twig', [
       'users' => $users
     ]);
@@ -39,8 +40,9 @@ class UsersController extends Controller {
 
     $twig = $this->get('twig');
     $orm = $this->get('orm');
+    $userEntity = $this->get('user_entity');
 
-    $user = $orm->getRepository('Karambol\Entity\User')->find($userId);
+    $user = $orm->getRepository($userEntity)->find($userId);
 
     $userForm = $this->getUserForm($user);
     $deleteForm = $this->getUserDeleteForm($user->getId());
@@ -66,10 +68,11 @@ class UsersController extends Controller {
     $twig = $this->get('twig');
     $orm = $this->get('orm');
     $request = $this->get('request');
+    $userEntity = $this->get('user_entity');
 
     $user = null;
     if(!empty($userId)) {
-      $user = $orm->getRepository('Karambol\Entity\User')->find($userId);
+      $user = $orm->getRepository($userEntity)->find($userId);
     }
 
     $form = $this->getUserForm($user);
@@ -103,8 +106,9 @@ class UsersController extends Controller {
     $twig = $this->get('twig');
     $orm = $this->get('orm');
     $request = $this->get('request');
+    $userEntity = $this->get('user_entity');
 
-    $user = $orm->getRepository('Karambol\Entity\User')->find($userId);
+    $user = $orm->getRepository($userEntity)->find($userId);
     $deleteForm = $this->getUserDeleteForm($userId);
 
     $deleteForm->handleRequest($request);
@@ -150,8 +154,9 @@ class UsersController extends Controller {
 
     $formFactory = $this->get('form.factory');
     $urlGen = $this->get('url_generator');
+    $userEntity = $this->get('user_entity');
 
-    if($user === null) $user = new User();
+    if($user === null) $user = new $userEntity();
 
     $formBuilder = $formFactory->createBuilder(UserType::class, $user);
     $action = $urlGen->generate('admin_user_upsert', ['userId' => $user->getId()]);

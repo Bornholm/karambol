@@ -16,7 +16,10 @@ class DefaultCustomizationRulesListener {
 
     $rules[] = new Rule('not isConnected()', ['addPageToMenu("login", "home_main", {"align":"right", "icon_class": "fa fa-sign-in"})']);
     $rules[] = new Rule('isGranted("ROLE_ADMIN")', ['addPageToMenu("admin", "home_main", {"align":"right", "icon_class": "fa fa-wrench"})']);
-    $rules[] = new Rule('isConnected()', ['addPageToMenu("logout", "home_main", {"align":"right", "icon_class": "fa fa-sign-out"})']);
+    $rules[] = new Rule('isConnected()', [
+      'addPageToMenu("profile", "home_main", {"align":"right", "icon_class": "fa fa-user"})',
+      'addPageToMenu("logout", "home_main", {"align":"right", "icon_class": "fa fa-sign-out"})'
+    ]);
 
   }
 

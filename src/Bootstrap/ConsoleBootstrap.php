@@ -16,8 +16,8 @@ class ConsoleBootstrap implements BootstrapInterface {
     $console = $app['console'];
 
     $console->add(new Command\LinkAssetsCommand($app));
-    $console->add(new Command\CreateUserCommand($app));
-    $console->add(new Command\PromoteUserCommand($app));
+    $console->add(new Command\CreateAccountCommand($app));
+    $console->add(new Command\PromoteAccountCommand($app));
 
   }
 

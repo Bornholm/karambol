@@ -13,7 +13,7 @@ use Karambol\Entity\RuleSet;
 use Karambol\Entity\CustomRule;
 use Karambol\RuleEngine\RuleEngineService;
 
-class PromoteUserCommand extends Command
+class PromoteAccountCommand extends Command
 {
 
   protected $app;
@@ -26,12 +26,12 @@ class PromoteUserCommand extends Command
   protected function configure()
   {
     $this
-      ->setName('karambol:user:promote')
-      ->setDescription('Promote a registered user to admin.')
+      ->setName('karambol:account:promote')
+      ->setDescription('Promote a registered account to admin.')
       ->addArgument(
-        'email',
+        'username',
         InputArgument::REQUIRED,
-        'The user\'s email'
+        'The account\'s username'
       )
     ;
   }
@@ -39,14 +39,14 @@ class PromoteUserCommand extends Command
   protected function execute(InputInterface $input, OutputInterface $output)
   {
 
-    $email = $input->getArgument('email');
+    $username = $input->getArgument('username');
     $orm = $this->app['orm'];
+    $userEntity = $this->app['user_entity'];
 
-    $user = $orm->getRepository('Karambol\Entity\User')->findOneByEmail($email);
-
+    $user = $orm->getRepository($userEntity)->findOneByUsername($username);
 
     if(!$user) {
-      $output->writeln(sprintf('<error>User "%s" does not exists.</error>', $email));
+      $output->writeln(sprintf('<error>The account with username "%s" does not exists.</error>', $username));
       exit(1);
     }
 
