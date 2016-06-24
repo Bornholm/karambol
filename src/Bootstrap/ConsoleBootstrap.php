@@ -18,6 +18,7 @@ class ConsoleBootstrap implements BootstrapInterface {
     $console->add(new Command\LinkAssetsCommand($app));
     $console->add(new Command\CreateAccountCommand($app));
     $console->add(new Command\PromoteAccountCommand($app));
+    $console->add(new Command\SeedRulesCommand($app));
 
   }
 

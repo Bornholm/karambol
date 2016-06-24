@@ -16,8 +16,6 @@ use Karambol\Entity\User;
 use Karambol\Entity\RuleSet;
 use Karambol\RuleEngine\BaseCustomizationAPIListener;
 use Karambol\RuleEngine\BaseAccessControlAPIListener;
-use Karambol\RuleEngine\DefaultCustomizationRulesListener;
-
 
 class RuleEngineBootstrap implements BootstrapInterface {
 
@@ -34,10 +32,6 @@ class RuleEngineBootstrap implements BootstrapInterface {
 
     $accessControlAPIListener = new BaseAccessControlAPIListener($app);
     $ruleEngine->addListener(RuleEngineEvent::BEFORE_EXECUTE_RULES, [$accessControlAPIListener, 'onBeforeExecuteRules']);
-
-    // Add default rules listeners
-    $customizationRulesListener = new DefaultCustomizationRulesListener();
-    $ruleEngine->addListener(RuleEngineEvent::BEFORE_EXECUTE_RULES, [$customizationRulesListener, 'onBeforeExecuteRules']);
 
     // Execute customization rules on request
     $app->before([$this, 'onBeforeRequest']);
