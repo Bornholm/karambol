@@ -26,7 +26,7 @@ class PluginSettingSubscriber implements EventSubscriberInterface {
   public function onSearchSetting(ItemSearchEvent $event) {
 
     $settingName = $this->getPluginSettingName($this->pluginId);
-    $settingDescKey = sprintf('admin.settings.%s_description', $settingName);
+    $settingDescKey = sprintf('admin.settings.%s_help', $settingName);
     $settingEntry = new SettingEntry($settingName, false, $settingDescKey);
 
     $event->addItem($settingEntry);

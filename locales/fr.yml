@@ -8,7 +8,7 @@ admin:
     id: Identifiant
     email: Courriel
     actions: Actions
-    no_users: Auncu utilisateur pour le moment.
+    no_users: Aucun utilisateur pour le moment.
     create: Créer
     edit: Éditer
     edit_user: Utilisateur "%name%"
@@ -40,9 +40,14 @@ admin:
     documentation: Documentation
     methods: Méthodes
   settings:
-    application_settings: Configuration de l'application
+    portal_settings: Configuration du portail
     save_settings: Enregistrer
     enable_plugin_example_plugin: Activer le plugin 'Example'
+    enable_plugin_example_plugin_help: Activer/désactiver le plugin d'exemple de Karambol.
+    portal_title: Titre du site
+    portal_title_help: Le titre de votre site. Suivant le thème utilisé, celui ci sera affiché dans le bandeau de la page d'acceuil.
+    default_theme: Thème par défaut
+    default_theme_help: Le thème utilisé par défaut par votre portail.
 form:
   rules:
     save_ruleset: Enregistrer

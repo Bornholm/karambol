@@ -29,8 +29,6 @@ class SettingsController extends Controller {
 
     $form->handleRequest($request);
 
-    dump($form->createView());
-
     return $twig->render('admin/settings/index.html.twig', [
       'settingsForm' => $form->createView()
     ]);

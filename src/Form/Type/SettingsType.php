@@ -28,7 +28,7 @@ class SettingsType extends AbstractType
             'constraints' => $entry->getConstraints(),
             'required' => false,
             'attr' => [
-              'help' => $entry->getDescription()
+              'help' => $entry->getHelp()
             ]
           ];
 

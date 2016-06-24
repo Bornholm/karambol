@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="{{ path('home') }}">
-        <img alt="Logo" height="30" class="karambol-inline" src="{{asset('img/logo.svg')}}"> Karambol
+        <img alt="Logo" height="30" class="karambol-inline" src="{{asset('img/logo.svg')}}"> {{ app.settings.get('portal_title') }}
       </a>
     </div>
 

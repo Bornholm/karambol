@@ -10,7 +10,7 @@ interface SettingEntryInterface {
   public function getValue();
   public function setValue($value);
   public function getDefaultValue();
-  public function getDescription();
+  public function getHelp();
   public function getConstraints();
   public function getChoices();
 

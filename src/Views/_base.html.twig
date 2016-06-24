@@ -10,7 +10,7 @@
       <link rel="stylesheet" href="{{ asset('css/karambol.css') }}">
     {% endblock %}
   </head>
-  <body class="karambol {{  app.request.get('_route') }}">
+  <body class="karambol {{  app.request.get('_route') }} {{  app.themes.selectedTheme }}">
     {{
       appendScript([
         'vendor/jquery/jquery.min.js',
