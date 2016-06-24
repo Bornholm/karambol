@@ -1,3 +1,4 @@
 assets:
   yeti-theme:
-    - { src: themes/yeti/assets, dest: public/themes/yeti }
+    - { src: themes/yeti/assets/css, dest: public/themes/yeti/css }
+    - { src: vendor/twbs/bootstrap/dist/fonts, dest: public/themes/yeti/fonts }
