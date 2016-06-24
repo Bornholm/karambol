@@ -73,9 +73,11 @@ class AdminMainMenuSubscriber implements EventSubscriberInterface {
     ;
     $items[] = $rulesItem;
 
-    $configItem = new MenuItem(MenuItems::ADMIN_CONFIGURATION, '', [
-      'icon_class' => 'fa fa-cog'
-    ]);
+    $configItem = new MenuItem(
+      MenuItems::ADMIN_CONFIGURATION,
+      $urlGen->generate('settings'),
+      ['icon_class' => 'fa fa-cog']
+    );
     $items[] = $configItem;
 
     $pluginsItem = new MenuItem(MenuItems::ADMIN_PLUGINS, '', [

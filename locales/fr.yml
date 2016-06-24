@@ -39,6 +39,10 @@ admin:
     operations: Opérations
     documentation: Documentation
     methods: Méthodes
+  settings:
+    application_settings: Configuration de l'application
+    save_settings: Enregistrer
+    enable_plugin_example_plugin: Activer le plugin 'Example'
 form:
   rules:
     save_ruleset: Enregistrer

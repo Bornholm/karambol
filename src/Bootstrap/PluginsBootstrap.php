@@ -3,6 +3,7 @@
 namespace Karambol\Bootstrap;
 
 use Karambol\KarambolApp;
+use Karambol\Plugin\PluginSettingSubscriber;
 
 class PluginsBootstrap implements BootstrapInterface {
 
@@ -10,6 +11,7 @@ class PluginsBootstrap implements BootstrapInterface {
 
     $plugins = $app['config']['plugins'];
     $logger = $app['monolog'];
+    $settings = $app['settings'];
 
     foreach($plugins as $pluginId => $pluginInfo) {
 
@@ -17,6 +19,12 @@ class PluginsBootstrap implements BootstrapInterface {
         $logger->warn(sprintf('Cannot load plugin "%s". No class specified', $pluginId));
         continue;
       }
+
+      // Ajout du subscriber pour la configuration du plugin
+      $settings->addSubscriber(new PluginSettingSubscriber($pluginId));
+
+      $pluginSetting = $settings->findOne(['name' => 'enable_plugin_'.$pluginId]);
+      if($pluginSetting && $pluginSetting->getValue() === false) continue;
 
       $logger->debug(sprintf('Load plugin "%s" with class %s', $pluginId, $pluginInfo['class']));
 
@@ -27,5 +35,7 @@ class PluginsBootstrap implements BootstrapInterface {
     }
 
   }
+
+
 
 }

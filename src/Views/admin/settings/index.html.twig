@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  {% include 'admin/_navbar.html.twig' %}
+  <div class="container-fluid">
+    {% block content %}
+      <div class="row">
+        <div class="col-md-12">
+          <h3>{{'admin.settings.application_settings'|trans}}</h3>
+          {{form_start(settingsForm)}}
+          {% for formEntryName, formEntry in settingsForm %}
+            {% if formEntryName != 'submit' %}
+              {{form_row(formEntry) }}
+              {% if formEntry.vars.attr.description is defined %}
+                <div class="alert alert-info">
+                  {{ formEntry.vars.attr.description|trans }}
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="pull-right clearfix">
+            {{ form_end(settingsForm, {"render_rest": true}) }}
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+  </div>
+{% endblock %}
