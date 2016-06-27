@@ -1,0 +1,49 @@
+{% form_theme settingsForm 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% extends 'base.html.twig' %}
+
+{% block head_style %}
+  {{ parent() }}
+  <style>
+    .settings-form-buttons .form-group {
+      margin-right: -45px;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  {% include 'admin/_navbar.html.twig' %}
+  <div class="container-fluid">
+    {% block content %}
+      <div class="row">
+        <div class="col-md-12">
+          <h3>{{'admin.settings.portal_settings'|trans}}</h3>
+        </div>
+      </div>
+      {{form_start(settingsForm)}}
+      {% for formEntryName, formEntry in settingsForm %}
+        {% if formEntryName != 'submit' %}
+          <div class="row">
+            <div class="col-md-6">
+              {{form_row(formEntry) }}
+            </div>
+            <div class="col-md-6">
+              {% if formEntry.vars.attr.help is defined %}
+                <div class="alert alert-info">
+                  {{ formEntry.vars.attr.help|trans }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="pull-right clearfix settings-form-buttons">
+            {{ form_end(settingsForm, {"render_rest": true}) }}
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+  </div>
+{% endblock %}

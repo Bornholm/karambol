@@ -19,6 +19,10 @@ class ThemeBootstrap implements BootstrapInterface {
       [$themeListener, 'onThemeChange']
     );
 
+    // Configure default theme
+    $defaultTheme = $app['settings']->get('default_theme');
+    $app['themes']->setDefaultTheme(empty($defaultTheme) ?  null : $defaultTheme);
+
     $app['themes']->setSelectedTheme(null);
 
   }
