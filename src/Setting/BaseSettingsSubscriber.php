@@ -7,14 +7,11 @@ use Karambol\Setting\SettingEntry;
 use Karambol\VirtualSet\ItemCountEvent;
 use Karambol\VirtualSet\ItemSearchEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Karambol\Util\AppAwareTrait;
 
 class BaseSettingsSubscriber implements EventSubscriberInterface {
 
-  protected $app;
-
-  public function __construct(KarambolApp $app) {
-    $this->app = $app;
-  }
+  use AppAwareTrait;
 
   public static function getSubscribedEvents() {
     return [
@@ -37,10 +34,12 @@ class BaseSettingsSubscriber implements EventSubscriberInterface {
 
     $entries = [];
 
-    $entries[] = new SettingEntry('portal_title', 'MSE', 'admin.settings.portal_title_help');
+    // Ajout paramètre titre du portail
+    $entries[] = new SettingEntry('portal_title', 'Karambol', 'admin.settings.portal_title_help');
 
+    // Ajout du paramètre de thème par défaut
     $themes = $this->app['themes'];
-    $defaultThemeEntry = new SettingEntry('default_theme', $themes->getSelectedTheme(), 'admin.settings.default_theme_help');
+    $defaultThemeEntry = new SettingEntry('default_theme', $themes->getDefaultTheme(), 'admin.settings.default_theme_help');
     $themeChoices = [];
     foreach($themes->getAvailableThemes() as $theme) {
       $themeChoices[$theme] = $theme;

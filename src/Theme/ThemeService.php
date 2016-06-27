@@ -15,18 +15,17 @@ class ThemeService extends EventDispatcher {
   protected $defaultTheme = '';
   protected $theme = null;
 
-  public function __construct($themesBaseDir, array $availableThemes, $defaultTheme) {
+  public function __construct($themesBaseDir, array $availableThemes) {
     $this->themesBaseDir = $themesBaseDir;
     $this->availableThemes = $availableThemes;
-    $this->defaultTheme = $defaultTheme;
   }
 
   public function getDefaultTheme() {
     return $this->defaultTheme;
   }
 
-  public function setDefaultTheme($defaultTheme) {
-    if( !$this->isThemeAvailable($defaultTheme) ) {
+  public function setDefaultTheme($defaultTheme = null) {
+    if( $defaultTheme !== null && !$this->isThemeAvailable($defaultTheme) ) {
       throw new \Exception(sprintf('The theme "%s" is not available !', $defaultTheme));
     }
     $this->defaultTheme = $defaultTheme;

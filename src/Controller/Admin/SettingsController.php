@@ -29,9 +29,21 @@ class SettingsController extends Controller {
 
     $form->handleRequest($request);
 
-    return $twig->render('admin/settings/index.html.twig', [
-      'settingsForm' => $form->createView()
-    ]);
+    if(!$form->isValid()) {
+      return $twig->render('admin/settings/index.html.twig', [
+        'settingsForm' => $form->createView()
+      ]);
+    }
+
+    $data = $form->getData();
+    $settings = $this->get('settings');
+
+    foreach($data as $settingName => $settingValue) {
+      $settings->save($settingName, $settingValue);
+    }
+
+    $urlGen = $this->get('url_generator');
+    return $this->redirect($urlGen->generate('settings'));
 
   }
 

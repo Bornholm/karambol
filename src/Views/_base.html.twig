@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    {% block head %}
+    {% block head_meta %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    {% block style %}
+    {% endblock %}
+    {% block head_title %}<title>{{ app.settings.get('portal_title') }}</title>{% endblock %}
+    {% block head_style %}
       <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
       <link rel="stylesheet" href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}">
       <link rel="stylesheet" href="{{ asset('css/karambol.css') }}">
+    {% endblock %}
     {% endblock %}
   </head>
   <body class="karambol {{  app.request.get('_route') }} {{  app.themes.selectedTheme }}">

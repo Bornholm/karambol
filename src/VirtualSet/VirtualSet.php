@@ -20,7 +20,7 @@ class VirtualSet extends EventDispatcher implements \Countable, \IteratorAggrega
   public function find(array $criteria = [], $limit = null) {
     $event = new ItemSearchEvent($criteria, $limit);
     $this->dispatch(ItemSearchEvent::NAME, $event);
-    return $event->getResults();
+    return $event->getItems();
   }
 
   public function getIterator() {
