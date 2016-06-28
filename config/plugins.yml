@@ -1,8 +1,4 @@
-imports:
-  - { resource: ../plugins/ExamplePlugin/config.yml }
-
 plugins:
-  example_plugin:
-    class: ExamplePlugin\ExamplePlugin
+  dashboard:
+    class: DashboardPlugin\DashboardPlugin
     options:
-  auth_cas:

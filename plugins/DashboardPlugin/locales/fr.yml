@@ -1,0 +1,6 @@
+admin:
+  settings:
+    enable_plugin_dashboard: Activer le plugin "Tableau de bord"
+    enable_plugin_dashboard_help: |
+      Le plugin "Tableau de bord" permet d'ajouter des pages construites dynamiquement à
+      partir de "widgets". Ces widgets sont configurables via les règles de personnalisation.
