@@ -23,8 +23,8 @@ class PluginsBootstrap implements BootstrapInterface {
       // Ajout du subscriber pour la configuration du plugin
       $settings->addSubscriber(new PluginSettingSubscriber($pluginId));
 
-      $pluginSetting = $settings->findOne(['name' => 'enable_plugin_'.$pluginId]);
-      if($pluginSetting && $pluginSetting->getValue() === false) continue;
+      $isPluginEnabled = $settings->get('enable_plugin_'.$pluginId);
+      if(!$isPluginEnabled) continue;
 
       $logger->debug(sprintf('Load plugin "%s" with class %s', $pluginId, $pluginInfo['class']));
 

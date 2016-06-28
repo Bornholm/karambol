@@ -38,9 +38,7 @@ class SettingsController extends Controller {
     $data = $form->getData();
     $settings = $this->get('settings');
 
-    foreach($data as $settingName => $settingValue) {
-      $settings->save($settingName, $settingValue);
-    }
+    $settings->save($data);
 
     $urlGen = $this->get('url_generator');
     return $this->redirect($urlGen->generate('settings'));

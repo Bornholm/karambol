@@ -4,53 +4,38 @@ namespace Karambol\Setting;
 
 use Karambol\VirtualSet\VirtualSet;
 use Karambol\KarambolApp;
-use Karambol\Entity\Setting;
-use Karambol\Util\AppAwareTrait;
+use Symfony\Component\Yaml\Yaml;
 
 class SettingService extends VirtualSet {
 
-  use AppAwareTrait;
+  protected $configFilePath;
+  protected $values = [];
 
-  public function get($entryName) {
-    $entry = $this->findOne(['name' => $entryName]);
+  public function __construct($configFilePath, $values = []) {
+    $this->configFilePath = $configFilePath;
+    $this->values = $values;
+  }
+
+  public function get($name) {
+    $entry = $this->findOne(['name' => $name]);
     return $entry ? $entry->getValue() : null;
   }
 
   public function find(array $criteria = [], $limit = null) {
-
+    $values = $this->values;
     $results = parent::find($criteria, $limit);
-
-    $orm = $this->app['orm'];
-    $repo = $orm->getRepository('Karambol\Entity\Setting');
-
     foreach($results as $entry) {
-      $entryName = $entry->getName();
-      $savedSetting = $repo->findOneByName($entryName);
-      if(!$savedSetting) continue;
-      $entry->setValue($savedSetting->getValue());
+      $hasValue = isset($values[$entry->getName()]);
+      if($hasValue) $entry->setValue($values[$entry->getName()]);
     }
-
     return $results;
-
   }
 
-  public function save($entryName, $entryValue) {
-
-    $orm = $this->app['orm'];
-
-    $setting = $orm->getRepository('Karambol\Entity\Setting')->findOneByName($entryName);
-
-    if(!$setting) {
-      $setting = new Setting();
-      $setting->setName($entryName);
-      $orm->persist($setting);
-    }
-
-    $setting->setValue($entryValue);
-    $orm->flush();
-
+  public function save($values) {
+    $this->values = array_merge($this->values, $values);
+    $yaml = Yaml::dump(['settings' => $this->values], 2, 2);
+    file_put_contents($this->configFilePath, $yaml);
     return $this;
-
   }
 
 }
