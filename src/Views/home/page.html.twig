@@ -1,5 +1,9 @@
 {% extends 'home/index.html.twig' %}
 
+{% block head_title %}
+  <title>{{ page.label }} - {{ app.settings.get('portal_title') }}</title>
+{% endblock %}
+
 {% block body_content %}
   <div class="karambol-flex-container">
     <div class="karambol-flex-item karambol-page-container">

@@ -10,7 +10,7 @@ class ItemSearchEvent extends Event {
 
   protected $criteria;
   protected $matcher;
-  protected $results = [];
+  protected $items = [];
   protected $limit;
 
   public function __construct(array $criteria = [], $limit = null) {
@@ -28,8 +28,8 @@ class ItemSearchEvent extends Event {
 
   public function addItem($item) {
     if($this->isLimitReached()) return $this;
-    if($this->getResultIndex($item) === false && $this->matchesCriteria($item))  {
-      $this->results[] = $item;
+    if($this->getItemIndex($item) === false && $this->matchesCriteria($item))  {
+      $this->items[] = $item;
       if($this->isLimitReached()) $this->stopPropagation();
     }
     return $this;
@@ -38,7 +38,7 @@ class ItemSearchEvent extends Event {
   public function removeItem($item) {
     if($this->isLimitReached()) return $this;
     $itemIndex = $this->getItemIndex($item);
-    if($itemIndex !== false) array_splice($this->results, $itemIndex);
+    if($itemIndex !== false) array_splice($this->items, $itemIndex);
     return $this;
   }
 
@@ -54,16 +54,16 @@ class ItemSearchEvent extends Event {
     return $this->criteria;
   }
 
-  public function getResults() {
-    return $this->results;
+  public function getItems() {
+    return $this->items;
   }
 
   protected function isLimitReached() {
-    return $this->limit !== null && count($this->results) >= $this->limit;
+    return $this->limit !== null && count($this->items) >= $this->limit;
   }
 
-  protected function getResultIndex($item) {
-    return array_search($item, $this->results, true);
+  protected function getItemIndex($item) {
+    return array_search($item, $this->items, true);
   }
 
 }
