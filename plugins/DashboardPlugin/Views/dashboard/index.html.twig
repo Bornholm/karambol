@@ -1,5 +1,9 @@
 {% extends 'home/index.html.twig' %}
 
+{% block head_style %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('plugins/dashboard/css/dashboard.css') }}" />
+{% endblock %}
 
 {% block body_content %}
   <div class="container-fluid">
@@ -20,5 +24,10 @@
       </div>
     {% endfor %}
   </div>
-  {{ appendScript('plugins/dashboard/js/dashboard.js') }}
+  {{
+    appendScript([
+      'plugins/dashboard/js/json-rpc2-server.js',
+      'plugins/dashboard/js/dashboard.js'
+    ])
+  }}
 {% endblock %}

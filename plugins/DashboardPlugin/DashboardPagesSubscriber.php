@@ -32,7 +32,7 @@ class DashboardPagesSubscriber implements EventSubscriberInterface {
   }
 
   public function onCountPages(ItemCountEvent $event) {
-
+    $event->add(1);
   }
 
 }
