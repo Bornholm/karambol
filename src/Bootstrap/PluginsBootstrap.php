@@ -13,20 +13,20 @@ class PluginsBootstrap implements BootstrapInterface {
     $logger = $app['monolog'];
     $settings = $app['settings'];
 
-    foreach($plugins as $pluginId => $pluginInfo) {
+    foreach($plugins as $pluginName => $pluginInfo) {
 
       if( !isset($pluginInfo['class']) ) {
-        $logger->warn(sprintf('Cannot load plugin "%s". No class specified', $pluginId));
+        $logger->warn(sprintf('Cannot load plugin "%s". No class specified', $pluginName));
         continue;
       }
 
       // Ajout du subscriber pour la configuration du plugin
-      $settings->addSubscriber(new PluginSettingSubscriber($pluginId));
+      $settings->addSubscriber(new PluginSettingSubscriber($app, $pluginName));
 
-      $isPluginEnabled = $settings->get('enable_plugin_'.$pluginId);
+      $isPluginEnabled = $settings->get('enable_plugin_'.$pluginName);
       if(!$isPluginEnabled) continue;
 
-      $logger->debug(sprintf('Load plugin "%s" with class %s', $pluginId, $pluginInfo['class']));
+      $logger->debug(sprintf('Load plugin "%s" with class %s', $pluginName, $pluginInfo['class']));
 
       $pluginClass = $pluginInfo['class'];
       $plugin = new $pluginClass();

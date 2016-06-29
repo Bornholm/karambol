@@ -8,15 +8,15 @@ use Karambol\Setting\SettingEntryInterface;
 class SettingEntry implements SettingEntryInterface {
 
   protected $name;
+  protected $label;
   protected $help;
   protected $defaultValue;
   protected $value;
   protected $constraints;
   protected $choices;
 
-  public function __construct($name, $defaultValue, $help = '') {
+  public function __construct($name, $defaultValue) {
     $this->name = $name;
-    $this->help = $help;
     $this->defaultValue = $defaultValue;
     $this->constraints = [];
     $this->choices = null;
@@ -24,6 +24,15 @@ class SettingEntry implements SettingEntryInterface {
 
   public function getName() {
     return $this->name;
+  }
+
+  public function setLabel($label) {
+    $this->label = $label;
+    return $this;
+  }
+
+  public function getLabel() {
+    return empty($this->label) ? $this->name : $this->label;
   }
 
   public function getDefaultValue() {
@@ -41,6 +50,11 @@ class SettingEntry implements SettingEntryInterface {
 
   public function setValue($value) {
     $this->value = $value;
+    return $this;
+  }
+
+  public function setHelp($help) {
+    $this->help = $help;
     return $this;
   }
 

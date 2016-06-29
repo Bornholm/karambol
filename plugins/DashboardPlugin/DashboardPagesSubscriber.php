@@ -19,6 +19,7 @@ class DashboardPagesSubscriber implements EventSubscriberInterface {
   }
 
   public function onSearchPages(ItemSearchEvent $event) {
+    $page = new Page('pages.plugins.dashboard', $urlGen->generate('home'), 'home');
 
   }
 

@@ -42,8 +42,7 @@ admin:
   settings:
     portal_settings: Configuration du portail
     save_settings: Enregistrer
-    enable_plugin_example_plugin: Activer le plugin 'Example'
-    enable_plugin_example_plugin_help: Activer/désactiver le plugin d'exemple de Karambol.
+    enable_plugin: Activer/Désactiver le plugin "%plugin_name%"
     portal_title: Titre du site
     portal_title_help: Le titre de votre site. Suivant le thème utilisé, celui ci sera affiché dans le bandeau de la page d'acceuil.
     default_theme: Thème par défaut
