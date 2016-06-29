@@ -1,5 +1,4 @@
 imports:
-  - { resource: plugins.yml }
   - { resource: themes.yml }
 
 debug: false

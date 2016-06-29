@@ -1,4 +1,0 @@
-plugins:
-  dashboard:
-    class: DashboardPlugin\DashboardPlugin
-    options:

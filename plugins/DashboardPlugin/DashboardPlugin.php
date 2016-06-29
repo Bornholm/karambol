@@ -11,6 +11,7 @@ class DashboardPlugin implements PluginInterface
 
   public function boot(KarambolApp $app, array $options) {
     $this->addPluginPages($app);
+    $this->addPluginViews($app);
     $this->addPluginTranslation($app);
     $this->addControllers($app);
   }
@@ -23,12 +24,18 @@ class DashboardPlugin implements PluginInterface
   }
 
   public function addPluginPages(KarambolApp $app) {
-    $app['pages']->addSubscriber(new DashboardPagesSubscriber());
+    $app['pages']->addSubscriber(new DashboardPagesSubscriber($app));
   }
 
   public function addControllers(KarambolApp $app) {
     $dashboardCtrl = new DashboardController();
     $dashboardCtrl->bindTo($app);
+  }
+
+  public function addPluginViews($app) {
+    $twigPaths = $app['twig.path'];
+    array_unshift($twigPaths, __DIR__.'/Views');
+    $app['twig.path'] = $twigPaths;
   }
 
 }

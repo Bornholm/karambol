@@ -1,0 +1,24 @@
+{% extends 'home/index.html.twig' %}
+
+
+{% block body_content %}
+  <div class="container-fluid">
+    {% for row in widgets %}
+      <div class="row">
+      {% for widget in row %}
+        <div class="col-md-{{widget.columnWidth}}">
+          <div class="panel panel-default karambol-widget-panel">
+            <div class="panel-heading">
+              <h4 class="panel-title">{{widget.label}}</h4>
+            </div>
+            <div class="panel-body">
+              <iframe class="karambol-widget" data-url="{{widget.url}}"></iframe>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+  {{ appendScript('plugins/dashboard/js/dashboard.js') }}
+{% endblock %}

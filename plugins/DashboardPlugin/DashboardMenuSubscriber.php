@@ -18,7 +18,7 @@ class DashboardMenuSubscriber implements EventSubscriberInterface {
   }
 
   public function onSearchItems(ItemSearchEvent $event) {
-    $event->addItem(new )
+    dump($event);
   }
 
   public function onCountItems(ItemCountEvent $event) {

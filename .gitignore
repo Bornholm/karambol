@@ -4,6 +4,7 @@
 *.log
 /public/vendor
 /public/themes
+/public/plugins
 /public/cache
 /config/local.d/*
 !/config/local.d/.gitkeep
