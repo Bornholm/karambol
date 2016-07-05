@@ -5,6 +5,7 @@ namespace DashboardPlugin;
 use Karambol\Plugin\PluginInterface;
 use Karambol\KarambolApp;
 use DashboardPlugin\Controller\DashboardController;
+use DashboardPlugin\Controller\Widget as WidgetController;
 
 class DashboardPlugin implements PluginInterface
 {
@@ -30,6 +31,8 @@ class DashboardPlugin implements PluginInterface
   public function addControllers(KarambolApp $app) {
     $dashboardCtrl = new DashboardController();
     $dashboardCtrl->bindTo($app);
+    $rssWidgetCtrl = new WidgetController\RSSWidgetController();
+    $rssWidgetCtrl->bindTo($app);
   }
 
   public function addPluginViews($app) {

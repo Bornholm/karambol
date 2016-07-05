@@ -1,54 +1,47 @@
-(function($, window, JSONRPC2) {
+(function($, window, JSRPC) {
 
   'use strict';
 
-  var $window = $(window);
-  var rpcServer = new JSONRPC2.Server();
+  var server = new JSRPC.Server(sendHandler);
 
-  rpcServer.expose({
-    'setPreferredHeight': setPreferredHeight,
-    'setTitle': setTitle
+  server.expose({
+
+    setPreferredHeight: function(params, context, cb) {
+      if(!('height' in params)) throw new Error('You must provide a "height" parameter.');
+      if(params.height !== +params.height) throw new Error('The height parameter must be a number.');
+      $(context.widgetFrame).height(params.height);
+      return cb();
+    },
+
+    setTitle: function(params, context, cb) {
+      if(!('title' in params)) throw new Error('You must provide a "title" parameter.');
+      $(context.widgetFrame)
+        .parents('.karambol-widget-panel')
+        .find('.panel-title')
+        .text(params.title)
+      ;
+      return cb();
+    }
+
   });
 
-  // Récupération des widgets présents dans la page
-  $('.karambol-widget[data-url]').each(function(i, widget) {
+  window.addEventListener('message', onWidgetMessage, false);
 
-    var $widget = $(widget);
-    var url = $widget.data('url');
+  function onWidgetMessage(evt) {
+    console.log('message from client', evt);
+    var widgetFrame = getSourceWidget(evt.source);
+    if(widgetFrame) server.handleMessage(evt.data, {widgetFrame: widgetFrame});
+  }
 
-    $window.on('message', onWidgetMessage.bind($widget));
+  function sendHandler(message, context) {
+    context.widgetFrame.contentWindow.postMessage(message, '*');
+  }
 
-    if(url) $widget.attr('src', url);
-
-  });
-
-  function onWidgetMessage(event) {
-    var data;
-    try {
-      message = JSON.parse(event.data);
-    } catch(err) {
-      console.error(err);
-      return;
-    }
-    if(message) {
-      var isNotification = !(id in message);
-      rpcServer.handleMessage(
-        message,
-        isNotification ? onRPCServerResult.bind(this) : null
-      );
+  function getSourceWidget(frameWindow) {
+    var $widgets = $('iframe.karambol-widget');
+    for(var widget, i = 0; (widget = $widgets[i]); i++) {
+      if(widget.contentWindow === frameWindow) return widget;
     }
   }
 
-  function onRPCServerResult(err, result) {
-
-  }
-
-  function setPreferredHeight(args, cb) {
-
-  }
-
-  function setTitle(args, cb) {
-
-  }
-
-}($, window, JSONRPC2));
+}($, window, JSRPC));

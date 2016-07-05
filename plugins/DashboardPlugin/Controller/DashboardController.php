@@ -15,7 +15,10 @@ class DashboardController extends Controller {
     $twig = $this->get('twig');
     return $twig->render('dashboard/index.html.twig', [
       'widgets' => [
-        [ ['label' => 'Test', 'columnOffset' => null, 'columnWidth' => 6, 'order' => 0, 'url' => 'http://linuxfr.org' ] ]
+        [
+          ['label' => 'Test', 'columnOffset' => null, 'columnWidth' => 4, 'order' => 0, 'url' => '/widgets/rss', 'height' => 600 ],
+          ['label' => 'Test', 'columnOffset' => null, 'columnWidth' => 4, 'order' => 0, 'url' => '/widgets/rss', 'height' => 800 ]
+        ]
       ]
     ]);
   }

@@ -6,27 +6,29 @@
 {% endblock %}
 
 {% block body_content %}
-  <div class="container-fluid">
-    {% for row in widgets %}
-      <div class="row">
-      {% for widget in row %}
-        <div class="col-md-{{widget.columnWidth}}">
-          <div class="panel panel-default karambol-widget-panel">
-            <div class="panel-heading">
-              <h4 class="panel-title">{{widget.label}}</h4>
+  <div class="karambol-flex-container">
+    <div class="karambol-flex-item">
+      <div class="karambol-dashboard">
+        <div class="container-fluid">
+          {% for row in widgets %}
+            <div class="row">
+            {% for widget in row %}
+              {% include 'dashboard/_widget.html.twig' %}
+            {% endfor %}
             </div>
-            <div class="panel-body">
-              <iframe class="karambol-widget" data-url="{{widget.url}}"></iframe>
-            </div>
-          </div>
+          {% endfor %}
         </div>
-      {% endfor %}
       </div>
-    {% endfor %}
+    </div>
+    <div class="karambol-footer">
+      {% block body_footer %}
+        {{ menu('home_footer') }}
+      {% endblock %}
+    </div>
   </div>
   {{
     appendScript([
-      'plugins/dashboard/js/json-rpc2-server.js',
+      'plugins/dashboard/js/jsrpc/server.js',
       'plugins/dashboard/js/dashboard.js'
     ])
   }}
