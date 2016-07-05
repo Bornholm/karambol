@@ -1,8 +1,8 @@
 {
   "repositories": [
     {
-      "type": "git",
-      "url": "/home/will/workspace/karambol-plugin-dashboard"
+      "type": "path",
+      "url": "../karambol-plugin-dashboard"
     },
     {
       "type": "package",
