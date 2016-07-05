@@ -1,6 +1,10 @@
 {
   "repositories": [
     {
+      "type": "git",
+      "url": "/home/will/workspace/karambol-plugin-dashboard"
+    },
+    {
       "type": "package",
       "package": {
         "name": "font-awesome/font-awesome",
@@ -24,6 +28,7 @@
     }
   ],
   "require": {
+    "bornholm/karambol-plugin-dashboard": "dev-develop",
     "silex/silex": "^1.3",
     "twig/twig": "^1.24",
     "symfony/twig-bridge": "^3.0",
@@ -50,8 +55,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Karambol\\": "src/",
-      "": "plugins/"
+      "Karambol\\": "src/"
     }
   },
   "require-dev": {

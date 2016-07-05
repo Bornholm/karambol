@@ -1,8 +1,0 @@
-plugins:
-  dashboard:
-    class: DashboardPlugin\DashboardPlugin
-
-assets:
-  dashboard:
-    - { src: plugins/DashboardPlugin/public/js, dest: public/plugins/dashboard/js }
-    - { src: plugins/DashboardPlugin/public/css, dest: public/plugins/dashboard/css }
