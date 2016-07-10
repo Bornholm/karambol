@@ -27,7 +27,7 @@
             <div class="col-md-6">
               {{form_row(formEntry) }}
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 col-xs-offset-2 col-md-offset-0">
               {% if formEntry.vars.attr.help is defined and not formEntry.vars.attr.help is empty %}
                 <div class="alert alert-info">
                   {{ formEntry.vars.attr.help|trans }}
