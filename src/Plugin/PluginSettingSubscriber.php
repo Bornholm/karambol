@@ -10,10 +10,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class PluginSettingSubscriber implements EventSubscriberInterface {
 
-  protected $pluginId;
+  protected $app;
+  protected $pluginName;
 
-  public function __construct($pluginId) {
-    $this->pluginId = $pluginId;
+  public function __construct(KarambolApp $app, $pluginName) {
+    $this->app = $app;
+    $this->pluginName = $pluginName;
   }
 
   public static function getSubscribedEvents() {
@@ -25,9 +27,14 @@ class PluginSettingSubscriber implements EventSubscriberInterface {
 
   public function onSearchSetting(ItemSearchEvent $event) {
 
-    $settingName = $this->getPluginSettingName($this->pluginId);
-    $settingDescKey = sprintf('admin.settings.%s_help', $settingName);
-    $settingEntry = new SettingEntry($settingName, false, $settingDescKey);
+    $settingName = $this->getPluginSettingName($this->pluginName);
+    $settingEntry = new SettingEntry($settingName, false);
+
+    $trans = $this->app['translator'];
+    $settingLabel = $trans->trans('admin.settings.enable_plugin', [
+      '%plugin_name%' => $this->pluginName
+    ]);
+    $settingEntry->setLabel($settingLabel);
 
     $event->addItem($settingEntry);
 
@@ -37,8 +44,8 @@ class PluginSettingSubscriber implements EventSubscriberInterface {
     $event->add(1);
   }
 
-  protected function getPluginSettingName($pluginId) {
-    return sprintf('enable_plugin_%s', $pluginId);
+  protected function getPluginSettingName($pluginName) {
+    return sprintf('enable_plugin_%s', $pluginName);
   }
 
 }

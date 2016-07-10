@@ -35,11 +35,20 @@ class BaseSettingsSubscriber implements EventSubscriberInterface {
     $entries = [];
 
     // Ajout paramètre titre du portail
-    $entries[] = new SettingEntry('portal_title', 'Karambol', 'admin.settings.portal_title_help');
+    $portalTitleEntry = new SettingEntry('portal_title', 'Karambol');
+    $portalTitleEntry
+      ->setLabel('admin.settings.portal_title')
+      ->setHelp('admin.settings.portal_title_help')
+    ;
+    $entries[] = $portalTitleEntry;
 
     // Ajout du paramètre de thème par défaut
     $themes = $this->app['themes'];
-    $defaultThemeEntry = new SettingEntry('default_theme', $themes->getDefaultTheme(), 'admin.settings.default_theme_help');
+    $defaultThemeEntry = new SettingEntry('default_theme', $themes->getDefaultTheme());
+    $defaultThemeEntry
+      ->setLabel('admin.settings.default_theme')
+      ->setHelp('admin.settings.default_theme_help')
+    ;
     $themeChoices = [];
     foreach($themes->getAvailableThemes() as $theme) {
       $themeChoices[$theme] = $theme;

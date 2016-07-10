@@ -1,8 +1,7 @@
 imports:
-  - { resource: plugins.yml }
   - { resource: themes.yml }
 
-debug: true
+debug: false
 
 database:
   driver: pdo_mysql

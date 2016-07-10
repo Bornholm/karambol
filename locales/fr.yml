@@ -6,7 +6,7 @@ admin:
     rules: Règles
   users:
     id: Identifiant
-    email: Courriel
+    username: Nom d'utilisateur
     actions: Actions
     no_users: Aucun utilisateur pour le moment.
     create: Créer
@@ -15,17 +15,17 @@ admin:
     delete_user: Supprimer
     save_user: Enregistrer
     new_user: Nouvel utilisateur
-    add_attribute: Ajout un attribut
-    remove_attribute: Supprimer l'attribut
-    attribute_name: Nom
-    attribute_value: Valeur
-    user_attributes: Attributs
+    base_info: Informations de base
+    username: "Nom d'utilisateur"
+    password: Mot de passe
+    repeat_password: Répéter le mot de passe
   pages:
     label: Label
     slug: Identifiant textuel (slug)
     url: URL
     edit: Éditer
     edit_page: 'Éditer: %label%'
+    new_page: 'Créer une nouvelle page'
     delete_page: Supprimer
     operations: Opérations
     create: Ajouter une page
@@ -42,8 +42,7 @@ admin:
   settings:
     portal_settings: Configuration du portail
     save_settings: Enregistrer
-    enable_plugin_example_plugin: Activer le plugin 'Example'
-    enable_plugin_example_plugin_help: Activer/désactiver le plugin d'exemple de Karambol.
+    enable_plugin: Activer/Désactiver le plugin "%plugin_name%"
     portal_title: Titre du site
     portal_title_help: Le titre de votre site. Suivant le thème utilisé, celui ci sera affiché dans le bandeau de la page d'acceuil.
     default_theme: Thème par défaut

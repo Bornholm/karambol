@@ -4,15 +4,15 @@
 
   <div class="row">
     <div class="col-md-push-8  col-md-4 text-right">
-      {% if user is defined %}
-        {{ form(deleteForm, {'attr': {'class': 'form-inline'}}) }}
+      {% if entity is defined %}
+        {{ form(entityDeleteForm, {'attr': {'class': 'form-inline'}}) }}
       {% endif %}
     </div>
     <div class="col-md-pull-4 col-md-8">
-      <h2>{{ user is defined ? 'admin.users.edit_user'|trans({ '%name%': user.get('name') }) : 'admin.users.new_user'|trans }}</h2>
+      <h2>{{ entity is defined ? 'admin.users.edit_user'|trans({ '%name%': entity.username }) : 'admin.users.new_user'|trans }}</h2>
     </div>
   </div>
-  {{ form_start(userForm) }}
+  {{ form_start(entityEditForm) }}
   <div class="row">
     <div class="col-md-6">
       <div class="panel panel-default">
@@ -20,18 +20,7 @@
           <h3 class="panel-title">{{'admin.users.base_info'|trans}}</h3>
         </div>
         <div class="panel-body">
-
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">{{'admin.users.user_attributes'|trans}}</h3>
-        </div>
-        <div class="panel-body">
-          {% include 'admin/users/_user_attributes.html.twig' %}
-          {% do userForm.attributes.setRendered %}
+          {{ form_row(entityEditForm.username) }}
         </div>
       </div>
     </div>
@@ -39,9 +28,8 @@
   <div class="row">
     <div class="col-md-12">
       <div class="pull-right clearfix">
-        {{ form_end(userForm, {"render_rest": true}) }}
+        {{ form_end(entityEditForm, {"render_rest": true}) }}
       </div>
     </div>
   </div>
-  {{ appendScript('js/admin-users.js') }}
 {% endblock %}

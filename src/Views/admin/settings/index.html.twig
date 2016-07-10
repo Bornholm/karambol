@@ -5,8 +5,8 @@
 {% block head_style %}
   {{ parent() }}
   <style>
-    .settings-form-buttons .form-group {
-      margin-right: -45px;
+    #settings_submit {
+      float: right;
     }
   </style>
 {% endblock %}
@@ -28,7 +28,7 @@
               {{form_row(formEntry) }}
             </div>
             <div class="col-md-6">
-              {% if formEntry.vars.attr.help is defined %}
+              {% if formEntry.vars.attr.help is defined and not formEntry.vars.attr.help is empty %}
                 <div class="alert alert-info">
                   {{ formEntry.vars.attr.help|trans }}
                 </div>
@@ -39,7 +39,7 @@
       {% endfor %}
       <div class="row">
         <div class="col-md-12">
-          <div class="pull-right clearfix settings-form-buttons">
+          <div>
             {{ form_end(settingsForm, {"render_rest": true}) }}
           </div>
         </div>

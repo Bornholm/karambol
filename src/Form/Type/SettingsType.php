@@ -23,7 +23,7 @@ class SettingsType extends AbstractType
           $entryType = $this->detectEntryType($entry);
 
           $entryOpts = [
-            'label' => 'admin.settings.'.$entry->getName(),
+            'label' => $entry->getLabel(),
             'data' => $entry->getValue(),
             'constraints' => $entry->getConstraints(),
             'required' => false,
