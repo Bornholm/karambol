@@ -8,3 +8,5 @@
 /public/cache
 /config/local.d/*
 !/config/local.d/.gitkeep
+/components
+/composer.local.json

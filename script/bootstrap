@@ -12,7 +12,7 @@ if [ -z "$PHP_SUP_54" ]; then
   exit 1
 fi
 
-$COMPOSER install --no-plugins
+$COMPOSER install
 
 $DIR/console karambol:link-assets
 

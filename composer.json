@@ -1,10 +1,6 @@
 {
   "repositories": [
     {
-      "type": "path",
-      "url": "../karambol-plugin-dashboard"
-    },
-    {
       "type": "package",
       "package": {
         "name": "font-awesome/font-awesome",
@@ -28,7 +24,6 @@
     }
   ],
   "require": {
-    "bornholm/karambol-plugin-dashboard": "dev-develop",
     "silex/silex": "^1.3",
     "twig/twig": "^1.24",
     "symfony/twig-bridge": "^3.0",
@@ -51,7 +46,8 @@
     "symfony/console": "^3.1",
     "paragonie/random_compat": "^2.0",
     "league/commonmark": "^0.13.4",
-    "mistic100/randomcolor": "^1.0"
+    "mistic100/randomcolor": "^1.0",
+    "wikimedia/composer-merge-plugin": "^1.3"
   },
   "autoload": {
     "psr-4": {
@@ -64,5 +60,16 @@
   },
   "config": {
     "secure-http": false
+  },
+  "extra" : {
+    "merge-plugin": {
+      "include": [
+        "composer.local.json"
+      ],
+      "recurse": true,
+      "replace": false,
+      "merge-dev": true,
+      "merge-extra": false
+    }
   }
 }
