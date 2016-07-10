@@ -23,7 +23,7 @@ class BaseUser implements UserInterface {
   protected $username;
 
   /**
-   * @ORM\Column(type="text")
+   * @ORM\Column(type="text", nullable=true)
    */
   protected $password;
 

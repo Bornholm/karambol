@@ -7,18 +7,16 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 
-class UserType extends AbstractType
+class BaseUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-      $builder->add('attributes', Type\CollectionType::class, [
-          'allow_add' => true,
-          'allow_delete' => true,
-          'entry_type' => UserAttributeType::class,
-          'by_reference' => false
+      $builder
+        ->add('username', Type\TextType::class, [
+          'label' => 'admin.users.username'
         ])
         ->add('submit', Type\SubmitType::class, [
-          'label' => 'form.user.save_user',
+          'label' => 'admin.users.save_user',
           'attr' => [
             'class' => 'btn-success'
           ]

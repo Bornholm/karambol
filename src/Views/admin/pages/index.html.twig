@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-12 clearfix">
       <div class="pull-right">
-        <a href="{{ path('admin_page_new') }}" class="btn btn-primary"><span class="fa fa-plus"></span> {{ 'admin.pages.create'|trans }}</a>
+        <a href="{{ path('admin_pages_new') }}" class="btn btn-primary"><span class="fa fa-plus"></span> {{ 'admin.pages.create'|trans }}</a>
       </div>
     </div>
   </div>
@@ -21,14 +21,14 @@
             </tr>
           </thead>
           <tbody>
-            {% for page in pages %}
+            {% for page in entities %}
               <tr>
                 <td>{{page.label}}</td>
                 <td>{{page.slug}}</td>
                 <td>{{page.url}}</td>
                 <td>
                   {% if page.id is defined %}
-                    <a href="{{ path('admin_page_edit', {'pageId': page.id}) }}" class="btn btn-primary btn-xs">{{ 'admin.pages.edit'|trans }}</a>
+                    <a href="{{ path('admin_pages_edit', {'entityId': page.id}) }}" class="btn btn-primary btn-xs">{{ 'admin.pages.edit'|trans }}</a>
                   {% else %}
                     <span title="{{'admin.pages.system_page_help'|trans}}" class="fa fa-question-circle"></span> <i>{{'admin.pages.system_page'|trans}}</i>
                   {% endif %}

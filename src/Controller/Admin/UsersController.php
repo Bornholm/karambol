@@ -3,133 +3,71 @@
 namespace Karambol\Controller\Admin;
 
 use Karambol\KarambolApp;
-use Karambol\Controller\Controller;
+use Karambol\Controller\AbstractEntityController;
 use Karambol\Entity\User;
-use Karambol\Form\Type\UserType;
-use Karambol\Form\Type\UserAttributeType;
+use Karambol\Form\Type\BaseUserType;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class UsersController extends Controller {
+class UsersController extends AbstractEntityController {
 
-  public function mount(KarambolApp $app) {
-    $app->get('/admin/users', [$this, 'showUsersIndex'])->bind('admin_users');
-    $app->get('/admin/users/new', [$this, 'showNewUserForm'])->bind('admin_user_new');
-    $app->get('/admin/users/{userId}', [$this, 'showUserEditForm'])->bind('admin_user_edit');
-    $app->delete('/admin/users/{userId}', [$this, 'handleUserDelete'])
-      ->value('userId', '')
-      ->bind('admin_user_delete')
-    ;
-    $app->post('/admin/users/{userId}', [$this, 'handleUserUpsert'])
-      ->value('userId', '')
-      ->bind('admin_user_upsert')
-    ;
-  }
+  protected function getEntityClass() { return $this->get('user_entity'); }
+  protected function getViewsDirectory() { return 'admin/users'; }
+  protected function getRoutePrefix() { return '/admin/users'; }
+  protected function getRouteNamePrefix() { return 'admin_users'; }
 
-  public function showUsersIndex() {
-    $twig = $this->get('twig');
+  public function getEntities($offset = 0, $limit = null) {
+
     $orm = $this->get('orm');
-    $userEntity = $this->get('user_entity');
-    $users = $orm->getRepository($userEntity)->findAll();
-    return $twig->render('admin/users/index.html.twig', [
-      'users' => $users
-    ]);
+    $qb = $orm->getRepository($this->getEntityClass())->createQueryBuilder('u');
+
+    $qb->setFirstResult($offset);
+    if($limit !== null) $qb->setMaxResults($limit);
+
+    return $qb->getQuery()->getResult();
+
   }
 
-  public function showUserEditForm($userId) {
+  protected function saveEntityFromForm($form) {
 
-    $twig = $this->get('twig');
     $orm = $this->get('orm');
-    $userEntity = $this->get('user_entity');
-
-    $user = $orm->getRepository($userEntity)->find($userId);
-
-    $userForm = $this->getUserForm($user);
-    $deleteForm = $this->getUserDeleteForm($user->getId());
-
-    return $twig->render('admin/users/edit.html.twig', [
-      'userForm' => $userForm->createView(),
-      'deleteForm' => $deleteForm->createView(),
-      'user' => $user
-    ]);
-
-  }
-
-  public function showNewUserForm() {
-    $twig = $this->get('twig');
-    $userForm = $this->getUserForm();
-    return $twig->render('admin/users/edit.html.twig', [
-      'userForm' => $userForm->createView()
-    ]);
-  }
-
-  public function handleUserUpsert($userId) {
-
-    $twig = $this->get('twig');
-    $orm = $this->get('orm');
-    $request = $this->get('request');
-    $userEntity = $this->get('user_entity');
-
-    $user = null;
-    if(!empty($userId)) {
-      $user = $orm->getRepository($userEntity)->find($userId);
-    }
-
-    $form = $this->getUserForm($user);
-
-    $form->handleRequest($request);
-
-    if( !$form->isValid() ) {
-      return $twig->render('admin/users/edit.html.twig', [
-        'userForm' => $form->createView(),
-        'deleteForm' => $user ? $this->getUserDeleteForm($user->getId())->createView() : null,
-        'user' => $user
-      ]);
-    }
-
     $user = $form->getData();
-    $orm = $this->get('orm');
 
-    if( $user->getId() === null ) {
+    if($user->getId() === null) {
       $orm->persist($user);
     }
 
     $orm->flush();
 
-    $urlGen = $this->get('url_generator');
-    return $this->redirect($urlGen->generate('admin_user_edit', ['userId' => $user->getId()]));
+    return $user;
 
   }
 
-  public function handleUserDelete($userId) {
+  protected function deleteEntityFromForm($form) {
 
-    $twig = $this->get('twig');
     $orm = $this->get('orm');
-    $request = $this->get('request');
-    $userEntity = $this->get('user_entity');
+    $data = $form->getData();
 
-    $user = $orm->getRepository($userEntity)->find($userId);
-    $deleteForm = $this->getUserDeleteForm($userId);
+    if(!isset($data['userId'])) {
+      // TODO add flash message to indicate error
+      return false;
+    }
 
-    $deleteForm->handleRequest($request);
+    $user = $orm->getRepository($this->getEntityClass())->find($data['userId']);
 
-    if(!$deleteForm->isValid()) {
-      return $twig->render('admin/users/edit.html.twig', [
-        'userForm' => $form->createView(),
-        'deleteForm' => $deleteForm->createView(),
-        'user' => $user
-      ]);
+    if(!$user) {
+      // TODO add flash message to indicate error
+      return false;
     }
 
     $orm->remove($user);
     $orm->flush();
 
-    $urlGen = $this->get('url_generator');
-    return $this->redirect($urlGen->generate('admin_users'));
+    return true;
 
   }
 
-  protected function getUserDeleteForm($userId) {
+  protected function getEntityDeleteForm($user) {
 
     $formFactory = $this->get('form.factory');
     $urlGen = $this->get('url_generator');
@@ -137,29 +75,32 @@ class UsersController extends Controller {
     $formBuilder = $formFactory->createBuilder(Type\FormType::class);
 
     return $formBuilder
+      ->add('userId', Type\HiddenType::class, [
+        'data' => $user->getId()
+      ])
       ->add('submit', Type\SubmitType::class, [
         'label' => 'admin.users.delete_user',
         'attr' => [
           'class' => 'btn-danger'
         ]
       ])
-      ->setAction($urlGen->generate('admin_user_delete', ['userId' => $userId]))
+      ->setAction($urlGen->generate($this->getRouteName(self::DELETE_ACTION), ['entityId' => $user->getId()]))
       ->setMethod('DELETE')
       ->getForm()
     ;
 
   }
 
-  protected function getUserForm($user = null) {
+  protected function getEntityEditForm($user = null) {
 
     $formFactory = $this->get('form.factory');
     $urlGen = $this->get('url_generator');
-    $userEntity = $this->get('user_entity');
+    $userEntity = $this->getEntityClass();
 
     if($user === null) $user = new $userEntity();
 
-    $formBuilder = $formFactory->createBuilder(UserType::class, $user);
-    $action = $urlGen->generate('admin_user_upsert', ['userId' => $user->getId()]);
+    $formBuilder = $formFactory->createBuilder(BaseUserType::class, $user);
+    $action = $urlGen->generate($this->getRouteName(self::UPSERT_ACTION), ['entityId' => $user->getId()]);
 
     return $formBuilder->setAction($action)
       ->setMethod('POST')

@@ -41,20 +41,15 @@ class AdminMainMenuSubscriber implements EventSubscriberInterface {
     $items = [];
     $urlGen = $this->app['url_generator'];
 
-    $usersItem = new MenuItem(MenuItems::ADMIN_USERS, $urlGen->generate('admin_users'), [
+    $usersItem = new MenuItem(MenuItems::ADMIN_USERS, $urlGen->generate('admin_users_list'), [
       'icon_class' => 'fa fa-users'
     ]);
     $items[] = $usersItem;
 
-    $contentItem = new MenuItem(MenuItems::ADMIN_CONTENT, '#', [
-      'icon_class' => 'fa fa-puzzle-piece'
-    ]);
-    $items[] = $contentItem;
-
-    $linksItem = new MenuItem(MenuItems::ADMIN_PAGES, $urlGen->generate('admin_pages'), [
+    $pagesItem = new MenuItem(MenuItems::ADMIN_PAGES, $urlGen->generate('admin_pages_list'), [
       'icon_class' => 'fa fa-link'
     ]);
-    $contentItem->addItem($linksItem);
+    $items[] = $pagesItem;
 
     $rulesItem = new MenuItem(MenuItems::ADMIN_RULES, '', [
       'icon_class' => 'fa fa-gavel'

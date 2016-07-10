@@ -9,7 +9,8 @@ class PluginsBootstrap implements BootstrapInterface {
 
   public function bootstrap(KarambolApp $app) {
 
-    $plugins = $app['config']['plugins'];
+    $config = $app['config'];
+    $plugins = isset($config['plugins']) ? $app['config']['plugins'] : [];
     $logger = $app['monolog'];
     $settings = $app['settings'];
 

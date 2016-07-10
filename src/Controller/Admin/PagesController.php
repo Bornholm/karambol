@@ -3,125 +3,55 @@
 namespace Karambol\Controller\Admin;
 
 use Karambol\KarambolApp;
-use Karambol\Controller\Controller;
+use Karambol\Controller\AbstractEntityController;
 use Karambol\Entity\CustomPage;
 use Karambol\Form\Type\CustomPageType;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 
-class PagesController extends Controller {
+class PagesController extends AbstractEntityController {
 
-  public function mount(KarambolApp $app) {
-    $app->get('/admin/pages', [$this, 'showPages'])->bind('admin_pages');
-    $app->get('/admin/pages/new', [$this, 'showNewPage'])->bind('admin_page_new');
-    $app->get('/admin/pages/{pageId}', [$this, 'showPageEdit'])->bind('admin_page_edit');
-    $app->delete('/admin/pages/{pageId}', [$this, 'handlePageDelete'])
-      ->value('pageId', '')
-      ->bind('admin_page_delete')
-    ;
-    $app->post('/admin/pages/{pageId}', [$this, 'handlePageUpsert'])
-      ->value('pageId', '')
-      ->bind('admin_page_upsert')
-    ;
+  protected function getEntityClass() { return 'Karambol\Entity\CustomPage'; }
+  protected function getViewsDirectory() { return 'admin/pages'; }
+  protected function getRoutePrefix() { return '/admin/pages'; }
+  protected function getRouteNamePrefix() { return 'admin_pages'; }
+
+  public function getEntities($offset = 0, $limit = null) {
+    return $this->get('pages');
   }
 
-  public function showPages() {
-    $twig = $this->get('twig');
-    return $twig->render('admin/pages/index.html.twig', [
-      'pages' => $this->get('pages')
-    ]);
-  }
-
-  public function showPageEdit($pageId) {
-
-    $twig = $this->get('twig');
-    $orm = $this->get('orm');
-
-    $page = $orm->getRepository('Karambol\Entity\CustomPage')->find($pageId);
-
-    $pageForm = $this->getPageForm($page);
-    $deleteForm = $this->getPageDeleteForm($page->getId());
-
-    return $twig->render('admin/pages/edit.html.twig', [
-      'pageForm' => $pageForm->createView(),
-      'deleteForm' => $deleteForm->createView(),
-      'page' => $page
-    ]);
-
-  }
-
-  public function showNewPage() {
-    $twig = $this->get('twig');
-    $pageForm = $this->getPageForm();
-    return $twig->render('admin/pages/edit.html.twig', [
-      'pageForm' => $pageForm->createView()
-    ]);
-  }
-
-  public function handlePageUpsert($pageId) {
-
-    $twig = $this->get('twig');
-    $orm = $this->get('orm');
-    $request = $this->get('request');
-
-    $page = null;
-    if(!empty($pageId)) {
-      $user = $orm->getRepository('Karambol\Entity\CustomPage')->find($pageId);
-    }
-
-    $form = $this->getPageForm($page);
-
-    $form->handleRequest($request);
-
-    if( !$form->isValid() ) {
-      return $twig->render('admin/pages/edit.html.twig', [
-        'pageForm' => $form->createView(),
-        'deleteForm' => $page ? $this->getPageDeleteForm($page->getId())->createView() : null,
-        'page' => $page
-      ]);
-    }
-
+  protected function saveEntityFromForm($form) {
     $page = $form->getData();
     $orm = $this->get('orm');
-
-    if( $page->getId() === null ) {
-      $orm->persist($page);
-    }
-
+    if($page->getId() === null) $orm->persist($page);
     $orm->flush();
-
-    $urlGen = $this->get('url_generator');
-    return $this->redirect($urlGen->generate('admin_page_edit', ['pageId' => $page->getId()]));
-
+    return $page;
   }
 
-  public function handlePageDelete($pageId) {
+  protected function deleteEntityFromForm($form) {
 
-    $twig = $this->get('twig');
     $orm = $this->get('orm');
-    $request = $this->get('request');
+    $data = $form->getData();
 
-    $page = $orm->getRepository('Karambol\Entity\CustomPage')->find($pageId);
-    $deleteForm = $this->getPageDeleteForm($pageId);
+    if(!isset($data['pageId'])) {
+      // TODO add flash message to indicate error
+      return false;
+    }
 
-    $deleteForm->handleRequest($request);
+    $page = $orm->getRepository($this->getEntityClass())->find($data['pageId']);
 
-    if(!$deleteForm->isValid()) {
-      return $twig->render('admin/users/edit.html.twig', [
-        'pageForm' => $form->createView(),
-        'deleteForm' => $deleteForm->createView(),
-        'page' => $page
-      ]);
+    if(!$page) {
+      // TODO add flash message to indicate error
+      return false;
     }
 
     $orm->remove($page);
     $orm->flush();
 
-    $urlGen = $this->get('url_generator');
-    return $this->redirect($urlGen->generate('admin_pages'));
+    return true;
 
   }
 
-  protected function getPageDeleteForm($pageId) {
+  protected function getEntityDeleteForm($page) {
 
     $formFactory = $this->get('form.factory');
     $urlGen = $this->get('url_generator');
@@ -129,20 +59,23 @@ class PagesController extends Controller {
     $formBuilder = $formFactory->createBuilder(Type\FormType::class);
 
     return $formBuilder
+      ->add('pageId', Type\HiddenType::class, [
+        'data' => $page->getId()
+      ])
       ->add('submit', Type\SubmitType::class, [
         'label' => 'admin.pages.delete_page',
         'attr' => [
           'class' => 'btn-danger'
         ]
       ])
-      ->setAction($urlGen->generate('admin_page_delete', ['pageId' => $pageId]))
+      ->setAction($urlGen->generate($this->getRouteName(self::DELETE_ACTION), ['entityId' => $page->getId()]))
       ->setMethod('DELETE')
       ->getForm()
     ;
 
   }
 
-  protected function getPageForm($page = null) {
+  protected function getEntityEditForm($page = null) {
 
     $formFactory = $this->get('form.factory');
     $urlGen = $this->get('url_generator');
@@ -150,7 +83,8 @@ class PagesController extends Controller {
     if($page === null) $page = new CustomPage();
 
     $formBuilder = $formFactory->createBuilder(CustomPageType::class, $page);
-    $action = $urlGen->generate('admin_page_upsert', ['page' => $page->getId()]);
+    $routeName = $this->getRouteName(self::UPSERT_ACTION);
+    $action = $urlGen->generate($routeName, ['entityId' => $page->getId()]);
 
     return $formBuilder->setAction($action)
       ->setMethod('POST')

@@ -4,21 +4,21 @@
 
   <div class="row">
     <div class="col-md-push-8  col-md-4 text-right">
-      {% if page is defined %}
-        {{ form(deleteForm, {'attr': {'class': 'form-inline'}}) }}
+      {% if entity is defined %}
+        {{ form(entityDeleteForm, {'attr': {'class': 'form-inline'}}) }}
       {% endif %}
     </div>
     <div class="col-md-pull-4 col-md-8">
-      <h2>{{ page is defined ? 'admin.pages.edit_page'|trans({'%label%': page.label}) : 'admin.pages.new_page'|trans }}</h2>
+      <h2>{{ entity is defined ? 'admin.pages.edit_page'|trans({'%label%': entity.label}) : 'admin.pages.new_page'|trans }}</h2>
     </div>
   </div>
-  {{ form_start(pageForm) }}
+  {{ form_start(entityEditForm) }}
   <div class="row">
     <div class="col-md-12">
-      {{ form_row(pageForm.label) }}
-      {{ form_row(pageForm.url) }}
+      {{ form_row(entityEditForm.label) }}
+      {{ form_row(entityEditForm.url) }}
       <div class="pull-right clearfix">
-        {{ form_end(pageForm, {"render_rest": true}) }}
+        {{ form_end(entityEditForm, {"render_rest": true}) }}
       </div>
     </div>
   </div>
