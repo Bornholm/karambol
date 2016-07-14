@@ -47,7 +47,7 @@ class AdminMainMenuSubscriber implements EventSubscriberInterface {
     $items[] = $usersItem;
 
     $pagesItem = new MenuItem(MenuItems::ADMIN_PAGES, $urlGen->generate('admin_pages_list'), [
-      'icon_class' => 'fa fa-link'
+      'icon_class' => 'fa fa-sitemap'
     ]);
     $items[] = $pagesItem;
 
