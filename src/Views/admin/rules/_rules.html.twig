@@ -11,7 +11,7 @@
     <tbody id="rules-holder">
       {% for rule in rulesetForm.rules %}
         <tr>
-          <td>--</td>
+          <td>{{ rule.vars.value.id }}</td>
           <td>{{form_widget(rule.condition)}}</td>
           <td>{{form_widget(rule.action)}}</td>
           <td><button class="remove-rule btn btn-danger btn-sm"><span class="fa fa-trash"></span></button></td>
