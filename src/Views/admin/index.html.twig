@@ -4,16 +4,7 @@
   {% include 'admin/_navbar.html.twig' %}
   <div class="container-fluid">
     {% block content %}
-      <div class="row">
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">Statistiques</div>
-            <div class="panel-body">
-              Stats...
-            </div>
-          </div>
-        </div>
-      </div>
+      {{ menu('admin_stats') }}
     {% endblock %}
   </div>
 {% endblock %}

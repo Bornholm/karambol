@@ -1,4 +1,6 @@
 admin:
+  stats:
+    no_stats_yet: Le statistiques ne sont pas encore implémentées
   navbar:
     toggle_nav: Basculer la navigation
     brand: KarAdmin
