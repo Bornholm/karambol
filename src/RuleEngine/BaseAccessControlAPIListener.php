@@ -8,7 +8,7 @@ use Karambol\KarambolApp;
 use Karambol\Menu\MenuItem;
 use Karambol\Page\PageInterface;
 use Karambol\Page\Page;
-use Karambol\Entity\User;
+use Karambol\Entity\BaseUser;
 
 class BaseAccessControlAPIListener extends CommonAPIConfigurator {
 
@@ -24,14 +24,14 @@ class BaseAccessControlAPIListener extends CommonAPIConfigurator {
     $provider->registerFunction(
       'addRole',
       function($vars, $role) use ($app) {
-        if(isset($vars['_user']) && $vars['_user'] instanceof User) $vars['_user']->addRole($role);
+        if(isset($vars['_user']) && $vars['_user'] instanceof BaseUser) $vars['_user']->addRole($role);
       }
     );
 
     $provider->registerFunction(
       'removeRole',
       function($vars, $role) use ($app) {
-        if(isset($vars['_user']) && $vars['_user'] instanceof User) $vars['_user']->removeRole($role);
+        if(isset($vars['_user']) && $vars['_user'] instanceof BaseUser) $vars['_user']->removeRole($role);
       }
     );
 
