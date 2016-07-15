@@ -1,3 +1,3 @@
 # Karambol - Documentation
 
-- [Français](./fr)
+- [Français](./fr/index.md)

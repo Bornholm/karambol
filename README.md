@@ -28,7 +28,7 @@ script/server
 
 ## Documentation et tutoriels
 
-Voir [ici](./doc)
+Voir [ici](./doc/index.md)
 
 ## Licence
 
