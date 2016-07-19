@@ -4,9 +4,9 @@ Créer un plugin est la meilleure manière d'étendre/modifier le portail Karamb
 
 ## Table des matières
 
-- [Prérequis](#prerequis)
+- [Prérequis](#prérequis)
 - [Mise en place du projet](#mise-en-place-du-projet)
-- [Activer votre plugin](#activer-votre-plugin)
+- [Installer votre nouveau plugin](#installer-votre-nouveau-plugin)
 
 ## Prérequis
 
@@ -28,7 +28,7 @@ cd workspace
 git clone https://github.com/Bornholm/karambol.git karambol
 ```
 
-### Création et initialisation de Composer
+### Création de l'arborescence de base et initialisation de Composer
 
 Nous allons maintenant créer le répertoire pour notre plugin.
 Toujours dans `workspace`:
@@ -113,7 +113,7 @@ class MyPlugin implements PluginInterface {
 
 > Cette classe est le point d'entrée de votre plugin. C'est à partir d'ici que vous pourrez instancier et monter vos controleurs, utiliser les services exposés par Karambol ou en créer de nouveaux.
 
-## Activer votre plugin
+## Installer votre nouveau plugin
 
 ### Lier votre plugin à votre portail
 
@@ -138,8 +138,9 @@ Créez et/ou éditez le fichier `composer.local.json`.
   }
 }
 ```
+> La possibilité de créer un fichier `composer.local.json` est fournie par l'extension [Composer Merge Plugin](https://github.com/wikimedia/composer-merge-plugin) de la fondation Wikimédia.
 
-Mettez à jour vos dépendances via composer.
+Mettez à jour vos dépendances via composer:
 
 ```bash
 composer update <Votre espace de nom>/karambol-plugin-myfirstplugin
@@ -147,4 +148,28 @@ composer update <Votre espace de nom>/karambol-plugin-myfirstplugin
 
 > Vous devriez avoir à la suite de cette commande un répertoire `vendor/<Votre espace de nom>/karambol-plugin-myfirstplugin` lié symboliquement sur le dossier de votre plugin.
 
-### Configurer et lancer votre portail à partir des sources
+Exposez la configuration de votre plugin dans votre portail:
+
+```bash
+PLUGIN_PATH=$(readlink -s ../karambol-plugin-myfirstplugin/config/myfirstplugin.yml)
+ln -s "$PLUGIN_PATH" config/local.d/myfirstplugin.yml
+```
+
+### Activer votre plugin depuis l'interface d'administration de Karambol
+
+Si ce n'est pas déjà fait, installez et configurez votre portail Karambol en vous basant sur le [guide de l'utilisateur](../index.md) depuis le répertoire des sources.
+
+Puis, via la console, créez un nouvel utilisateur et donnez lui les droits administrateurs.
+
+```bash
+./script/console karambol:account:create "<Nom d\'utilisateur>" "<Mot de passe>"
+./script/console karambol:account:promote "<Nom d\'utilisateur>"
+```
+
+Ensuite, connectez vous sur l'interface d'administration de Karambol et accédez à la page de configuration. Vous devriez avoir quelque chose ressemblant à:
+
+![Activation du plugin](../resources/activer-myplugin.png)
+
+Si vous avez correctement suivi les étapes jusque là vous devriez voir apparaitre l'option _"Activer/Désactiver le plugin myfirstplugin"_.
+
+Cochez la case et enregistrez. Bravo, votre plugin est maintenant chargé automatiquement par Karambol !
