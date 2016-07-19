@@ -8,12 +8,12 @@
 - Gestion des pages
 - Paramétrage du portail
 - Installation et gestion des plugins
-- Les commandes
+- La console et les commandes
 
 ## Guide du développeur
 
 - Créer son thème
-- Créer un plugin
+- [Créer un plugin](./plugins/create-plugin.md)
 - Focus sur
   - Les `VirtualSet`
   - Le service `settings`
