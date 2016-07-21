@@ -10,3 +10,4 @@
 !/config/local.d/.gitkeep
 /components
 /composer.local.json
+/data
