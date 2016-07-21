@@ -15,7 +15,9 @@
 - Créer son thème
 - [Créer un plugin](./plugins/create-plugin.md)
 - Focus sur
+  - Les contrôleurs
   - Les `VirtualSet`
   - Le service `settings`
   - Le service `accounts`
+  - Le service `rule_engine`
   - La création de commandes

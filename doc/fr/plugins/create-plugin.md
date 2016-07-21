@@ -7,6 +7,10 @@ Créer un plugin est la meilleure manière d'étendre/modifier le portail Karamb
 - [Prérequis](#prérequis)
 - [Mise en place du projet](#mise-en-place-du-projet)
 - [Installer votre nouveau plugin](#installer-votre-nouveau-plugin)
+- [Créer son premier contrôleur](#créer-son-premier-contrôleur)
+- [Ajouter des entités à la base de données](#ajouter-des-entités-à-la-base-de-données)
+- [Ajouter des fichiers de localisation](#ajouter-des-fichiers-de-localisation)
+- [Définir des ressources statiques à déployer](#définir-des-ressources-statiques-à-déployer)
 
 ## Prérequis
 
@@ -157,19 +161,28 @@ ln -s "$PLUGIN_PATH" config/local.d/myfirstplugin.yml
 
 ### Activer votre plugin depuis l'interface d'administration de Karambol
 
-Si ce n'est pas déjà fait, installez et configurez votre portail Karambol en vous basant sur le [guide de l'utilisateur](../index.md) depuis le répertoire des sources.
+Si ce n'est pas déjà fait, installez et configurez votre portail Karambol en vous basant sur le [guide de l'utilisateur](../index.md) depuis le répertoire des sources. Vous aurez également besoin d'un utilisateur avec les droits d'administration.
 
-Puis, via la console, créez un nouvel utilisateur et donnez lui les droits administrateurs.
-
-```bash
-./script/console karambol:account:create "<Nom d\'utilisateur>" "<Mot de passe>"
-./script/console karambol:account:promote "<Nom d\'utilisateur>"
-```
-
-Ensuite, connectez vous sur l'interface d'administration de Karambol et accédez à la page de configuration. Vous devriez avoir quelque chose ressemblant à:
+Connectez vous sur l'interface d'administration de Karambol et accédez à la page de configuration. Vous devriez avoir quelque chose ressemblant à:
 
 ![Activation du plugin](../resources/activer-myplugin.png)
 
 Si vous avez correctement suivi les étapes jusque là vous devriez voir apparaitre l'option _"Activer/Désactiver le plugin myfirstplugin"_.
 
 Cochez la case et enregistrez. Bravo, votre plugin est maintenant chargé automatiquement par Karambol !
+
+## Créer son premier contrôleur
+
+> TODO
+
+## Ajouter des entités à la base de données
+
+> TODO
+
+## Ajouter des fichiers de localisation
+
+> TODO
+
+## Définir des ressources statiques à déployer
+
+> TODO
