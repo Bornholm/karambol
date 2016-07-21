@@ -30,8 +30,19 @@ class PluginsBootstrap implements BootstrapInterface {
       $logger->debug(sprintf('Load plugin "%s" with class %s', $pluginName, $pluginInfo['class']));
 
       $pluginClass = $pluginInfo['class'];
-      $plugin = new $pluginClass();
-      $plugin->boot($app, isset($pluginInfo['options']) ? $pluginInfo['options'] : []);
+
+      if(!class_exists($pluginClass)) {
+        $logger->error(sprintf('The "%s" plugin\'s class "%s" is not defined. Check your composer dependencies.', $pluginName, $pluginClass));
+        continue;
+      }
+
+      try {
+        $plugin = new $pluginClass();
+        $plugin->boot($app, isset($pluginInfo['options']) ? $pluginInfo['options'] : []);
+      } catch(\Exception $ex) {
+        $logger->error(sprintf('Error while loading plugin "%s" with class "%s" !', $pluginName, $pluginClass));
+        $logger->error($ex);
+      }
 
     }
 
