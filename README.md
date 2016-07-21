@@ -10,8 +10,8 @@ Portail web extensible
 ## Démarrer à partir des sources
 
 ```bash
-# Vérification des dépendances système et génération du fichier de configuration local
-script/bootstrap
+# Vérification/installation des dépendances et génération du fichier de configuration local
+script/install
 # Vérification de la connexion à la base de données et mise à jour si nécessaire
 script/migrate
 # Au besoin, vous pouvez importer des règles d'amorçage de votre portail

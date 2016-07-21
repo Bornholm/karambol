@@ -16,6 +16,7 @@ class KarambolApp extends Application
 
     $bootrappers = [
       'Karambol\Bootstrap\ConfigBootstrap',
+      'Karambol\Bootstrap\AppPathBootstrap',
       'Karambol\Bootstrap\DoctrineBootstrap',
       'Karambol\Bootstrap\SettingBootstrap',
       'Karambol\Bootstrap\AccountBootstrap',
