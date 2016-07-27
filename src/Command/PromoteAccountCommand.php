@@ -52,7 +52,7 @@ class PromoteAccountCommand extends Command
 
     $rule = new CustomRule();
     $rule->setCondition(sprintf('user.id == %s', $user->getId()));
-    $rule->setAction('addRole("ROLE_ADMIN")');
+    $rule->setAction('allow("*", "*")');
 
     $ruleset = $orm->getRepository('Karambol\Entity\RuleSet')->findOneByName(RuleEngineService::ACCESS_CONTROL);
     if(!$ruleset) {

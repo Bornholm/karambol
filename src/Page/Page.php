@@ -4,8 +4,9 @@ namespace Karambol\Page;
 
 use Cocur\Slugify\Slugify;
 use Karambol\Page\PageInterface;
+use Karambol\AccessControl\ResourceInterface;
 
-class Page implements PageInterface {
+class Page implements PageInterface, ResourceInterface {
 
   protected $url;
   protected $slug;
@@ -42,6 +43,18 @@ class Page implements PageInterface {
   public function setSlug($slug) {
     $this->slug = $slug;
     return $this;
+  }
+
+  public function getResourceType() {
+    return 'page';
+  }
+
+  public function getResourceId() {
+    return $this->getSlug();
+  }
+
+  public function getResourceOwnerId() {
+    return null;
   }
 
 }

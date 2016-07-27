@@ -4,11 +4,13 @@ namespace Karambol\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Karambol\AccessControl\ResourceOwnerInterface;
+use Karambol\RuleEngine\RuleEngineVariableViewInterface;
 
 /**
  * @ORM\MappedSuperclass
  */
-class BaseUser implements UserInterface {
+class BaseUser implements UserInterface, ResourceOwnerInterface, RuleEngineVariableViewInterface {
 
   /**
    * @ORM\Id
@@ -78,11 +80,15 @@ class BaseUser implements UserInterface {
     return $this;
   }
 
-  public function toPOPO() {
-    $user = new \stdClass();
-    $user->id = $this->getId();
-    $user->username = $this->getUsername();
-    return $user;
+  public function getOwnerId() {
+    return $this->getId();
+  }
+
+  public function createRuleEngineView() {
+    $view = new \stdClass();
+    $view->id = $this->getId();
+    $view->username = $this->getUsername();
+    return $view;
   }
 
 }

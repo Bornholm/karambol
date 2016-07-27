@@ -3,7 +3,7 @@
 namespace Karambol\AccessControl\Parser;
 
 
-class ResourceCriteriaTokenizer {
+class ResourceSelectorTokenizer {
 
   const ID_SET_OPENING = '[';
   const ID_SET_CLOSING = ']';
@@ -21,33 +21,33 @@ class ResourceCriteriaTokenizer {
   const TOKEN_RESOURCE = 'resource';
   const TOKEN_OWNER = 'owner';
 
-  public function tokenize($criteria) {
+  public function tokenize($selectorStr) {
 
     $state = self::STATE_BEGIN;
     $tokens = [];
     $current = [];
 
-    if(empty($criteria)) return $tokens;
+    if(empty($selectorStr)) return $tokens;
 
-    $strLength = mb_strlen($criteria);
+    $strLength = mb_strlen($selectorStr);
     $charIndex = 0;
 
     while($charIndex < $strLength) {
 
-      $char = $criteria[$charIndex];
+      $char = $selectorStr[$charIndex];
 
       switch($state) {
 
         case self::STATE_BEGIN:
-          $this->checkInvalidResourceTypeChar($criteria, $charIndex);
+          $this->checkInvalidResourceTypeChar($selectorStr, $charIndex);
           $current = [ 'token' => self::TOKEN_RESOURCE, 'type' => '', 'references' => [] ];
-          if($char === self::ID_SET_OPENING) $this->throwInvalidCharException($criteria, $charIndex);
+          if($char === self::ID_SET_OPENING) $this->throwInvalidCharException($selectorStr, $charIndex);
           $state = self::STATE_RESOURCE_TYPE_DEFINITION;
           break;
 
         case self::STATE_RESOURCE_TYPE_DEFINITION:
 
-          $this->checkInvalidResourceTypeChar($criteria, $charIndex);
+          $this->checkInvalidResourceTypeChar($selectorStr, $charIndex);
 
           if($char === self::ID_SET_OPENING) {
             $state = self::STATE_ID_LIST;
@@ -65,6 +65,12 @@ class ResourceCriteriaTokenizer {
 
           $current['type'] .= $char;
           $charIndex++;
+
+          if($charIndex === $strLength) {
+            $tokens[] = $current;
+            $state = self::STATE_END;
+          }
+
           break;
 
         case self::STATE_ID_LIST:
@@ -75,7 +81,7 @@ class ResourceCriteriaTokenizer {
             $charIndex++;
 
             if($current['token'] === self::TOKEN_RESOURCE) {
-              if($charIndex < $strLength && $criteria[$charIndex] === self::OWNER_PREFIX) {
+              if($charIndex < $strLength && $selectorStr[$charIndex] === self::OWNER_PREFIX) {
                 $current = [ 'token' => self::TOKEN_OWNER, 'references' => [] ];
                 $state = self::STATE_OWNER_DEFINITION;
               } else {
@@ -107,7 +113,7 @@ class ResourceCriteriaTokenizer {
           case self::STATE_OWNER_DEFINITION:
 
             $ownerSelfLen = mb_strlen(self::OWNER_SELF);
-            $hasSelf = mb_substr($criteria, $charIndex, $ownerSelfLen) === self::OWNER_SELF;
+            $hasSelf = mb_substr($selectorStr, $charIndex, $ownerSelfLen) === self::OWNER_SELF;
 
             if($char === self::ID_SET_OPENING) {
               $state = self::STATE_ID_LIST;
@@ -126,7 +132,7 @@ class ResourceCriteriaTokenizer {
             break;
 
           case self::STATE_END:
-            if($charIndex !== $strLength-1) $this->throwInvalidCharException($criteria, $charIndex);
+            if($charIndex !== $strLength-1) $this->throwInvalidCharException($selectorStr, $charIndex);
             break;
 
       }
@@ -137,17 +143,17 @@ class ResourceCriteriaTokenizer {
 
   }
 
-  protected function checkInvalidResourceTypeChar($criteria, $charIndex) {
-    return in_array($criteria[$charIndex], [
+  protected function checkInvalidResourceTypeChar($selector, $charIndex) {
+    return in_array($selector[$charIndex], [
       self::ID_SET_CLOSING,
       self::ID_SEPARATOR,
       self::OWNER_PREFIX
     ]);
-    if($isInvalidChar) $this->throwInvalidCharException($criteria, $charIndex);
+    if($isInvalidChar) $this->throwInvalidCharException($selector, $charIndex);
   }
 
-  protected function throwInvalidCharException($criteria, $charIndex) {
-    throw new TokenizerException($criteria, $charIndex);
+  protected function throwInvalidCharException($selector, $charIndex) {
+    throw new TokenizerException($selector, $charIndex);
   }
 
 }

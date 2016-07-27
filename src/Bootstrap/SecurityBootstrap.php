@@ -7,6 +7,8 @@ use Silex\Provider\SecurityServiceProvider;
 use Karambol\Security\UserProvider;
 use Karambol\Security\UserFoundEvent;
 use Karambol\RuleEngine\RuleEngineService;
+use Karambol\AccessControl\RuleEngineAccessControlVoter;
+use Karambol\RuleEngine\RuleEngineVariableViewInterface;
 
 class SecurityBootstrap implements BootstrapInterface {
 
@@ -24,7 +26,6 @@ class SecurityBootstrap implements BootstrapInterface {
           'anonymous' => true,
           'users' => function() use ($app, $that) {
             $provider = new UserProvider($app);
-            $provider->addListener(UserFoundEvent::NAME, [$that, 'executeAccessControlRules']);
             return $provider;
           },
           'form' => [
@@ -40,34 +41,11 @@ class SecurityBootstrap implements BootstrapInterface {
       ]
     ]);
 
+    $app['security.voters'] = $app->share($app->extend('security.voters', function ($voters, $app) {
+      $voters[] = new RuleEngineAccessControlVoter($app);
+      return $voters;
+    }));
 
-  }
-
-  public function executeAccessControlRules(UserFoundEvent $event) {
-
-    $user = $event->getUser();
-    $app = $this->app;
-
-    $logger = $app['monolog'];
-    $ruleEngine = $app['rule_engine'];
-    $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
-
-    $ruleset = $rulesetRepo->findOneByName(RuleEngineService::ACCESS_CONTROL);
-
-    if(!$ruleset) return;
-
-    $vars = [
-      '_user' => $user,
-      'user' => $user->toPOPO()
-    ];
-
-    $rules = $ruleset->getRules()->toArray();
-
-    try {
-      $ruleEngine->execute(RuleEngineService::ACCESS_CONTROL, $rules, $vars);
-    } catch(\Exception $ex) {
-      $logger->error($ex);
-    }
 
   }
 

@@ -3,6 +3,9 @@
 namespace Karambol\Controller;
 
 use Karambol\KarambolApp;
+use Karambol\AccessControl\Resource;
+use Karambol\AccessControl\BaseActions;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class Controller implements ControllerInterface {
 
@@ -23,6 +26,15 @@ abstract class Controller implements ControllerInterface {
   public function bindTo(KarambolApp $app) {
     $this->app = $app;
     $this->mount($app);
+  }
+
+  protected function assertAccessAuthorization() {
+    $request = $this->get('request');
+    $resource = new Resource('url', $request->getRequestURI());
+
+    $authCheck = $this->get('security.authorization_checker');
+    $canAccess = $authCheck->isGranted(BaseActions::ACCESS, $resource);
+    if(!$canAccess) throw new AccessDeniedException();
   }
 
   abstract public function mount(KarambolApp $app);

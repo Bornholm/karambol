@@ -28,7 +28,7 @@ class ItemSearchEvent extends Event {
 
   public function addItem($item) {
     if($this->isLimitReached()) return $this;
-    if($this->getItemIndex($item) === false && $this->matchesCriteria($item))  {
+    if($this->getItemIndex($item) === false && $this->matchesSelector($item))  {
       $this->items[] = $item;
       if($this->isLimitReached()) $this->stopPropagation();
     }
@@ -46,11 +46,11 @@ class ItemSearchEvent extends Event {
     return $this->getItemIndex($item) !== false;
   }
 
-  public function matchesCriteria($item) {
+  public function matchesSelector($item) {
     return $this->matcher->matches($item);
   }
 
-  public function getCriteria() {
+  public function getSelector() {
     return $this->criteria;
   }
 

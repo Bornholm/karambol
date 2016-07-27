@@ -12,10 +12,11 @@ use Karambol\RuleEngine\CustomizationListener;
 use Karambol\RuleEngine\ExpressionFunctionProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
-use Karambol\Entity\User;
+use Karambol\Entity\BaseUser;
 use Karambol\Entity\RuleSet;
 use Karambol\RuleEngine\BaseCustomizationAPIListener;
 use Karambol\RuleEngine\BaseAccessControlAPIListener;
+use Karambol\RuleEngine\RuleEngineVariableViewInterface;
 
 class RuleEngineBootstrap implements BootstrapInterface {
 
@@ -47,9 +48,9 @@ class RuleEngineBootstrap implements BootstrapInterface {
     $ruleset = $rulesetRepo->findOneByName(RuleEngineService::CUSTOMIZATION);
     $rules = $ruleset->getRules()->toArray();
 
-    $user = $app['user'] ? $app['user'] : new User();
+    $user = $app['user'] ? $app['user'] : new BaseUser();
     $vars = [
-      'user' => $user->toPOPO()
+      'user' => $user instanceof RuleEngineVariableViewInterface ? $user->createRuleEngineView() : $user
     ];
 
     try {

@@ -2,5 +2,4 @@
 
 #### API
 
-##### addRole()
-##### hasRole()
+##### allow(action, resourceSelector)

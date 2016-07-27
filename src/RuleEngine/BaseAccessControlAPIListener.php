@@ -22,16 +22,13 @@ class BaseAccessControlAPIListener extends CommonAPIConfigurator {
     $this->registerCommonAPI($provider);
 
     $provider->registerFunction(
-      'addRole',
-      function($vars, $role) use ($app) {
-        if(isset($vars['_user']) && $vars['_user'] instanceof BaseUser) $vars['_user']->addRole($role);
-      }
-    );
-
-    $provider->registerFunction(
-      'removeRole',
-      function($vars, $role) use ($app) {
-        if(isset($vars['_user']) && $vars['_user'] instanceof BaseUser) $vars['_user']->removeRole($role);
+      'allow',
+      function($vars, $action, $selector) use ($app) {
+        $context = $vars['_context'];
+        $context->authorizations[] = [
+          'action' => $action,
+          'selector' => $selector
+        ];
       }
     );
 

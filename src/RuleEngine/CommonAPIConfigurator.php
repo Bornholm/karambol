@@ -31,8 +31,8 @@ class CommonAPIConfigurator {
 
     $provider->registerFunction(
       'isGranted',
-      function($vars, $authorization) use ($app) {
-        return $app['security.authorization_checker']->isGranted($authorization);
+      function($vars, $authorization, $authorizationAttrs = []) use ($app) {
+        return $app['security.authorization_checker']->isGranted($authorization, $authorizationAttrs);
       }
     );
 
