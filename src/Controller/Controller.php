@@ -28,13 +28,21 @@ abstract class Controller implements ControllerInterface {
     $this->mount($app);
   }
 
-  protected function assertAccessAuthorization() {
-    $request = $this->get('request');
-    $resource = new Resource('url', $request->getRequestURI());
+  protected function ifAuthorized(callable $callback) {
+    return function() use ($callback) {
 
-    $authCheck = $this->get('security.authorization_checker');
-    $canAccess = $authCheck->isGranted(BaseActions::ACCESS, $resource);
-    if(!$canAccess) throw new AccessDeniedException();
+      $args = func_get_args();
+      $request = $this->get('request');
+      $resource = new Resource('url', $request->getRequestURI());
+
+      $authCheck = $this->get('security.authorization_checker');
+      $canAccess = $authCheck->isGranted(BaseActions::ACCESS, $resource);
+
+      if(!$canAccess) throw new AccessDeniedException();
+
+      return call_user_func_array($callback, $args);
+
+    };
   }
 
   abstract public function mount(KarambolApp $app);

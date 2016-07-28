@@ -29,6 +29,19 @@ class ResourceSelector {
     return $this->ownerReferences;
   }
 
+  public function getAssociatedResources() {
+
+    $resources = [];
+    $resourceRererences = $this->getResourceReferences();
+    $ownerReferences = $this->getOwnerReferences();
+    $hasOwnerReferences = count($ownerReferences) > 0;
+    $hasResourceReferences = count($ownerReferences) > 0;
+
+    
+
+    return $resources;
+  }
+
   public function match(ResourceInterface $resource, ResourceOwnerInterface $owner = null) {
 
     $resourceTypeMatches = $this->matchResourceType($resource->getResourceType());
@@ -56,14 +69,12 @@ class ResourceSelector {
 
   protected function matchOwnerReferences($resourceOwnerId, $ownerId) {
 
-    if($resourceOwnerId === null) return true;
-
     $references = $this->getOwnerReferences();
     if(count($references) === 0) return true;
 
     foreach($references as $ref) {
+      if($ref === self::SELF_OWNER && $resourceOwnerId === $ownerId && $ownerId !== null) return true;
       if(fnmatch($ref, $ownerId)) return true;
-      if($ref === self::SELF_OWNER && $resourceOwnerId === $ownerId) return true;
     }
 
     return false;

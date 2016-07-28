@@ -9,7 +9,7 @@ use Karambol\AccessControl\BaseActions;
 class HomeController extends Controller {
 
   public function mount(KarambolApp $app) {
-    $app->get('/', array($this, 'showHome'))->bind('home');
+    $app->get('/', $this->ifAuthorized([$this, 'showHome']))->bind('home');
     $app->get('/home', array($this, 'showDefaultHome'))->bind('default_home');
     $app->get('/p/{pageSlug}', array($this, 'showFramedPage'))->bind('framed_page');
   }

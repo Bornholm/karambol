@@ -21,8 +21,6 @@ class RuleEngineAccessControlVoter implements VoterInterface {
 
   public function vote(TokenInterface $token, $subject, array $attributes) {
 
-    //dump($token, $subject, $attributes);
-
     $action = null;
     $resource = null;
 
@@ -41,6 +39,8 @@ class RuleEngineAccessControlVoter implements VoterInterface {
       $resource = new Resource('url', $subject->getRequestURI(), null);
       $action = BaseActions::ACCESS;
     }
+
+    // dump($subject, $attributes);
 
     if($resource === null || $action === null) return VoterInterface::ACCESS_ABSTAIN;
 
@@ -77,12 +77,16 @@ class RuleEngineAccessControlVoter implements VoterInterface {
     $parser = new ResourceSelectorParser();
     $owner = $user instanceof ResourceOwnerInterface ? $user : null;
 
+    // dump($action, $resource, $authorizations);
+
     foreach($authorizations as $auth) {
 
       $selector = $parser->parse($auth['selector']);
 
       $isActionAuthorized = $auth['action'] === '*' || $auth['action'] === $action;
       $resourceMatchesSelector = $selector->match($resource, $owner);
+
+      // dump($selector, $isActionAuthorized, $resourceMatchesSelector);
 
       if($isActionAuthorized && $resourceMatchesSelector) return VoterInterface::ACCESS_GRANTED;
 

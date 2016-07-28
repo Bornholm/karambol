@@ -11,6 +11,7 @@ use Karambol\KarambolApp;
 use Karambol\Entity\RuleSet;
 use Karambol\Entity\CustomRule;
 use Karambol\RuleEngine\RuleEngineService;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class SeedRulesCommand extends Command
 {
@@ -33,9 +34,40 @@ class SeedRulesCommand extends Command
   protected function execute(InputInterface $input, OutputInterface $output)
   {
 
-    $orm = $this->app['orm'];
+    $helper = $this->getHelper('question');
 
-    $customizationRules = [
+    $question = new ConfirmationQuestion('<info>This will delete all your current rules. Are you sure ? (y/N)</info>', false);
+    if (!$helper->ask($input, $output, $question)) {
+      return 0;
+    }
+
+    $output->writeln('<comment>Reseting rules...</comment>');
+    $this->truncateRules();
+
+    $output->writeln('<comment>Seeding customization rules...</comment>');
+    $this->seedCustomizationRules();
+
+    $output->writeln('<comment>Seeding access control rules...</comment>');
+    $this->seedAccessControlRules();
+
+    $output->writeln('<info>Rules added.</info>');
+
+  }
+
+  protected function truncateRules() {
+    $orm = $this->app['orm'];
+    $cmd = $orm->getClassMetadata('Karambol\Entity\CustomRule');
+    $connection = $orm->getConnection();
+    $dbPlatform = $connection->getDatabasePlatform();
+    $connection->query('SET FOREIGN_KEY_CHECKS=0');
+    $q = $dbPlatform->getTruncateTableSql($cmd->getTableName());
+    $connection->executeUpdate($q);
+    $connection->query('SET FOREIGN_KEY_CHECKS=1');
+  }
+
+  protected function seedCustomizationRules() {
+
+    $rules = [
       [
         'condition' => 'not isConnected()',
         'actions' => ['addPageToMenu("login", "home_main", {"align":"right", "icon_class": "fa fa-sign-in"})']
@@ -53,26 +85,50 @@ class SeedRulesCommand extends Command
       ],
     ];
 
-    $customizationRuleset = $orm->getRepository('Karambol\Entity\RuleSet')->findOneByName(RuleEngineService::CUSTOMIZATION);
+    $this->seedRules(RuleEngineService::CUSTOMIZATION, $rules);
 
-    if(!$customizationRuleset) {
-      $customizationRuleset = new RuleSet();
-      $customizationRuleset->setName(RuleEngineService::CUSTOMIZATION);
-      $orm->persist($customizationRuleset);
+  }
+
+  protected function seedAccessControlRules() {
+
+    $rules = [
+      [
+        'condition' => 'true',
+        'actions' => [
+          'allow("access", "url[/, /p/home]")',
+          'allow("*", "*@self")'
+        ]
+      ]
+    ];
+
+    $this->seedRules(RuleEngineService::ACCESS_CONTROL, $rules);
+
+  }
+
+  protected function seedRules($rulesetName, $rules) {
+
+    $orm = $this->app['orm'];
+
+    $ruleset = $orm->getRepository('Karambol\Entity\RuleSet')
+      ->findOneByName($rulesetName)
+    ;
+
+    if(!$ruleset) {
+      $ruleset = new RuleSet();
+      $ruleset->setName($rulesetName);
+      $orm->persist($ruleset);
       $orm->flush();
     }
 
-    foreach($customizationRules as $ruleData) {
+    foreach($rules as $ruleData) {
       $rule = new CustomRule();
       $rule->setCondition($ruleData['condition']);
       $rule->setAction(implode(PHP_EOL, $ruleData['actions']));
-      $rule->setRuleset($customizationRuleset);
+      $rule->setRuleset($ruleset);
       $orm->persist($rule);
     }
 
     $orm->flush();
-
-    $output->writeln('<info>Rules added.</info>');
 
   }
 
