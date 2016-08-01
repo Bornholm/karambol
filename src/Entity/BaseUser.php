@@ -4,6 +4,7 @@ namespace Karambol\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Karambol\AccessControl\ResourceInterface;
 use Karambol\AccessControl\ResourceOwnerInterface;
 use Karambol\RuleEngine\RuleEngineVariableViewInterface;
 
@@ -80,8 +81,8 @@ class BaseUser implements UserInterface, ResourceOwnerInterface, RuleEngineVaria
     return $this;
   }
 
-  public function getOwnerId() {
-    return $this->getId();
+  public function owns(ResourceInterface $resource) {
+    return $resource->getResourceType() === 'user' && $resource->getResourceId() === $this->getId();
   }
 
   public function createRuleEngineView() {
@@ -89,6 +90,10 @@ class BaseUser implements UserInterface, ResourceOwnerInterface, RuleEngineVaria
     $view->id = $this->getId();
     $view->username = $this->getUsername();
     return $view;
+  }
+
+  public function __toString() {
+    return sprintf('user#%s', $this->getId());
   }
 
 }

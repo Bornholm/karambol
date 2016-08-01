@@ -95,8 +95,19 @@ class SeedRulesCommand extends Command
       [
         'condition' => 'true',
         'actions' => [
-          'allow("access", "url[/, /p/home]")',
-          'allow("*", "*@self")'
+          'allow("access", "url[/, /p/home]")'
+        ]
+      ],
+      [
+        'condition' => 'isConnected()',
+        'actions' => [
+          'allow("access", "url[/profile]")'
+        ]
+      ],
+      [
+        'condition' => 'owns(resource)',
+        'actions' => [
+          'allow("*", resource)'
         ]
       ]
     ];

@@ -22,7 +22,8 @@ class ProfileController extends Controller {
     $form = $this->getProfileForm($user);
 
     return $twig->render('user/profile.html.twig', [
-      'profileForm' => $form->createView()
+      'profileForm' => $form->createView(),
+      'user' => $user
     ]);
 
   }
@@ -39,7 +40,8 @@ class ProfileController extends Controller {
 
     if( !$form->isValid() ) {
       return $twig->render('user/profile.html.twig', [
-        'profileForm' => $form->createView()
+        'profileForm' => $form->createView(),
+        'user' => $user
       ]);
     }
 

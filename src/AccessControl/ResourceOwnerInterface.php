@@ -3,5 +3,5 @@
 namespace Karambol\AccessControl;
 
 interface ResourceOwnerInterface {
-  public function getOwnerId();
+  public function owns(ResourceInterface $resource);
 }

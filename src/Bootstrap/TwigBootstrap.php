@@ -3,6 +3,8 @@
 namespace Karambol\Bootstrap;
 
 use Karambol\KarambolApp;
+use Karambol\AccessControl\Parser\ResourceSelectorParser;
+use Karambol\AccessControl\Resource;
 use Silex\Provider\TwigServiceProvider;
 use League\CommonMark\CommonMarkConverter;
 use Colors\RandomColor;
@@ -41,6 +43,10 @@ class TwigBootstrap implements BootstrapInterface {
 
       $twig->addFunction(new \Twig_SimpleFunction('reset_color', function($seed = 0) {
         mt_srand($seed);
+      }));
+
+      $twig->addFunction(new \Twig_SimpleFunction('resource', function($resourceType, $resourceId) {
+        return new Resource($resourceType, $resourceId);
       }));
 
       $twig->addFunction(new \Twig_SimpleFunction('random_color', function($luminosity = 'light', $hue = null, $format = 'rgbCss') {

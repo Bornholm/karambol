@@ -21,26 +21,23 @@ class ResourceSelectorTokenizerTest extends \PHPUnit_Framework_TestCase
     $this->assertCount(1, $tokens);
     $this->assertArraySubset([ 0 => [ 'token' => ResourceSelectorTokenizer::TOKEN_RESOURCE, 'type' => 'post1',  'references' => ['15','16']]], $tokens);
 
-    $selector = 'post2[15]@self';
+    $selector = 'post2[15]';
     $tokens = $tokenizer->tokenize($selector);
 
     $this->assertArraySubset([ 0 => [ 'token' => ResourceSelectorTokenizer::TOKEN_RESOURCE, 'type' => 'post2',  'references' => ['15']]], $tokens);
-    $this->assertArraySubset([ 1 => [ 'token' => ResourceSelectorTokenizer::TOKEN_OWNER,  'references' => ['self']]], $tokens);
-    $this->assertCount(2, $tokens);
+    $this->assertCount(1, $tokens);
 
-    $selector = 'post3[15]@[9,523]';
+    $selector = 'post3[15]';
     $tokens = $tokenizer->tokenize($selector);
 
     $this->assertArraySubset([ 0 => [ 'token' => ResourceSelectorTokenizer::TOKEN_RESOURCE, 'type' => 'post3', 'references' => ['15']]], $tokens);
-    $this->assertArraySubset([ 1 => [ 'token' => ResourceSelectorTokenizer::TOKEN_OWNER, 'references' => ['9', '523']]], $tokens);
-    $this->assertCount(2, $tokens);
+    $this->assertCount(1, $tokens);
 
-    $selector = 'post4@self';
+    $selector = 'post4';
     $tokens = $tokenizer->tokenize($selector);
 
     $this->assertArraySubset([ 0 => [ 'token' => ResourceSelectorTokenizer::TOKEN_RESOURCE, 'type' => 'post4']], $tokens);
-    $this->assertArraySubset([ 1 => [ 'token' => ResourceSelectorTokenizer::TOKEN_OWNER,  'references' => ['self']]], $tokens);
-    $this->assertCount(2, $tokens);
+    $this->assertCount(1, $tokens);
 
     $selector = 'post5[*]';
     $tokens = $tokenizer->tokenize($selector);
@@ -57,17 +54,6 @@ class ResourceSelectorTokenizerTest extends \PHPUnit_Framework_TestCase
     $tokenizer = new ResourceSelectorTokenizer();
 
     $selector = '[sdfsdf]';
-    $tokens = $tokenizer->tokenize($selector);
-
-  }
-
-  public function testSelectorTokenizerInvalidExpression2() {
-
-    $this->setExpectedException('Karambol\AccessControl\Parser\TokenizerException');
-
-    $tokenizer = new ResourceSelectorTokenizer();
-
-    $selector = 'post4@self[123]';
     $tokens = $tokenizer->tokenize($selector);
 
   }

@@ -19,8 +19,7 @@ class ResourceSelectorParser {
 
     $selector = new ResourceSelector(
       $tokens[0]['type'],
-      $tokens[0]['references'],
-      $hasOwnerToken ? $tokens[1]['references'] : []
+      $tokens[0]['references']
     );
 
     return $selector;

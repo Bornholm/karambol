@@ -14,12 +14,17 @@ use Karambol\AccessControl\ResourceOwnerInterface;
 use Karambol\RuleEngine\RuleEngineService;
 use Karambol\Entity\BaseUser;
 use Karambol\RuleEngine\RuleEngineVariableViewInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class RuleEngineAccessControlVoter implements VoterInterface {
 
   use \Karambol\Util\AppAwareTrait;
 
   public function vote(TokenInterface $token, $subject, array $attributes) {
+
+    $app = $this->app;
+    $logger = $app['logger'];
+    $user = $token instanceof AnonymousToken ? new BaseUser() : $token->getUser();
 
     $action = null;
     $resource = null;
@@ -40,14 +45,16 @@ class RuleEngineAccessControlVoter implements VoterInterface {
       $action = BaseActions::ACCESS;
     }
 
-    // dump($subject, $attributes);
-
     if($resource === null || $action === null) return VoterInterface::ACCESS_ABSTAIN;
 
-    $user = $token instanceof AnonymousToken ? new BaseUser() : $token->getUser();
+    // dump($subject, $attributes);
+    $logger->debug(sprintf(
+      'Checking authorizations for user "%s" to use resource "%s" with action "%s"',
+      $user instanceof UserInterface ? $user->getUsername() : '???',
+      $resource,
+      $action
+    ));
 
-    $app = $this->app;
-    $logger = $app['logger'];
     $ruleEngine = $app['rule_engine'];
     $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
 
@@ -61,7 +68,8 @@ class RuleEngineAccessControlVoter implements VoterInterface {
 
     $vars = [
       '_context' => $context,
-      'user' =>  $user instanceof RuleEngineVariableViewInterface ? $user->createRuleEngineView() : $user
+      'user' =>  $user instanceof RuleEngineVariableViewInterface ? $user->createRuleEngineView() : $user,
+      'resource' => $resource instanceof RuleEngineVariableViewInterface ? $resource->createRuleEngineView() : $resource
     ];
 
     $rules = $ruleset->getRules()->toArray();
@@ -75,20 +83,21 @@ class RuleEngineAccessControlVoter implements VoterInterface {
 
     $authorizations =  $context->authorizations;
     $parser = new ResourceSelectorParser();
-    $owner = $user instanceof ResourceOwnerInterface ? $user : null;
 
     // dump($action, $resource, $authorizations);
 
     foreach($authorizations as $auth) {
 
-      $selector = $parser->parse($auth['selector']);
+      $actionAuthorized = $auth['action'] === '*' || $auth['action'] === $action;
+      if(!$actionAuthorized) continue;
 
-      $isActionAuthorized = $auth['action'] === '*' || $auth['action'] === $action;
-      $resourceMatchesSelector = $selector->match($resource, $owner);
+      if($auth['resource'] !== null && $auth['resource'] === $resource) return VoterInterface::ACCESS_GRANTED;
 
-      // dump($selector, $isActionAuthorized, $resourceMatchesSelector);
-
-      if($isActionAuthorized && $resourceMatchesSelector) return VoterInterface::ACCESS_GRANTED;
+      if($auth['selector'] !== null) {
+        $selector = $parser->parse($auth['selector']);
+        $resourceMatchesSelector = $selector->matches($resource);
+        if($resourceMatchesSelector) return VoterInterface::ACCESS_GRANTED;
+      }
 
     }
 
