@@ -1,6 +1,14 @@
 ### Contrôle des accès
 
+#### Variables
+
+##### user
+##### resource
+
 #### API
 
-##### addRole()
-##### hasRole()
+##### owns(resourceSelector)
+##### allow(action, resourceSelector)
+##### hasRole(role)
+##### addRole(role)
+##### removeRole(role)

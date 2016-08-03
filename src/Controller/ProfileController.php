@@ -10,8 +10,8 @@ use Karambol\Entity\BaseUser;
 class ProfileController extends Controller {
 
   public function mount(KarambolApp $app) {
-    $app->get('/profile', array($this, 'showProfile'))->bind('profile');
-    $app->post('/profile', array($this, 'handleProfileForm'))->bind('handle_profile');
+    $app->get('/profile', $this->ifAllowed([$this, 'showProfile']))->bind('profile');
+    $app->post('/profile', $this->ifAllowed([$this, 'handleProfileForm']))->bind('handle_profile');
   }
 
   public function showProfile() {
@@ -22,7 +22,8 @@ class ProfileController extends Controller {
     $form = $this->getProfileForm($user);
 
     return $twig->render('user/profile.html.twig', [
-      'profileForm' => $form->createView()
+      'profileForm' => $form->createView(),
+      'user' => $user
     ]);
 
   }
@@ -39,7 +40,8 @@ class ProfileController extends Controller {
 
     if( !$form->isValid() ) {
       return $twig->render('user/profile.html.twig', [
-        'profileForm' => $form->createView()
+        'profileForm' => $form->createView(),
+        'user' => $user
       ]);
     }
 

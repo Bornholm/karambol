@@ -3,7 +3,7 @@
 namespace Karambol\RuleEngine;
 
 use Karambol\RuleEngine\RuleEngineEvent;
-use Karambol\RuleEngine\RuleEngineService;
+use Karambol\RuleEngine\RuleEngine;
 use Karambol\KarambolApp;
 use Karambol\Menu\MenuItem;
 use Karambol\Page\PageInterface;
@@ -26,13 +26,6 @@ class CommonAPIConfigurator {
       'isConnected',
       function($vars) use ($app) {
         return $app['user'] !== null;
-      }
-    );
-
-    $provider->registerFunction(
-      'isGranted',
-      function($vars, $authorization) use ($app) {
-        return $app['security.authorization_checker']->isGranted($authorization);
       }
     );
 

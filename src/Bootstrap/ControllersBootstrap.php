@@ -4,7 +4,7 @@ namespace Karambol\Bootstrap;
 
 use Karambol\KarambolApp;
 use Karambol\Controller;
-use Karambol\RuleEngine\RuleEngineService;
+use Karambol\RuleEngine\RuleEngine;
 
 class ControllersBootstrap implements BootstrapInterface {
 
@@ -25,10 +25,10 @@ class ControllersBootstrap implements BootstrapInterface {
       $ctrl->bindTo($app);
     }
 
-    $customRulesCtrl = new Controller\Admin\RulesController(RuleEngineService::CUSTOMIZATION);
+    $customRulesCtrl = new Controller\Admin\RulesController(RuleEngine::CUSTOMIZATION);
     $customRulesCtrl->bindTo($app);
 
-    $accesControlCtrl = new Controller\Admin\RulesController(RuleEngineService::ACCESS_CONTROL);
+    $accesControlCtrl = new Controller\Admin\RulesController(RuleEngine::ACCESS_CONTROL);
     $accesControlCtrl->bindTo($app);
 
   }

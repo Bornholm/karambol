@@ -25,6 +25,7 @@ class RuleSet {
 
   /**
    * @ORM\OneToMany(targetEntity="Karambol\Entity\CustomRule", mappedBy="ruleset", orphanRemoval=true, cascade="all")
+   * @ORM\OrderBy({"order" = "ASC"})
    */
   protected $rules;
 

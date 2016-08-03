@@ -12,6 +12,10 @@ use Karambol\RuleEngine\RuleInterface;
  */
 class CustomRule implements RuleInterface {
 
+  const ORIGIN_SEED = 'seed';
+  const ORIGIN_USER = 'user';
+  const ORIGIN_COMMAND = 'command';
+
   /**
    * @ORM\Id
    * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -28,6 +32,16 @@ class CustomRule implements RuleInterface {
    * @ORM\Column(type="text", nullable=false)
    */
   protected $action;
+
+  /**
+   * @ORM\Column(type="integer", name="`order`")
+   */
+  protected $order = 0;
+
+  /**
+   * @ORM\Column(type="text", length=64, nullable=false)
+   */
+  protected $origin;
 
   /**
    * @ORM\ManyToOne(targetEntity="Karambol\Entity\RuleSet", inversedBy="rules")
@@ -65,6 +79,44 @@ class CustomRule implements RuleInterface {
 
   public function setRuleset($ruleset = null) {
     $this->ruleset = $ruleset;
+  }
+
+  /**
+   * @return
+   */
+  public function getOrder()
+  {
+    return $this->order;
+  }
+
+  /**
+   * @param  $order
+   *
+   * @return static
+   */
+  public function setOrder($order)
+  {
+    $this->order = $order;
+    return $this;
+  }
+
+  /**
+   * @return
+   */
+  public function getOrigin()
+  {
+    return $this->origin;
+  }
+
+  /**
+   * @param  $origin
+   *
+   * @return static
+   */
+  public function setOrigin($origin)
+  {
+    $this->origin = $origin;
+    return $this;
   }
 
 }

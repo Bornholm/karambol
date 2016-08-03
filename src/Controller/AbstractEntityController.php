@@ -32,14 +32,14 @@ abstract class AbstractEntityController extends Controller {
 
     $routePrefix = $this->getRoutePrefix();
 
-    $app->get($routePrefix, [$this, 'showEntities'])->bind($this->getRouteName(self::LIST_ACTION));
-    $app->get($routePrefix.'/new', [$this, 'showNewEntity'])->bind($this->getRouteName(self::NEW_ACTION));
-    $app->get($routePrefix.'/{entityId}', [$this, 'showEntityEdit'])->bind($this->getRouteName(self::EDIT_ACTION));
-    $app->delete($routePrefix.'/{entityId}', [$this, 'handleEntityDelete'])
+    $app->get($routePrefix, $this->ifAllowed([$this, 'showEntities']))->bind($this->getRouteName(self::LIST_ACTION));
+    $app->get($routePrefix.'/new', $this->ifAllowed([$this, 'showNewEntity']))->bind($this->getRouteName(self::NEW_ACTION));
+    $app->get($routePrefix.'/{entityId}', $this->ifAllowed([$this, 'showEntityEdit']))->bind($this->getRouteName(self::EDIT_ACTION));
+    $app->delete($routePrefix.'/{entityId}', $this->ifAllowed([$this, 'handleEntityDelete']))
       ->value('entityId', '')
       ->bind($this->getRouteName(self::DELETE_ACTION))
     ;
-    $app->post($routePrefix.'/{entityId}', [$this, 'handleEntityUpsert'])
+    $app->post($routePrefix.'/{entityId}', $this->ifAllowed([$this, 'handleEntityUpsert']))
       ->value('entityId', '')
       ->bind($this->getRouteName(self::UPSERT_ACTION))
     ;

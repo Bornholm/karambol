@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Karambol\Entity\User;
 use Karambol\KarambolApp;
-use Karambol\RuleEngine\RuleEngineService;
+use Karambol\RuleEngine\RuleEngine;
 use Karambol\Security\UserFoundEvent;
 use Karambol\Security\UserNotFoundEvent;
 

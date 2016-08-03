@@ -25,7 +25,7 @@ class BasePagesSubscriber implements EventSubscriberInterface {
 
   public function onSearchPages(ItemSearchEvent $event) {
 
-    $criteria = $event->getCriteria();
+    $criteria = $event->getSelector();
 
     $customPages = $this->getCustomPages($criteria);
     $event->addItems($customPages);

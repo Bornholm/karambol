@@ -84,10 +84,4 @@ class User extends BaseUser {
     }
   }
 
-  public function toPOPO() {
-    $user = parent::toPOPO();
-    $user->attrs = $this->getAttrs();
-    return $user;
-  }
-
 }

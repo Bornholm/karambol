@@ -11,7 +11,7 @@ use Karambol\KarambolApp;
 use Karambol\Entity\User;
 use Karambol\Entity\RuleSet;
 use Karambol\Entity\CustomRule;
-use Karambol\RuleEngine\RuleEngineService;
+use Karambol\RuleEngine\RuleEngine;
 
 class PromoteAccountCommand extends Command
 {
@@ -52,12 +52,13 @@ class PromoteAccountCommand extends Command
 
     $rule = new CustomRule();
     $rule->setCondition(sprintf('user.id == %s', $user->getId()));
-    $rule->setAction('addRole("ROLE_ADMIN")');
+    $rule->setAction('allow("*", "*")');
+    $rule->setOrigin(CustomRule::ORIGIN_COMMAND);
 
-    $ruleset = $orm->getRepository('Karambol\Entity\RuleSet')->findOneByName(RuleEngineService::ACCESS_CONTROL);
+    $ruleset = $orm->getRepository('Karambol\Entity\RuleSet')->findOneByName(RuleEngine::ACCESS_CONTROL);
     if(!$ruleset) {
       $ruleset = new RuleSet();
-      $ruleset->setName(RuleEngineService::ACCESS_CONTROL);
+      $ruleset->setName(RuleEngine::ACCESS_CONTROL);
       $orm->persist($ruleset);
       $orm->flush();
     }
