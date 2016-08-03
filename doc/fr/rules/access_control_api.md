@@ -1,14 +1,14 @@
-### Contrôle des accès
+# Contrôle des accès
 
-#### Variables
+## Variables
 
-##### user
-##### resource
+### user
+### resource
 
-#### API
+## API
 
-##### owns(resourceSelector)
-##### allow(action, resourceSelector)
-##### hasRole(role)
-##### addRole(role)
-##### removeRole(role)
+### owns(resourceSelector)
+### allow(action, resourceSelector)
+### hasRole(role)
+### addRole(role)
+### removeRole(role)

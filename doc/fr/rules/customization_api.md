@@ -1,13 +1,13 @@
-### Personnalisation
+# Personnalisation
 
-#### Variables
+## Variables
 
-##### user
+### user
 
-#### API
+## API
 
-##### addPageToMenu(pageSlug, menuName, options)
-##### useTheme(themeName)
-##### setHomepage(pageSlug)
-##### asFrame(pageSlug)
-##### isGranted(role) ou isGranted(action, resourceSelector)
+### addPageToMenu(pageSlug, menuName, options)
+### useTheme(themeName)
+### setHomepage(pageSlug)
+### asFrame(pageSlug)
+### isGranted(role) ou isGranted(action, resourceSelector)

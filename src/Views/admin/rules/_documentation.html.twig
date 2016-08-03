@@ -3,5 +3,5 @@
   {% if not file_exists(markdown_file) %}
     {% set markdown_file = 'doc/' ~ app.locale_fallbacks[0] ~ '/rules/' ~  ruleset.name ~ '_api.md'  %}
   {% endif %}
-  {{ include_markdown_file(markdown_file) }}
+  {{ include_markdown_file(markdown_file, {"shift_titles": 2}) }}
 {% endblock %}

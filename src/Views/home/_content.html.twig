@@ -1,6 +1,16 @@
 <div class="karambol-flex-container">
   <div class="karambol-flex-item">
-    {{ menu('home_content') }}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              {{ include_markdown_file('doc/index.md', {"shift_titles": 3, "rewrite_markdown_links": true}) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="karambol-footer">
     {% block body_footer %}
@@ -8,3 +18,4 @@
     {% endblock %}
   </div>
 </div>
+{{ appendScript('js/home-documentation.js') }}
