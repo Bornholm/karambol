@@ -9,8 +9,8 @@ use Karambol\Form\Type\SettingsType;
 class SettingsController extends Controller {
 
   public function mount(KarambolApp $app) {
-    $app->get('/admin/settings', array($this, 'showSettings'))->bind('settings');
-    $app->post('/admin/settings', array($this, 'handleSettings'))->bind('handle_settings');
+    $app->get('/admin/settings', $this->ifAllowed([$this, 'showSettings']))->bind('settings');
+    $app->post('/admin/settings', $this->ifAllowed([$this, 'handleSettings']))->bind('handle_settings');
   }
 
   public function showSettings() {

@@ -4,10 +4,9 @@ namespace Karambol\Bootstrap;
 
 use Karambol\KarambolApp;
 use Karambol\Provider;
-use Karambol\RuleEngine;
 use Karambol\RuleEngine\Rule;
 use Karambol\RuleEngine\RuleEngineEvent;
-use Karambol\RuleEngine\RuleEngineService;
+use Karambol\RuleEngine\RuleEngine;
 use Karambol\RuleEngine\CustomizationListener;
 use Karambol\RuleEngine\ExpressionFunctionProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +44,7 @@ class RuleEngineBootstrap implements BootstrapInterface {
     $ruleEngine = $app['rule_engine'];
     $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
 
-    $ruleset = $rulesetRepo->findOneByName(RuleEngineService::CUSTOMIZATION);
+    $ruleset = $rulesetRepo->findOneByName(RuleEngine::CUSTOMIZATION);
     $rules = $ruleset->getRules()->toArray();
 
     $user = $app['user'] ? $app['user'] : new BaseUser();
@@ -54,7 +53,7 @@ class RuleEngineBootstrap implements BootstrapInterface {
     ];
 
     try {
-      $ruleEngine->execute(RuleEngineService::CUSTOMIZATION, $rules, $vars);
+      $ruleEngine->execute(RuleEngine::CUSTOMIZATION, $rules, $vars);
     } catch(\Exception $ex) {
       // TODO Store rule exception and provide the debugging information to the administrator
       $logger->error($ex);

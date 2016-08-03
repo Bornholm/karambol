@@ -11,7 +11,7 @@ use Karambol\AccessControl\Resource;
 use Karambol\AccessControl\BaseActions;
 use Karambol\AccessControl\Parser\ResourceSelectorParser;
 use Karambol\AccessControl\ResourceOwnerInterface;
-use Karambol\RuleEngine\RuleEngineService;
+use Karambol\RuleEngine\RuleEngine;
 use Karambol\Entity\BaseUser;
 use Karambol\RuleEngine\RuleEngineVariableViewInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -58,7 +58,7 @@ class RuleEngineAccessControlVoter implements VoterInterface {
     $ruleEngine = $app['rule_engine'];
     $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
 
-    $ruleset = $rulesetRepo->findOneByName(RuleEngineService::ACCESS_CONTROL);
+    $ruleset = $rulesetRepo->findOneByName(RuleEngine::ACCESS_CONTROL);
 
     if(!$ruleset) return VoterInterface::ACCESS_ABSTAIN;
 
@@ -75,7 +75,7 @@ class RuleEngineAccessControlVoter implements VoterInterface {
     $rules = $ruleset->getRules()->toArray();
 
     try {
-      $ruleEngine->execute(RuleEngineService::ACCESS_CONTROL, $rules, $vars);
+      $ruleEngine->execute(RuleEngine::ACCESS_CONTROL, $rules, $vars);
     } catch(\Exception $ex) {
       // TODO Store rule exception and provide the debugging information to the administrator
       $logger->error($ex);

@@ -9,7 +9,7 @@ use Karambol\RuleEngine\RuleEngineAPI;
 use Karambol\RuleEngine\RuleEngineEvent;
 use Karambol\RuleEngine\ParserCache;
 
-class RuleEngineService extends EventDispatcher {
+class RuleEngine extends EventDispatcher {
 
   const CUSTOMIZATION = 'customization';
   const ACCESS_CONTROL = 'access_control';

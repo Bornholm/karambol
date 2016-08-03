@@ -3,7 +3,7 @@
 namespace Karambol\Test\RuleEngine;
 
 use Karambol\KarambolApp;
-use Karambol\RuleEngine\RuleEngineService;
+use Karambol\RuleEngine\RuleEngine;
 use Karambol\RuleEngine\BaseAccessControlAPIListener;
 use Karambol\Entity\User;
 use Karambol\Entity\BaseUser;
@@ -48,7 +48,7 @@ class AccessControlAPITest extends \PHPUnit_Framework_TestCase
       new Rule('owns(resource)', ["allow('*', resource)"])
     ];
 
-    $this->ruleEngine->execute(RuleEngineService::ACCESS_CONTROL, $rules, $vars);
+    $this->ruleEngine->execute(RuleEngine::ACCESS_CONTROL, $rules, $vars);
 
     $this->assertCount(1, $this->context->authorizations);
 

@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Karambol\KarambolApp;
 use Karambol\Entity\RuleSet;
 use Karambol\Entity\CustomRule;
-use Karambol\RuleEngine\RuleEngineService;
+use Karambol\RuleEngine\RuleEngine;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class SeedRulesCommand extends Command
@@ -85,7 +85,7 @@ class SeedRulesCommand extends Command
       ],
     ];
 
-    $this->seedRules(RuleEngineService::CUSTOMIZATION, $rules);
+    $this->seedRules(RuleEngine::CUSTOMIZATION, $rules);
 
   }
 
@@ -112,7 +112,7 @@ class SeedRulesCommand extends Command
       ]
     ];
 
-    $this->seedRules(RuleEngineService::ACCESS_CONTROL, $rules);
+    $this->seedRules(RuleEngine::ACCESS_CONTROL, $rules);
 
   }
 
@@ -131,11 +131,13 @@ class SeedRulesCommand extends Command
       $orm->flush();
     }
 
-    foreach($rules as $ruleData) {
+    foreach($rules as $i => $ruleData) {
       $rule = new CustomRule();
       $rule->setCondition($ruleData['condition']);
       $rule->setAction(implode(PHP_EOL, $ruleData['actions']));
+      $rule->setOrder($i);
       $rule->setRuleset($ruleset);
+      $rule->setOrigin(CustomRule::ORIGIN_SEED);
       $orm->persist($rule);
     }
 

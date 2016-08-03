@@ -8,7 +8,7 @@ use Karambol\Controller\Controller;
 class AdminController extends Controller {
 
   public function mount(KarambolApp $app) {
-    $app->get('/admin', array($this, 'showAdminIndex'))->bind('admin');
+    $app->get('/admin', $this->ifAllowed([$this, 'showAdminIndex']))->bind('admin');
   }
 
   public function showAdminIndex() {

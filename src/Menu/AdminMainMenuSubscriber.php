@@ -6,7 +6,7 @@ use Karambol\KarambolApp;
 use Karambol\Menu\MenuItem;
 use Karambol\Menu\Menu;
 use Karambol\Menu\MenuItems;
-use Karambol\RuleEngine\RuleEngineService;
+use Karambol\RuleEngine\RuleEngine;
 use Karambol\VirtualSet\ItemSearchEvent;
 use Karambol\VirtualSet\ItemCountEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -57,12 +57,12 @@ class AdminMainMenuSubscriber implements EventSubscriberInterface {
     $rulesItem
       ->addItem(new MenuItem(
         MenuItems::ADMIN_RULES_CUSTOMIZATION,
-        $urlGen->generate(sprintf('admin_rules_%s', RuleEngineService::CUSTOMIZATION)),
+        $urlGen->generate(sprintf('admin_rules_%s', RuleEngine::CUSTOMIZATION)),
         ['icon_class' => 'fa fa-rocket']
       ))
       ->addItem(new MenuItem(
         MenuItems::ADMIN_RULES_ACCES_CONTROL,
-        $urlGen->generate(sprintf('admin_rules_%s', RuleEngineService::ACCESS_CONTROL)),
+        $urlGen->generate(sprintf('admin_rules_%s', RuleEngine::ACCESS_CONTROL)),
         ['icon_class' => 'fa fa-shield']
       ))
     ;

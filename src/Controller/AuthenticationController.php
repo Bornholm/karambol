@@ -7,7 +7,7 @@ use Karambol\KarambolApp;
 class AuthenticationController extends Controller {
 
   public function mount(KarambolApp $app) {
-    $app->get('/login', array($this, 'showLogin'))->bind('login');
+    $app->get('/login', [$this, 'showLogin'])->bind('login');
   }
 
   public function showLogin() {

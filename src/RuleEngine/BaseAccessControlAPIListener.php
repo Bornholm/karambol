@@ -3,7 +3,7 @@
 namespace Karambol\RuleEngine;
 
 use Karambol\RuleEngine\RuleEngineEvent;
-use Karambol\RuleEngine\RuleEngineService;
+use Karambol\RuleEngine\RuleEngine;
 use Karambol\KarambolApp;
 use Karambol\Menu\MenuItem;
 use Karambol\Page\PageInterface;
@@ -13,12 +13,13 @@ use Karambol\AccessControl\Parser\ResourceSelectorParser;
 use Karambol\AccessControl\ResourceSelector;
 use Karambol\AccessControl\ResourceOwnerInterface;
 use Karambol\AccessControl\ResourceInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class BaseAccessControlAPIListener extends CommonAPIConfigurator {
 
   public function onBeforeExecuteRules(RuleEngineEvent $event) {
 
-    if($event->getType() !== RuleEngineService::ACCESS_CONTROL) return;
+    if($event->getType() !== RuleEngine::ACCESS_CONTROL) return;
 
     $app = $this->app;
     $provider = $event->getFunctionProvider();
@@ -26,6 +27,9 @@ class BaseAccessControlAPIListener extends CommonAPIConfigurator {
     $this->registerCommonAPI($provider);
     $provider->registerFunction('owns', [$this, 'ownsMethodHandler']);
     $provider->registerFunction('allow', [$this, 'allowMethodHandler']);
+    $provider->registerFunction('addRole', [$this, 'addRoleMethodHandler']);
+    $provider->registerFunction('removeRole', [$this, 'removeRoleMethodHandler']);
+    $provider->registerFunction('hasRole', [$this, 'hasRoleMethodHandler']);
 
   }
 
@@ -76,6 +80,25 @@ class BaseAccessControlAPIListener extends CommonAPIConfigurator {
       'resource' => $selectorOrResource instanceof ResourceInterface ? $selectorOrResource : null,
     ];
 
+  }
+
+  public function addRoleMethodHandler($vars, $role) {
+    $context = $vars['_context'];
+    $user = $context->user;
+    if($user instanceof BaseUser) $user->addRole($role);
+  }
+
+  public function removeRoleMethodHandler($vars, $role) {
+    $context = $vars['_context'];
+    $user = $context->user;
+    if($user instanceof BaseUser) $user->removeRole($role);
+  }
+
+  public function hasRoleMethodHandler($vars, $role) {
+    $context = $vars['_context'];
+    $user = $context->user;
+    if($user instanceof UserInterface) return in_array($role, $user->getRoles());
+    return false;
   }
 
 }

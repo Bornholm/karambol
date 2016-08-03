@@ -28,7 +28,7 @@ abstract class Controller implements ControllerInterface {
     $this->mount($app);
   }
 
-  protected function ifAuthorized(callable $callback) {
+  protected function ifAllowed(callable $callback) {
     return function() use ($callback) {
 
       $args = func_get_args();
