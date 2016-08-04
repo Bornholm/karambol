@@ -1,0 +1,7 @@
+<div class="karambol-documentation">
+  {{ include_markdown_file('doc/' ~ docFile, {
+      "shift_titles": shift_titles is defined ? shift_titles : 0,
+      "rewrite_markdown_links": rewrite_markdown_links is defined ? rewrite_markdown_links : '%s'
+    })
+  }}
+</div>

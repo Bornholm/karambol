@@ -10,7 +10,7 @@
 - Installation et gestion des plugins
 - La console et les commandes
 
-## Guide du développeur
+## Guide du développeur
 
 - Créer son thème
 - [Créer un plugin](./plugins/create-plugin.md)

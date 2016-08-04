@@ -26,11 +26,16 @@ class AppPathService {
   }
 
   public function getAppDirectory() {
-    return join(DIRECTORY_SEPARATOR, [__DIR__, '..', '..']);
+    return realpath(join(DIRECTORY_SEPARATOR, [__DIR__, '..', '..']));
   }
 
   public function getPath($appRelativePath) {
     return join(DIRECTORY_SEPARATOR, [$this->getAppDirectory(), $appRelativePath]);
+  }
+
+  public function existsInApp($appRelativePath) {
+    $filePath = realpath($this->getPath($appRelativePath));
+    return strpos($filePath, $this->getAppDirectory()) === 0;
   }
 
 }
