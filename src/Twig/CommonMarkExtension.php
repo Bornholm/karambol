@@ -15,6 +15,7 @@ use League\CommonMark\Block\Element\Heading;
 use League\CommonMark\Block\Element\AbstractBlock;
 use League\CommonMark\Inline\Renderer\InlineRendererInterface;
 use League\CommonMark\ElementRendererInterface;
+use Cocur\Slugify\Slugify;
 
 //
 //
@@ -56,8 +57,8 @@ class CommonMarkExtension extends Twig_Extension {
 
     $environment = Environment::createCommonMarkEnvironment();
 
-    if(isset($options['rewrite_markdown_links']) && $options['rewrite_markdown_links'] === true) {
-      $environment->addInlineRenderer(Link::class, new MarkdownLinkRenderer());
+    if(isset($options['rewrite_markdown_links'])) {
+      $environment->addInlineRenderer(Link::class, new MarkdownLinkRenderer(urldecode($options['rewrite_markdown_links'])));
     }
 
     if(isset($options['shift_titles']) && is_integer($options['shift_titles'])) {
@@ -73,11 +74,17 @@ class CommonMarkExtension extends Twig_Extension {
 
 class MarkdownLinkRenderer implements InlineRendererInterface {
 
+  protected $urlPattern;
+
+  public function __construct($urlPattern) {
+    $this->urlPattern = $urlPattern;
+  }
+
   public function render(AbstractInline $inline, ElementRendererInterface $htmlRenderer, $inThightList = false) {
     $attrs = [];
     $url = $htmlRenderer->escape($inline->getUrl(), true);
-    $isMarkdownLink = preg_match('/\.(md|markdown|commonmark)/i',$url);
-    if($isMarkdownLink) $url = '#/markdown/'.$url;
+    $isMarkdownLink = preg_match('/\.(md|markdown|commonmark)/i', $url);
+    if($isMarkdownLink) $url = sprintf($this->urlPattern, $url);
     $attrs['href'] = $url;
     return new HtmlElement('a', $attrs, $htmlRenderer->renderInlines($inline->children()));
   }
@@ -102,6 +109,12 @@ class HeadingShifterRenderer implements BlockRendererInterface {
     foreach ($block->getData('attributes', []) as $key => $value) {
       $attrs[$key] = $htmlRenderer->escape($value, true);
     }
+
+    if(!isset($attrs['id'])) {
+      $slugify = new Slugify();
+      $attrs['id'] = $slugify->slugify($block->getStringContent());
+    }
+
     return new HtmlElement($tag, $attrs, $htmlRenderer->renderInlines($block->children()));
   }
 

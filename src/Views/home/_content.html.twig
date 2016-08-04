@@ -4,8 +4,32 @@
       <div class="row">
         <div class="col-md-12">
           <div class="panel panel-default">
+            <div class="panel-heading"><h2 class="panel-title">Bienvenue dans Karambol !</h2></div>
             <div class="panel-body">
-              {{ include_markdown_file('doc/index.md', {"shift_titles": 3, "rewrite_markdown_links": true}) }}
+              <p>Karambol est un socle de portail web libre, extensible et fortement axé sur la personnalisation du contenu en fonction du profil des utilisateurs.</p>
+              <p>Ses principaux atouts sont:</p>
+              <ul>
+                <li>Un système de plugins permettant d'ajouter/modifier/remplacer les fonctionnalités du coeur applicatif</li>
+                <li>Un système de gestion des thèmes dynamique</li>
+                <li>Un moteur de règles permettant de modifier le contenu dynamiquement pour chaque profil d'utilisateur</li>
+                <li>Un second moteur de règles permettant de contrôler les accès des utilisateurs sur l'ensemble des ressources du portail</li>
+                <li>Une console en ligne de commande</li>
+                <li>Une interface d'administration complète</li>
+                <li>(Bientot) Une API REST permettant d'automatiser la gestion du portail...</li>
+              </ul>
+              <p>Le tout publié sous licence <a title="Licence AGPL v3" href="https://opensource.org/licenses/agpl-3.0">AGPL v3</a>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Documentation</h3>
+            </div>
+            <div class="panel-body">
+              {% include 'documentation/_documentation.html.twig' with { "docFile": "index.md", "rewrite_markdown_links": "doc/%s", "shift_titles": 4 } %}
             </div>
           </div>
         </div>
@@ -18,4 +42,3 @@
     {% endblock %}
   </div>
 </div>
-{{ appendScript('js/home-documentation.js') }}

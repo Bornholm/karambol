@@ -1,0 +1,27 @@
+{% extends 'home/index.html.twig' %}
+
+{% block head_title %}<title>Documentation - {{ docFile }}</title>{% endblock %}
+
+{% block body_content %}
+  <div class="karambol-flex-container">
+    <div class="karambol-flex-item">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="panel panel-default">
+              <div class="panel-heading"><h3 class="panel-title">Documentation</h3></div>
+              <div class="panel-body">
+                {% include 'documentation/_documentation.html.twig' with { "rewrite_markdown_links": "%s", "shift_titles": 2 } %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="karambol-footer">
+      {% block body_footer %}
+        {{ menu('home_footer') }}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

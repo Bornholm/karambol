@@ -18,6 +18,7 @@ class ControllersBootstrap implements BootstrapInterface {
       'Karambol\Controller\Admin\SettingsController',
       'Karambol\Controller\AuthenticationController',
       'Karambol\Controller\ProfileController',
+      'Karambol\Controller\DocumentationController',
     ];
 
     foreach($controllers as $controllerClass) {
