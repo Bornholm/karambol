@@ -41,7 +41,7 @@ class CustomRule implements RuleInterface {
   /**
    * @ORM\Column(type="text", length=64, nullable=false)
    */
-  protected $origin;
+  protected $origin = self::ORIGIN_USER;
 
   /**
    * @ORM\ManyToOne(targetEntity="Karambol\Entity\RuleSet", inversedBy="rules")
