@@ -9,12 +9,15 @@ use Karambol\AccessControl\BaseActions;
 class HomeController extends Controller {
 
   public function mount(KarambolApp $app) {
-    $app->get('/', $this->ifAllowed([$this, 'showHome']))->bind('home');
-    $app->get('/home', $this->ifAllowed([$this, 'showDefaultHome']))->bind('default_home');
-    $app->get('/p/{pageSlug}', $this->ifAllowed([$this, 'showFramedPage']))->bind('framed_page');
+    $app->get('/', [$this, 'showHome'])->bind('home');
+    $app->get('/home', [$this, 'showDefaultHome'])->bind('default_home');
+    $app->get('/p/{pageSlug}', [$this, 'showFramedPage'])->bind('framed_page');
   }
 
   public function showHome() {
+
+    $this->assertUrlAccessAuthorization();
+
     $homePage = $this->get('pages')->getHomepage();
     if($homePage instanceof PageInterface) {
       return $this->redirect($homePage->getUrl());
@@ -23,11 +26,14 @@ class HomeController extends Controller {
   }
 
   public function showDefaultHome() {
+    $this->assertUrlAccessAuthorization();
     $twig = $this->get('twig');
     return $twig->render('home/index.html.twig');
   }
 
   public function showFramedPage($pageSlug) {
+
+    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $pagesSvc = $this->get('pages');

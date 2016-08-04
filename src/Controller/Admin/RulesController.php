@@ -20,15 +20,17 @@ class RulesController extends Controller {
 
   public function mount(KarambolApp $app) {
     $rulesetName = $this->rulesetName;
-    $app->get(sprintf('/admin/rules/%s', $rulesetName), $this->ifAllowed([$this, 'showRules']))
+    $app->get(sprintf('/admin/rules/%s', $rulesetName), [$this, 'showRules'])
       ->bind(sprintf('admin_rules_%s', $rulesetName))
     ;
-    $app->post(sprintf('/admin/rules/%s', $rulesetName), $this->ifAllowed([$this, 'handleRulesetUpsert']))
+    $app->post(sprintf('/admin/rules/%s', $rulesetName), [$this, 'handleRulesetUpsert'])
       ->bind(sprintf('admin_ruleset_upsert_%s', $rulesetName))
     ;
   }
 
   public function showRules() {
+
+    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $orm = $this->get('orm');
@@ -52,6 +54,8 @@ class RulesController extends Controller {
   }
 
   public function handleRulesetUpsert() {
+
+    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $orm = $this->get('orm');

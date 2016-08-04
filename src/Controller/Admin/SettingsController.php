@@ -9,11 +9,14 @@ use Karambol\Form\Type\SettingsType;
 class SettingsController extends Controller {
 
   public function mount(KarambolApp $app) {
-    $app->get('/admin/settings', $this->ifAllowed([$this, 'showSettings']))->bind('settings');
-    $app->post('/admin/settings', $this->ifAllowed([$this, 'handleSettings']))->bind('handle_settings');
+    $app->get('/admin/settings', [$this, 'showSettings'])->bind('settings');
+    $app->post('/admin/settings', [$this, 'handleSettings'])->bind('handle_settings');
   }
 
   public function showSettings() {
+
+    $this->assertUrlAccessAuthorization();
+
     $twig = $this->get('twig');
     $form = $this->getSettingsForm();
     return $twig->render('admin/settings/index.html.twig', [
@@ -22,6 +25,8 @@ class SettingsController extends Controller {
   }
 
   public function handleSettings() {
+
+    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $request = $this->get('request');

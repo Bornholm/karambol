@@ -207,7 +207,6 @@ class MyController extends Controller {
 
   public function mount(KarambolApp $app) {
     $app->get('/my/url', [$this, 'showMyView']);
-    ;
   }
 
   public function showMyView() {

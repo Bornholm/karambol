@@ -10,11 +10,13 @@ use Karambol\Entity\BaseUser;
 class ProfileController extends Controller {
 
   public function mount(KarambolApp $app) {
-    $app->get('/profile', $this->ifAllowed([$this, 'showProfile']))->bind('profile');
-    $app->post('/profile', $this->ifAllowed([$this, 'handleProfileForm']))->bind('handle_profile');
+    $app->get('/profile', [$this, 'showProfile'])->bind('profile');
+    $app->post('/profile', [$this, 'handleProfileForm'])->bind('handle_profile');
   }
 
   public function showProfile() {
+
+    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $user = $this->get('user');
@@ -29,6 +31,8 @@ class ProfileController extends Controller {
   }
 
   public function handleProfileForm() {
+
+    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $request = $this->get('request');
