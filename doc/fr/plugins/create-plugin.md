@@ -171,9 +171,54 @@ Si vous avez correctement suivi les étapes jusque là vous devriez voir apparai
 
 Cochez la case et enregistrez. Bravo, votre plugin est maintenant chargé automatiquement par Karambol !
 
-## Créer son premier contrôleur
+## Créer son premier contrôleur et ses vues
 
 > TODO
+
+```php
+<?php
+
+namespace MyFirstPlugin;
+
+use Karambol\KarambolApp;
+use Karambol\Plugin\PluginInterface;
+use Karambol\Controller\Controller;
+
+class MyPlugin implements PluginInterface {
+
+  public function boot(KarambolApp $app, array $options) {
+
+
+    // Monter son contrôleur sur l'application
+    $ctrl = new MyController($app);
+    $ctrl->bindTo($app);
+
+    // Ajouter les vues du plugin à Twig
+    // en partant du principe que les vues sont dans "src/Views"
+    $twigPaths = $app['twig.path'];
+    array_unshift($twigPaths, __DIR__.'/Views');
+    $app['twig.path'] = $twigPaths;
+
+  }
+
+}
+
+class MyController extends Controller {
+
+  public function mount(KarambolApp $app) {
+    $app->get('/my/url', [$this, 'showMyView']);
+    ;
+  }
+
+  public function showMyView() {
+    $twig = $this->get('twig');
+    // Le fichier de la vue se trouve dans src/Views/plugins/my-first-plugin/
+    return $twig->render('plugins/my-first-plugin/index.html.twig');
+  }
+
+}
+
+```
 
 ## Ajouter des entités à la base de données
 
