@@ -47,11 +47,10 @@ class RuleEngineAccessControlVoter implements VoterInterface {
 
     if($resource === null || $action === null) return VoterInterface::ACCESS_ABSTAIN;
 
-    // dump($subject, $attributes);
     $logger->debug(sprintf(
       'Checking authorizations for user "%s" to use resource "%s" with action "%s"',
-      $user instanceof UserInterface ? $user->getUsername() : '???',
-      $resource,
+      $user instanceof UserInterface && $user->getUsername() ? $user->getUsername() : 'anon.',
+      sprintf('%s[%s]', $resource->getResourceType(), $resource->getResourceId()),
       $action
     ));
 
@@ -84,22 +83,47 @@ class RuleEngineAccessControlVoter implements VoterInterface {
     $authorizations =  $context->authorizations;
     $parser = new ResourceSelectorParser();
 
-    // dump($action, $resource, $authorizations);
+
 
     foreach($authorizations as $auth) {
 
       $actionAuthorized = $auth['action'] === '*' || $auth['action'] === $action;
       if(!$actionAuthorized) continue;
 
-      if($auth['resource'] !== null && $auth['resource'] === $resource) return VoterInterface::ACCESS_GRANTED;
+      if($auth['resource'] !== null && $auth['resource'] === $resource) {
+        $logger->debug(sprintf(
+          'Authorization granted to user "%s" to use resource "%s" with action "%s"',
+          $user instanceof UserInterface && $user->getUsername() ? $user->getUsername() : 'anon.',
+          sprintf('%s[%s]', $resource->getResourceType(), $resource->getResourceId()),
+          $action
+        ));
+        return VoterInterface::ACCESS_GRANTED;
+      }
 
       if($auth['selector'] !== null) {
+
         $selector = $parser->parse($auth['selector']);
         $resourceMatchesSelector = $selector->matches($resource);
-        if($resourceMatchesSelector) return VoterInterface::ACCESS_GRANTED;
+
+        if($resourceMatchesSelector) {
+          $logger->debug(sprintf(
+            'Authorization granted to user "%s" to use resource "%s" with action "%s"',
+            $user instanceof UserInterface && $user->getUsername() ? $user->getUsername() : 'anon.',
+            sprintf('%s[%s]', $resource->getResourceType(), $resource->getResourceId()),
+            $action
+          ));
+          return VoterInterface::ACCESS_GRANTED;
+        }
       }
 
     }
+
+    $logger->debug(sprintf(
+      'Authorization denied to user "%s" to use resource "%s" with action "%s"',
+      $user instanceof UserInterface && $user->getUsername() ? $user->getUsername() : 'anon.',
+      sprintf('%s[%s]', $resource->getResourceType(), $resource->getResourceId()),
+      $action
+    ));
 
     return VoterInterface::ACCESS_DENIED;
 

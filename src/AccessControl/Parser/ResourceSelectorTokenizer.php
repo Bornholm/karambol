@@ -65,6 +65,7 @@ class ResourceSelectorTokenizer {
 
           if($char === self::ID_SET_CLOSING) {
 
+            $this->trimLast($current['references']);
             $tokens[] = $current;
             $charIndex++;
             $state = self::STATE_END;
@@ -73,6 +74,7 @@ class ResourceSelectorTokenizer {
           }
 
           if($char === self::ID_SEPARATOR) {
+            $this->trimLast($current['references']);
             $current['references'][] = '';
             $charIndex++;
             continue;
@@ -106,6 +108,12 @@ class ResourceSelectorTokenizer {
 
   protected function throwInvalidCharException($selector, $charIndex) {
     throw new TokenizerException($selector, $charIndex);
+  }
+
+  protected function trimLast(&$arr) {
+    $lastIndex = count($arr)-1;
+    $references = $current['references'];
+    $arr[$lastIndex] = trim($arr[$lastIndex]);
   }
 
 }
