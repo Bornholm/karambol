@@ -112,7 +112,6 @@ class ResourceSelectorTokenizer {
 
   protected function trimLast(&$arr) {
     $lastIndex = count($arr)-1;
-    $references = $current['references'];
     $arr[$lastIndex] = trim($arr[$lastIndex]);
   }
 

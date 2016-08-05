@@ -7,7 +7,7 @@
 {% block body_content %}
   <div class="karambol-flex-container">
     <div class="karambol-flex-item karambol-page-container">
-      <iframe class="karambol-page" src="{{page.url}}"></iframe>
+      <iframe class="karambol-page" onload="this.style.opacity = 1" src="{{page.url}}"></iframe>
     </div>
     <div class="karambol-footer">
       {% block body_footer %}
@@ -15,5 +15,4 @@
       {% endblock %}
     </div>
   </div>
-  {{ appendScript('js/framed-page.js') }}
 {% endblock %}

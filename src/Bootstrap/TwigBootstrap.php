@@ -7,12 +7,15 @@ use Karambol\AccessControl\Parser\ResourceSelectorParser;
 use Karambol\AccessControl\Resource;
 use Karambol\Twig\CommonMarkExtension;
 use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\HttpFragmentServiceProvider;
 use League\CommonMark\CommonMarkConverter;
 use Colors\RandomColor;
 
 class TwigBootstrap implements BootstrapInterface {
 
   public function bootstrap(KarambolApp $app) {
+
+    $app->register(new HttpFragmentServiceProvider());
 
     // Init Twig view engine
     $app->register(new TwigServiceProvider(), [
