@@ -1,4 +1,4 @@
-# Table des matières
+# Table des matières (en cours de rédaction)
 
 ## Guide de l'utilisateur
 
