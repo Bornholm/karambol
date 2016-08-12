@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Karambol\KarambolApp;
-use Karambol\Entity\User;
+use Karambol\Account\Exception\AccountExistsException;
 
 class CreateAccountCommand extends Command
 {

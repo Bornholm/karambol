@@ -17,6 +17,10 @@ class AccountService extends EventDispatcher {
 
   public function createAccount($username, $password) {
 
+    if($this->accountExists($username)) {
+      throw new Exception\AccountExistsException($username);
+    }
+
     $userEntity = $this->app['user_entity'];
     $orm = $this->app['orm'];
 
@@ -38,6 +42,16 @@ class AccountService extends EventDispatcher {
 
     return $user;
 
+  }
+
+  public function accountExists($username) {
+    $userEntity = $this->app['user_entity'];
+    $orm = $this->app['orm'];
+    $qb = $orm->getRepository($userEntity)->createQueryBuilder('u');
+    $qb->select('count(u)')
+      ->where($qb->expr()->eq('u.username', $qb->expr()->literal($username)))
+    ;
+    return $qb->getQuery()->getSingleScalarResult() !== 0;
   }
 
   public function changePassword(BaseUser $user, $newPassword) {
