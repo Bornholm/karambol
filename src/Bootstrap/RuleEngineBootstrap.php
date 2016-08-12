@@ -45,6 +45,9 @@ class RuleEngineBootstrap implements BootstrapInterface {
     $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
 
     $ruleset = $rulesetRepo->findOneByName(RuleEngine::CUSTOMIZATION);
+
+    if(!$ruleset) return;
+
     $rules = $ruleset->getRules()->toArray();
 
     $user = $app['user'] ? $app['user'] : new BaseUser();
