@@ -3,15 +3,14 @@
 namespace Karambol\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Karambol\Account\UserInterface;
 use Karambol\AccessControl\ResourceInterface;
 use Karambol\AccessControl\ResourceOwnerInterface;
-use Karambol\RuleEngine\RuleEngineVariableViewInterface;
 
 /**
  * @ORM\MappedSuperclass
  */
-class BaseUser implements UserInterface, ResourceOwnerInterface, RuleEngineVariableViewInterface {
+class BaseUser implements UserInterface {
 
   /**
    * @ORM\Id
