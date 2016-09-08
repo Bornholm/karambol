@@ -45,6 +45,18 @@ abstract class Controller implements ControllerInterface {
 
   }
 
+  /**
+   * Render a Twig template with the provided data
+   *
+   * @param string $templatePath The template's path relative to the views base directory
+   * @param array $data The data to inject in the template
+   * @return The rendered template
+   */
+  protected function render($templatePath, $data = []) {
+    $twig = $this->get('twig');
+    return $twig->render($templatePath, $data);
+  }
+
   abstract public function mount(KarambolApp $app);
 
 }
