@@ -33,8 +33,6 @@ class LinkAssetsCommand extends Command
     $assets = $this->app['config']['assets'];
     $baseDir = __DIR__.'/../..';
 
-    $output->writeln('<info>Linking assets...</info>');
-
     foreach($assets as $assetsNamespace) {
       foreach($assetsNamespace as $assetItem) {
 
@@ -47,11 +45,21 @@ class LinkAssetsCommand extends Command
         if( is_dir($src) && !file_exists($dest)) {
           $destParentDir = dirname($dest);
           if(!file_exists($destParentDir)) mkdir($destParentDir, 0777, true);
-          if(!is_link($dest) && !file_exists($dest)) symlink($src, $dest);
+          $output->writeln('<info>Linking assets '.$assetItem['dest'].'</info>');
+        } elseif( is_dir($src) && file_exists($dest) ) {
+          $output->writeln('<info>Replace existing assets '.$assetItem['dest'].'</info>');
+          unlink($dest);
         }
+        $this->createLink($src, $dest);
 
       }
     }
 
+  }
+
+  protected function createLink($src, $dest) {
+    if(!is_link($dest) && !file_exists($dest)) {
+      symlink($src, $dest);
+    }
   }
 }
