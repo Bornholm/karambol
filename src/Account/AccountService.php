@@ -51,7 +51,7 @@ class AccountService extends EventDispatcher {
     $qb->select('count(u)')
       ->where($qb->expr()->eq('u.username', $qb->expr()->literal($username)))
     ;
-    return $qb->getQuery()->getSingleScalarResult() !== 0;
+    return $qb->getQuery()->getSingleScalarResult() != 0;
   }
 
   public function changePassword(BaseUser $user, $newPassword) {
