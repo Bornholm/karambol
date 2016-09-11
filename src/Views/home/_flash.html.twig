@@ -1,0 +1,24 @@
+{% if app.session.flashbag.peek('message') %}
+
+{%
+  set classTypeMap = {
+    'danger': 'danger',
+    'error': 'danger',
+    'success': 'success',
+    'info': 'info',
+    'warn': 'warn'
+  }
+%}
+
+<div class="container-fluid">
+  {% for flash in app.session.flashbag.get('message') %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="alert alert-{{ flash.options.type is defined and classTypeMap[flash.options.type] is defined ? classTypeMap[flash.options.type] : 'info' }}">
+          {% if flash.options.icon is defined %}<i class="{{ flash.options.icon }}"></i> {% endif %}{{ flash.content | trans }}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}

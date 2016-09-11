@@ -59,6 +59,7 @@ auth:
   login_submit: S'identifier
   username: Nom d'utilisateur
   password: Mot de passe
+  Bad credentials.: Identifiants invalides.
 menus:
   admin:
     admin: Administration

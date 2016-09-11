@@ -39,6 +39,8 @@ class UsersController extends AbstractEntityController {
 
     $orm->flush();
 
+    $this->addFlashMessage('User saved.');
+
     return $user;
 
   }

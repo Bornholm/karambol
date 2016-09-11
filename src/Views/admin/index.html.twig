@@ -2,6 +2,7 @@
 
 {% block body %}
   {% include 'admin/_navbar.html.twig' %}
+  {% include 'home/_flash.html.twig' %}
   <div class="container-fluid">
     {% block content %}
       {{ menu('admin_stats') }}
