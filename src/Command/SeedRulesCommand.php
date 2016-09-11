@@ -95,7 +95,7 @@ class SeedRulesCommand extends Command
       [
         'condition' => 'true',
         'actions' => [
-          'allow("access", "url[/, /p/home]")'
+          'allow("access", "url[/, /login, /register, /doc*, /p/home]")'
         ]
       ],
       [

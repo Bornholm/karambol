@@ -3,46 +3,52 @@
 namespace Karambol\Controller;
 
 use Karambol\KarambolApp;
-use Karambol\AccessControl\Resource;
-use Karambol\AccessControl\BaseActions;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class Controller implements ControllerInterface {
 
   protected $app;
 
+  /**
+   * Get an application service by its name
+   *
+   * @param string $service The name of the wanted service
+   * @return mixed The application service, null if not found
+   */
   public function get($service) {
     return isset($this->app[$service]) ? $this->app[$service] : null;
   }
 
+  /**
+   * Return a HTTP redirect response to the provided URL
+   *
+   * @param string $url The URL to redirect to
+   * @param integer $status The HTTP status of the response, default "302"
+   * @return Response The HTTP Response
+   */
   public function redirect($url, $status = 302) {
     return $this->app->redirect($url, $status);
   }
 
+  /**
+   * Return an aborted HTTP response with the provided status and message
+   *
+   * @param integer $status The HTTP status to return
+   * @param integer $status The message to attach to the response
+   * @return Response The HTTP Response
+   */
   public function abort($status, $message = '') {
     return $this->app->abort($status, $message);
   }
 
+  /**
+   * Attach controler to the provided application
+   *
+   * @param KarambolApp $app To app to attach the controller to
+   * @return static The controller
+   */
   public function bindTo(KarambolApp $app) {
     $this->app = $app;
     $this->mount($app);
-  }
-
-  protected function assertUrlAccessAuthorization($throwsException = true) {
-
-    $request = $this->get('request');
-    $resource = new Resource('url', $request->getRequestURI());
-
-    $authCheck = $this->get('security.authorization_checker');
-    $canAccess = $authCheck->isGranted(BaseActions::ACCESS, $resource);
-
-    if(!$canAccess) {
-      if($throwsException) throw new AccessDeniedException();
-      return false;
-    }
-
-    return true;
-
   }
 
   /**

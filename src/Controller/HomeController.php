@@ -16,8 +16,6 @@ class HomeController extends Controller {
 
   public function showHome() {
 
-    $this->assertUrlAccessAuthorization();
-
     $homePage = $this->get('pages')->getHomepage();
     if($homePage instanceof PageInterface) {
       return $this->redirect($homePage->getUrl());
@@ -26,14 +24,11 @@ class HomeController extends Controller {
   }
 
   public function showDefaultHome() {
-    $this->assertUrlAccessAuthorization();
     $twig = $this->get('twig');
     return $twig->render('home/index.html.twig');
   }
 
   public function showFramedPage($pageSlug) {
-
-    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $pagesSvc = $this->get('pages');

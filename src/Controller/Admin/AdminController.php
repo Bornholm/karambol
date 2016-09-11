@@ -12,7 +12,6 @@ class AdminController extends Controller {
   }
 
   public function showAdminIndex() {
-    $this->assertUrlAccessAuthorization();
     $twig = $this->get('twig');
     return $twig->render('admin/index.html.twig');
   }

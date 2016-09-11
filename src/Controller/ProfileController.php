@@ -16,8 +16,6 @@ class ProfileController extends Controller {
 
   public function showProfile() {
 
-    $this->assertUrlAccessAuthorization();
-
     $twig = $this->get('twig');
     $user = $this->get('user');
 
@@ -31,8 +29,6 @@ class ProfileController extends Controller {
   }
 
   public function handleProfileForm() {
-
-    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $request = $this->get('request');

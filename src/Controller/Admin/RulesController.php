@@ -30,8 +30,6 @@ class RulesController extends Controller {
 
   public function showRules() {
 
-    $this->assertUrlAccessAuthorization();
-
     $twig = $this->get('twig');
     $orm = $this->get('orm');
 
@@ -54,8 +52,6 @@ class RulesController extends Controller {
   }
 
   public function handleRulesetUpsert() {
-
-    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $orm = $this->get('orm');

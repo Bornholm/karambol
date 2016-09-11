@@ -15,8 +15,6 @@ class SettingsController extends Controller {
 
   public function showSettings() {
 
-    $this->assertUrlAccessAuthorization();
-
     $twig = $this->get('twig');
     $form = $this->getSettingsForm();
     return $twig->render('admin/settings/index.html.twig', [
@@ -25,8 +23,6 @@ class SettingsController extends Controller {
   }
 
   public function handleSettings() {
-
-    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $request = $this->get('request');

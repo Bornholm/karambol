@@ -16,6 +16,9 @@ use Karambol\Entity\RuleSet;
 use Karambol\RuleEngine\BaseCustomizationAPIListener;
 use Karambol\RuleEngine\BaseAccessControlAPIListener;
 use Karambol\RuleEngine\RuleEngineVariableViewInterface;
+use Karambol\AccessControl\Resource;
+use Karambol\AccessControl\BaseActions;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class RuleEngineBootstrap implements BootstrapInterface {
 
@@ -34,11 +37,13 @@ class RuleEngineBootstrap implements BootstrapInterface {
     $ruleEngine->addListener(RuleEngineEvent::BEFORE_EXECUTE_RULES, [$accessControlAPIListener, 'onBeforeExecuteRules']);
 
     // Execute customization rules on request
-    $app->before([$this, 'onBeforeRequest']);
+    $app->before([$this, 'customizationRulesMiddleware']);
+    // Check URL access authorization
+    $app->before([$this, 'URLAccessAuthorizationMiddleware']);
 
   }
 
-  public function onBeforeRequest(Request $request, Application $app) {
+  public function customizationRulesMiddleware(Request $request, Application $app) {
 
     $logger = $app['monolog'];
     $ruleEngine = $app['rule_engine'];
@@ -61,6 +66,18 @@ class RuleEngineBootstrap implements BootstrapInterface {
       // TODO Store rule exception and provide the debugging information to the administrator
       $logger->error($ex);
     }
+
+  }
+
+  public function URLAccessAuthorizationMiddleware(Request $request, Application $app) {
+
+    $request = $app['request'];
+    $resource = new Resource('url', $request->getRequestURI());
+
+    $authCheck =  $app['security.authorization_checker'];
+    $canAccess = $authCheck->isGranted(BaseActions::ACCESS, $resource);
+
+    if(!$canAccess) throw new AccessDeniedException();
 
   }
 

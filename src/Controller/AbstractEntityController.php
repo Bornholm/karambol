@@ -32,8 +32,12 @@ abstract class AbstractEntityController extends Controller {
 
     $routePrefix = $this->getRoutePrefix();
 
-    $app->get($routePrefix, [$this, 'showEntities'])->bind($this->getRouteName(self::LIST_ACTION));
-    $app->get($routePrefix.'/new', [$this, 'showNewEntity'])->bind($this->getRouteName(self::NEW_ACTION));
+    $app->get($routePrefix, [$this, 'showEntities'])
+      ->bind($this->getRouteName(self::LIST_ACTION))
+    ;
+
+    $app->get($routePrefix.'/new', [$this, 'showNewEntity'])
+      ->bind($this->getRouteName(self::NEW_ACTION));
     $app->get($routePrefix.'/{entityId}', [$this, 'showEntityEdit'])->bind($this->getRouteName(self::EDIT_ACTION));
     $app->delete($routePrefix.'/{entityId}', [$this, 'handleEntityDelete'])
       ->value('entityId', '')
@@ -55,7 +59,6 @@ abstract class AbstractEntityController extends Controller {
   }
 
   public function showEntities($offset = 0, $limit = null) {
-    $this->assertUrlAccessAuthorization();
     $twig = $this->get('twig');
     return $twig->render($this->getViewsDirectory().'/index.html.twig', [
       'entities' => $this->getEntities($offset, $limit)
@@ -63,8 +66,6 @@ abstract class AbstractEntityController extends Controller {
   }
 
   public function showEntityEdit($entityId) {
-
-    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $orm = $this->get('orm');
@@ -83,7 +84,6 @@ abstract class AbstractEntityController extends Controller {
   }
 
   public function showNewEntity() {
-    $this->assertUrlAccessAuthorization();
     $twig = $this->get('twig');
     $entityEditForm = $this->getEntityEditForm();
     return $twig->render($this->getViewsDirectory().'/edit.html.twig', [
@@ -92,8 +92,6 @@ abstract class AbstractEntityController extends Controller {
   }
 
   public function handleEntityUpsert($entityId) {
-
-    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $orm = $this->get('orm');
@@ -133,8 +131,6 @@ abstract class AbstractEntityController extends Controller {
   }
 
   public function handleEntityDelete($entityId) {
-
-    $this->assertUrlAccessAuthorization();
 
     $twig = $this->get('twig');
     $orm = $this->get('orm');
