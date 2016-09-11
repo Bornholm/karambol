@@ -12,7 +12,7 @@ use Karambol\AccessControl\BaseActions;
 use Karambol\AccessControl\Parser\ResourceSelectorParser;
 use Karambol\AccessControl\ResourceOwnerInterface;
 use Karambol\RuleEngine\RuleEngine;
-use Karambol\Entity\BaseUser;
+use Karambol\Entity\User;
 use Karambol\RuleEngine\RuleEngineVariableViewInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -24,7 +24,7 @@ class RuleEngineAccessControlVoter implements VoterInterface {
 
     $app = $this->app;
     $logger = $app['logger'];
-    $user = $token instanceof AnonymousToken ? new BaseUser() : $token->getUser();
+    $user = $token instanceof AnonymousToken ? new User() : $token->getUser();
 
     $action = null;
     $resource = null;

@@ -5,13 +5,13 @@ namespace Karambol\Controller\Admin;
 use Karambol\KarambolApp;
 use Karambol\Controller\AbstractEntityController;
 use Karambol\Entity\User;
-use Karambol\Form\Type\BaseUserType;
+use Karambol\Form\Type\UserType;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class UsersController extends AbstractEntityController {
 
-  protected function getEntityClass() { return $this->get('user_entity'); }
+  protected function getEntityClass() { return User::class; }
   protected function getViewsDirectory() { return 'admin/users'; }
   protected function getRoutePrefix() { return '/admin/users'; }
   protected function getRouteNamePrefix() { return 'admin_users'; }
@@ -101,7 +101,7 @@ class UsersController extends AbstractEntityController {
 
     if($user === null) $user = new $userEntity();
 
-    $formBuilder = $formFactory->createBuilder(BaseUserType::class, $user);
+    $formBuilder = $formFactory->createBuilder(UserType::class, $user);
     $action = $urlGen->generate($this->getRouteName(self::UPSERT_ACTION), ['entityId' => $user->getId()]);
 
     return $formBuilder->setAction($action)

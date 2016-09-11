@@ -2,8 +2,8 @@
 
 namespace Karambol\Account;
 
+use Karambol\Entity\User;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Karambol\Entity\BaseUser;
 use Karambol\KarambolApp;
 use Karambol\Account\ChangePasswordEvent;
 
@@ -21,13 +21,12 @@ class AccountService extends EventDispatcher {
       throw new Exception\AccountExistsException($username);
     }
 
-    $userEntity = $this->app['user_entity'];
     $orm = $this->app['orm'];
 
     $salt = $this->generateSalt();
     $hash = $this->hashPassword($password, $salt);
 
-    $user = new $userEntity();
+    $user = new User();
 
     $user->setUsername($username);
     $user->changePassword($hash, $salt);
@@ -45,16 +44,15 @@ class AccountService extends EventDispatcher {
   }
 
   public function accountExists($username) {
-    $userEntity = $this->app['user_entity'];
     $orm = $this->app['orm'];
-    $qb = $orm->getRepository($userEntity)->createQueryBuilder('u');
+    $qb = $orm->getRepository(User::class)->createQueryBuilder('u');
     $qb->select('count(u)')
       ->where($qb->expr()->eq('u.username', $qb->expr()->literal($username)))
     ;
     return $qb->getQuery()->getSingleScalarResult() != 0;
   }
 
-  public function changePassword(BaseUser $user, $newPassword) {
+  public function changePassword(User $user, $newPassword) {
 
     $orm = $this->app['orm'];
 

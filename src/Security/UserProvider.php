@@ -22,9 +22,8 @@ class UserProvider extends EventDispatcher implements UserProviderInterface {
   public function loadUserByUsername($username) {
 
     $orm = $this->app['orm'];
-    $userEntity = $this->app['user_entity'];
 
-    $usersRepo = $orm->getRepository($userEntity);
+    $usersRepo = $orm->getRepository(User::class);
     $user = $usersRepo->findOneByUsername($username);
 
     if(!$user) {
@@ -51,7 +50,7 @@ class UserProvider extends EventDispatcher implements UserProviderInterface {
   }
 
   public function supportsClass($class) {
-    return $class === 'Karambol\Entity\User';
+    return $class === User::class;
   }
 
 }
