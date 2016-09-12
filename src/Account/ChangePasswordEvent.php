@@ -3,7 +3,7 @@
 namespace Karambol\Account;
 
 use Symfony\Component\EventDispatcher\Event;
-use Karambol\Entity\BaseUser;
+use Karambol\Entity\User;
 
 class ChangePasswordEvent extends Event {
 
@@ -12,7 +12,7 @@ class ChangePasswordEvent extends Event {
   protected $user;
   protected $clearTextPassword;
 
-  public function __construct(BaseUser $user, $clearTextPassword) {
+  public function __construct(User $user, $clearTextPassword) {
     $this->user = $user;
     $this->clearTextPassword = $clearTextPassword;
   }

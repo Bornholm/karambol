@@ -41,9 +41,8 @@ class PromoteAccountCommand extends Command
 
     $username = $input->getArgument('username');
     $orm = $this->app['orm'];
-    $userEntity = $this->app['user_entity'];
 
-    $user = $orm->getRepository($userEntity)->findOneByUsername($username);
+    $user = $orm->getRepository(User::class)->findOneByUsername($username);
 
     if(!$user) {
       $output->writeln(sprintf('<error>The account with username "%s" does not exists.</error>', $username));

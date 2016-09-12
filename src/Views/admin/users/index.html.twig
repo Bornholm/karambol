@@ -16,6 +16,7 @@
             <tr>
               <th>{{ 'admin.users.id'|trans }}</th>
               <th>{{ 'admin.users.username'|trans }}</th>
+              <th>{{ 'admin.users.email'|trans }}</th>
               <th>{{ 'admin.users.actions'|trans }}</th>
             </tr>
           </thead>
@@ -24,6 +25,7 @@
               <tr>
                 <td>{{user.id}}</td>
                 <td>{{user.username}}</td>
+                <td>{% if user.email is empty %}<i>{{ 'admin.users.unknown' | trans }}</i>{% else %}{{ user.email }}{% endif %}</td>
                 <td>
                   <a href="{{ path('admin_users_edit', {'entityId': user.id}) }}" class="btn btn-primary btn-xs">{{ 'admin.users.edit'|trans }}</a>
                 </td>

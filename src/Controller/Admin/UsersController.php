@@ -5,13 +5,13 @@ namespace Karambol\Controller\Admin;
 use Karambol\KarambolApp;
 use Karambol\Controller\AbstractEntityController;
 use Karambol\Entity\User;
-use Karambol\Form\Type\BaseUserType;
+use Karambol\Form\Type\UserType;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class UsersController extends AbstractEntityController {
 
-  protected function getEntityClass() { return $this->get('user_entity'); }
+  protected function getEntityClass() { return User::class; }
   protected function getViewsDirectory() { return 'admin/users'; }
   protected function getRoutePrefix() { return '/admin/users'; }
   protected function getRouteNamePrefix() { return 'admin_users'; }
@@ -33,13 +33,19 @@ class UsersController extends AbstractEntityController {
     $orm = $this->get('orm');
     $user = $form->getData();
 
+    $userCreation = false;
+
     if($user->getId() === null) {
       $orm->persist($user);
+      $userCreation = true;
     }
 
     $orm->flush();
 
-    $this->addFlashMessage('User saved.');
+    $this->addFlashMessage(
+      $userCreation ? 'admin.users.user_created' : 'admin.users.user_saved',
+      ['type' => 'success']
+    );
 
     return $user;
 
@@ -51,19 +57,21 @@ class UsersController extends AbstractEntityController {
     $data = $form->getData();
 
     if(!isset($data['userId'])) {
-      // TODO add flash message to indicate error
+      $this->addFlashMessage('admin.users.invalid_data', ['type' => 'error']);
       return false;
     }
 
     $user = $orm->getRepository($this->getEntityClass())->find($data['userId']);
 
     if(!$user) {
-      // TODO add flash message to indicate error
+      $this->addFlashMessage('admin.users.user_not_found', ['type' => 'error']);
       return false;
     }
 
     $orm->remove($user);
     $orm->flush();
+
+    $this->addFlashMessage('admin.users.user_deleted', ['type' => 'success']);
 
     return true;
 
@@ -101,7 +109,7 @@ class UsersController extends AbstractEntityController {
 
     if($user === null) $user = new $userEntity();
 
-    $formBuilder = $formFactory->createBuilder(BaseUserType::class, $user);
+    $formBuilder = $formFactory->createBuilder(UserType::class, $user);
     $action = $urlGen->generate($this->getRouteName(self::UPSERT_ACTION), ['entityId' => $user->getId()]);
 
     return $formBuilder->setAction($action)

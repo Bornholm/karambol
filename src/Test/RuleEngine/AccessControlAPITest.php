@@ -6,7 +6,6 @@ use Karambol\KarambolApp;
 use Karambol\RuleEngine\RuleEngine;
 use Karambol\RuleEngine\BaseAccessControlAPIListener;
 use Karambol\Entity\User;
-use Karambol\Entity\BaseUser;
 use Karambol\AccessControl\Resource;
 use Karambol\AccessControl\ResourceInterface;
 use Karambol\AccessControl\ResourceOwnerInterface;
@@ -56,7 +55,7 @@ class AccessControlAPITest extends \PHPUnit_Framework_TestCase
 
 }
 
-class MightyUser extends BaseUser {
+class MightyUser extends User {
 
   public function owns(ResourceInterface $resource) {
     return true;

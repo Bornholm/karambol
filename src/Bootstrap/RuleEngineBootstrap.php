@@ -11,7 +11,7 @@ use Karambol\RuleEngine\CustomizationListener;
 use Karambol\RuleEngine\ExpressionFunctionProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
-use Karambol\Entity\BaseUser;
+use Karambol\Entity\User;
 use Karambol\Entity\RuleSet;
 use Karambol\RuleEngine\BaseCustomizationAPIListener;
 use Karambol\RuleEngine\BaseAccessControlAPIListener;
@@ -55,7 +55,7 @@ class RuleEngineBootstrap implements BootstrapInterface {
 
     $rules = $ruleset->getRules()->toArray();
 
-    $user = $app['user'] ? $app['user'] : new BaseUser();
+    $user = $app['user'] ? $app['user'] : new User();
     $vars = [
       'user' => $user instanceof RuleEngineVariableViewInterface ? $user->createRuleEngineView() : $user
     ];

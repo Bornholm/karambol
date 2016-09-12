@@ -5,7 +5,6 @@ namespace Karambol\Controller;
 use Karambol\KarambolApp;
 use Karambol\Form\Type\ProfileType;
 use Karambol\Entity\User;
-use Karambol\Entity\BaseUser;
 
 class ProfileController extends Controller {
 
@@ -59,7 +58,7 @@ class ProfileController extends Controller {
 
   }
 
-  protected function getProfileForm(BaseUser $user) {
+  protected function getProfileForm(User $user) {
 
     $formFactory = $this->get('form.factory');
     $urlGen = $this->get('url_generator');

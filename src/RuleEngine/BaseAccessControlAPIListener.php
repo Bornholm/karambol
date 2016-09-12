@@ -8,7 +8,7 @@ use Karambol\KarambolApp;
 use Karambol\Menu\MenuItem;
 use Karambol\Page\PageInterface;
 use Karambol\Page\Page;
-use Karambol\Entity\BaseUser;
+use Karambol\Entity\User;
 use Karambol\AccessControl\Parser\ResourceSelectorParser;
 use Karambol\AccessControl\ResourceSelector;
 use Karambol\AccessControl\ResourceOwnerInterface;
@@ -85,13 +85,13 @@ class BaseAccessControlAPIListener extends CommonAPIConfigurator {
   public function addRoleMethodHandler($vars, $role) {
     $context = $vars['_context'];
     $user = $context->user;
-    if($user instanceof BaseUser) $user->addRole($role);
+    if($user instanceof User) $user->addRole($role);
   }
 
   public function removeRoleMethodHandler($vars, $role) {
     $context = $vars['_context'];
     $user = $context->user;
-    if($user instanceof BaseUser) $user->removeRole($role);
+    if($user instanceof User) $user->removeRole($role);
   }
 
   public function hasRoleMethodHandler($vars, $role) {

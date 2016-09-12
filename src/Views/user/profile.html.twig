@@ -1,7 +1,5 @@
 {% extends 'home/index.html.twig' %}
 
-{% set canUpdate = is_granted('update', resource('user', user.id)) %}
-
 {% block body_content %}
   <div class="container">
     <div class="row">
@@ -17,7 +15,8 @@
             <h3 class="panel-title">{{'profile.personal_informations'|trans}}</h3>
           </div>
           <div class="panel-body">
-            {{ form_row(profileForm.email, {"attr": {"disabled": not canUpdate} }) }}
+            {{ form_row(profileForm.username, {"attr": {"disabled": not is_granted('update', resource('user.username', user.id))} }) }}
+            {{ form_row(profileForm.email, {"attr": {"disabled": not is_granted('update', resource('user.email', user.id))} }) }}
           </div>
         </div>
       </div>
@@ -27,7 +26,8 @@
             <h3 class="panel-title">{{'profile.change_password'|trans}}</h3>
           </div>
           <div class="panel-body">
-            {{ form_row(profileForm.password, {"attr": {"disabled": not canUpdate} }) }}
+            {{ form_row(profileForm.password.first, {"attr": {"disabled": not is_granted('update', resource('user.password', user.id))} }) }}
+            {{ form_row(profileForm.password.second, {"attr": {"disabled": not is_granted('update', resource('user.password', user.id))} }) }}
           </div>
         </div>
       </div>
@@ -35,7 +35,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="pull-right clearfix">
-          {{ form_row(profileForm.submit, {"attr": {"disabled": not canUpdate} }) }}
+          {{ form_row(profileForm.submit, {"attr": {"disabled": not is_granted('update', resource('user', user.id))} }) }}
           {{ form_end(profileForm, {"render_rest": true}) }}
         </div>
       </div>

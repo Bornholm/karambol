@@ -9,6 +9,7 @@ admin:
   users:
     id: Identifiant
     username: Nom d'utilisateur
+    email: Adresse courriel
     actions: Actions
     no_users: Aucun utilisateur pour le moment.
     create: Créer
@@ -21,6 +22,12 @@ admin:
     username: "Nom d'utilisateur"
     password: Mot de passe
     repeat_password: Répéter le mot de passe
+    user_deleted: L'utilisateur a été supprimé.
+    user_saved: Modifications sur l'utilisateur enregistrées
+    user_created: L'utilisateur a été créé.
+    invalid_data: Les données du formulaire sont invalides ou malformées.
+    user_not_found: Impossible de trouver l'utilisateur
+    unknown: Non renseigné
   pages:
     label: Label
     slug: Identifiant textuel (slug)
@@ -86,6 +93,7 @@ home:
   powered_by_karambol: Propulsé par Karambol
 profile:
   my_profile: Mon profil
+  username: Nom d'utilisateur
   email: Adresse courriel
   personal_informations: Mes informations personnelles
   change_password: Changer mon mot de passe
