@@ -22,6 +22,8 @@ mailer:
     password: ~
     encryption: ~
     auth_mode: ~
+  delivery_whitelist: ~
+  delivery_addresses: ~
 
 assets:
   jquery:
