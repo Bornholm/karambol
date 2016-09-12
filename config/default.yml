@@ -13,6 +13,16 @@ logger:
   file: ~
   level: WARNING
 
+mailer:
+  sender_address: [noreply@karambol.lan, Karambol Mailer]
+  options:
+    host: 127.0.0.1
+    port: 25
+    username: ~
+    password: ~
+    encryption: ~
+    auth_mode: ~
+
 assets:
   jquery:
     - { src: vendor/components/jquery, dest: public/vendor/jquery }
