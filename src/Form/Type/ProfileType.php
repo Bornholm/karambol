@@ -6,18 +6,22 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints as Constraints;
 
 class ProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
       $builder
+        ->add('username', Type\TextType::class, [
+          'label' => 'profile.username'
+        ])
         ->add('email', Type\TextType::class, [
-          'label' => 'profile.email',
+          'label' => 'admin.users.email',
           'constraints' => [
-            new Assert\Email()
-          ]
+            new Constraints\Email()
+          ],
+          'required' => false
         ])
         ->add('password', Type\RepeatedType::class, array(
           'type' => Type\PasswordType::class,

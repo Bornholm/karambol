@@ -33,13 +33,19 @@ class UsersController extends AbstractEntityController {
     $orm = $this->get('orm');
     $user = $form->getData();
 
+    $userCreation = false;
+
     if($user->getId() === null) {
       $orm->persist($user);
+      $userCreation = true;
     }
 
     $orm->flush();
 
-    $this->addFlashMessage('User saved.');
+    $this->addFlashMessage(
+      $userCreation ? 'admin.users.user_created' : 'admin.users.user_saved',
+      ['type' => 'success']
+    );
 
     return $user;
 
@@ -51,19 +57,21 @@ class UsersController extends AbstractEntityController {
     $data = $form->getData();
 
     if(!isset($data['userId'])) {
-      // TODO add flash message to indicate error
+      $this->addFlashMessage('admin.users.invalid_data', ['type' => 'error']);
       return false;
     }
 
     $user = $orm->getRepository($this->getEntityClass())->find($data['userId']);
 
     if(!$user) {
-      // TODO add flash message to indicate error
+      $this->addFlashMessage('admin.users.user_not_found', ['type' => 'error']);
       return false;
     }
 
     $orm->remove($user);
     $orm->flush();
+
+    $this->addFlashMessage('admin.users.user_deleted', ['type' => 'success']);
 
     return true;
 

@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
+use Symfony\Component\Validator\Constraints as Constraints;
 
 class UserType extends AbstractType
 {
@@ -14,6 +15,13 @@ class UserType extends AbstractType
       $builder
         ->add('username', Type\TextType::class, [
           'label' => 'admin.users.username'
+        ])
+        ->add('email', Type\TextType::class, [
+          'label' => 'admin.users.email',
+          'constraints' => [
+            new Constraints\Email()
+          ],
+          'required' => false
         ])
         ->add('submit', Type\SubmitType::class, [
           'label' => 'admin.users.save_user',

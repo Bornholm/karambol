@@ -29,6 +29,11 @@ class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableV
   protected $username;
 
   /**
+   * @ORM\Column(type="string", length=254, unique=true, nullable=true)
+   */
+  protected $email;
+
+  /**
    * @ORM\Column(type="text", nullable=true)
    */
   protected $password;
@@ -58,11 +63,12 @@ class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableV
   }
 
   public function getEmail() {
-    return $this->getUsername();
+    return $this->email;
   }
 
   public function setEmail($email) {
-    return $this->setUsername($email);
+    $this->email = $email;
+    return $this;
   }
 
   /**
@@ -162,7 +168,23 @@ class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableV
   }
 
   public function owns(ResourceInterface $resource) {
-    return $resource->getResourceType() === 'user' && $resource->getResourceId() === $this->getId();
+
+    $owns = ( $resource->getResourceType() === 'user' ||
+      fnmatch('user.*', $resource->getResourceType()) ) &&
+      $resource->getResourceId() === $this->getId()
+    ;
+
+    if($owns) return true;
+
+    foreach($this->getExtensions() as $extension) {
+      if($extension instanceof ResourceOwnerInterface) {
+        $owns = $extension->owns($resource);
+        if($owns) return true;
+      }
+    }
+
+    return false;
+
   }
 
   public function createRuleEngineView() {
@@ -173,7 +195,7 @@ class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableV
   }
 
   public function __toString() {
-    return sprintf('user#%s', $this->getId());
+    return sprintf('user[%s]', $this->getId());
   }
 
 }
