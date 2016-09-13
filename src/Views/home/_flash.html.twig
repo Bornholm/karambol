@@ -1,20 +1,32 @@
 {% if app.session.flashbag.peek('message') %}
 
 {%
-  set classTypeMap = {
-    'danger': 'danger',
-    'error': 'danger',
-    'success': 'success',
-    'info': 'info',
-    'warn': 'warn'
+  set defaultFlashMessageOpts = {
+    "classTypeMap": {
+      'danger': 'danger',
+      'error': 'danger',
+      'success': 'success',
+      'info': 'info',
+      'warn': 'warn'
+    },
+    "offset": 0,
+    "width": 12
   }
 %}
 
+{% set flashMessageOpts = flashMessageOpts is defined ? defaultFlashMessageOpts|merge(flashMessageOpts) : defaultFlashMessageOpts %}
+
 <div class="container-fluid">
   {% for flash in app.session.flashbag.get('message') %}
+    {%
+      set flashMessageAlertClass =
+        flash.options.type is defined and flashMessageOpts.classTypeMap[flash.options.type] is defined ?
+        flashMessageOpts.classTypeMap[flash.options.type] :
+        'info'
+    %}
     <div class="row">
-      <div class="col-md-12">
-        <div class="alert alert-{{ flash.options.type is defined and classTypeMap[flash.options.type] is defined ? classTypeMap[flash.options.type] : 'info' }}">
+      <div class="col-md-{{flashMessageOpts.width}} col-md-offset-{{flashMessageOpts.offset}}">
+        <div class="alert alert-{{ flashMessageAlertClass }}">
           {% if flash.options.icon is defined %}<i class="{{ flash.options.icon }}"></i> {% endif %}{{ flash.content | trans }}
         </div>
       </div>

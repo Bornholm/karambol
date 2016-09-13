@@ -70,7 +70,10 @@ class SeedRulesCommand extends Command
     $rules = [
       [
         'condition' => 'not isConnected()',
-        'actions' => ['addPageToMenu("login", "home_main", {"align":"right", "icon_class": "fa fa-sign-in"})']
+        'actions' => [
+          'addPageToMenu("register", "home_main", {"align":"right", "icon_class": "fa fa-edit"})',
+          'addPageToMenu("login", "home_main", {"align":"right", "icon_class": "fa fa-sign-in"})'
+        ]
       ],
       [
         'condition' => 'isGranted("ROLE_ADMIN")',

@@ -11,8 +11,20 @@
             <input id="login-username" name="_username" type="text" class="form-control" value="{{lastUsername}}" />
             <label for="login-password">{{ 'auth.password' | trans }}</label>
             <input id="login-password" name="_password" type="password" class="form-control" />
-            <div class="clearfix" style="margin-top:15px;">
-              <button type="submit" class="btn btn-primary pull-right">{{ 'auth.login_submit' | trans }}</button>
+            <div class="container-fluid">
+              <div class="row" style="margin-top:15px;">
+                <div class="col-md-6 karambol-no-padding">
+                  <small>
+                    <a href="#">{{ 'auth.forget_password'| trans }}</a><br />
+                    <a href="{{ path('register') }}">{{ 'auth.no_account'| trans }}</a>
+                  </small>
+                </div>
+                <div class="col-md-6 karambol-no-padding">
+                  <div class="clearfix">
+                    <button type="submit" class="btn btn-primary pull-right">{{ 'auth.login_submit' | trans }}</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </form>
         </div>

@@ -67,6 +67,15 @@ auth:
   username: Nom d'utilisateur
   password: Mot de passe
   Bad credentials.: Identifiants invalides.
+  no_account: Pas encore de compte ? S'incrire
+  forget_password: J'ai oublié mon mot de passe
+registration:
+  create_account: Créer un compte
+  username: Nom d'utilisateur
+  email_confirm: Confirmation de votre adresse courriel
+  email: Adresse courriel
+  register: S'enregistrer
+  successfully_registered: Inscription réussie. Vous allez recevoir un courriel afin de définir votre mot de passe.
 menus:
   admin:
     admin: Administration

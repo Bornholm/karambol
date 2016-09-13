@@ -5,6 +5,10 @@ html, body {
   height: 100%;
 }
 
+.karambol-no-padding {
+  padding: 0;
+}
+
 .karambol-header {
   z-index: 10;
 }

@@ -17,6 +17,7 @@ class ControllersBootstrap implements BootstrapInterface {
       'Karambol\Controller\Admin\UsersController',
       'Karambol\Controller\Admin\SettingsController',
       'Karambol\Controller\AuthenticationController',
+      'Karambol\Controller\RegistrationController',
       'Karambol\Controller\ProfileController',
       'Karambol\Controller\DocumentationController',
     ];
