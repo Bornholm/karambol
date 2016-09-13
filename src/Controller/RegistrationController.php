@@ -33,6 +33,8 @@ class RegistrationController extends Controller {
       ]);
     }
 
+    $accounts = $this->get('accounts');
+
     $this->addFlashMessage('registration.successfully_registered', ['type' => 'success']);
 
     return $this->redirect($this->get('url_generator')->generate('home'));

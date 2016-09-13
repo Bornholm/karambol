@@ -70,6 +70,10 @@ class AccountService extends EventDispatcher {
 
   }
 
+  public function sendPasswordResetEmail(User $user) {
+    
+  }
+
   protected function generateSalt() {
     return base64_encode(random_bytes(8));
   }

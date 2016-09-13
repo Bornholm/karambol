@@ -76,6 +76,10 @@ registration:
   email: Adresse courriel
   register: S'enregistrer
   successfully_registered: Inscription réussie. Vous allez recevoir un courriel afin de définir votre mot de passe.
+password_reset:
+  reset_password: Réinitialisation du mot de passe
+  email: Adresse courriel
+  ask_reset: Demander la réinitialisation
 menus:
   admin:
     admin: Administration
