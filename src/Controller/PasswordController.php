@@ -25,7 +25,7 @@ class PasswordController extends Controller {
 
     $request = $this->get('request');
 
-    $form = $this->getRegisterForm();
+    $form = $this->getPasswordResetForm();
 
     $form->handleRequest($request);
 
@@ -36,6 +36,9 @@ class PasswordController extends Controller {
     }
 
     $accounts = $this->get('accounts');
+    $user = $this->get('user');
+
+
 
     $this->addFlashMessage('password_reset.successfully_changed_password', ['type' => 'success']);
 

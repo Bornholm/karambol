@@ -76,6 +76,9 @@ registration:
   email: Adresse courriel
   register: S'enregistrer
   successfully_registered: Inscription réussie. Vous allez recevoir un courriel afin de définir votre mot de passe.
+  username_already_exists: Le nom d'utilisateur est déjà utilisé.
+  email_already_exists: Cette adresse courriel est déjà utilisée.
+  emails_must_be_the_same: Les adresses courriel doivent être identiques.
 password_reset:
   reset_password: Réinitialisation du mot de passe
   email: Adresse courriel
@@ -113,3 +116,9 @@ profile:
   password: Nouveau mot de passe
   password_confirm: Confirmation du mot de passe
   save_profile: Enregistrer
+email:
+  greetings: Bonjour
+  password_reset_subject: (Ré)initialisation de votre mot de passe
+  password_reset_message: |
+    Vous avez demandé à (ré)initialiser votre mot de passe.
+    Veuillez suivre [ce lien](%s) pour terminer la procédure.

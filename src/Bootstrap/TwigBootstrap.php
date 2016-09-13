@@ -25,6 +25,9 @@ class TwigBootstrap implements BootstrapInterface {
 
     // Add default helpers
     $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+
+      $twig->getLoader()->addLoader(new \Twig_Loader_String());
+
       $twig->addExtension(new CommonMarkExtension($app));
 
       $twig->addFunction(new \Twig_SimpleFunction('file_exists', function($filePath) {
