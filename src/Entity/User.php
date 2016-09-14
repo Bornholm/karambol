@@ -46,7 +46,7 @@ class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableV
   /**
    * @ORM\Column(type="datetime", nullable=true)
    */
-  protected $passwordTimestamp;
+  protected $passwordTokenTimestamp;
 
   /**
   * @var ArrayCollection
@@ -179,12 +179,12 @@ class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableV
 
   public function resetPasswordToken() {
     $this->passwordToken = bin2hex(random_bytes(32));
-    $this->passwordTimestamp = new \DateTime();
+    $this->passwordTokenTimestamp = new \DateTime();
   }
 
   public function clearPasswordToken() {
     $this->passwordToken = null;
-    $this->passwordTimestamp = null;
+    $this->passwordTokenTimestamp = null;
   }
 
   public function getPasswordToken() {

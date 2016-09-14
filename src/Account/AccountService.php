@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Karambol\KarambolApp;
 use Karambol\Account\ChangePasswordEvent;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Doctrine\DBAL\Types\Type;
 
 class AccountService extends EventDispatcher {
 
@@ -85,6 +86,27 @@ class AccountService extends EventDispatcher {
 
   }
 
+  public function findUserForPasswordToken($token, \DateInterval $validityInterval = null) {
+
+    if($validityInterval == null) $validityInterval = new \DateInterval('P1D');
+
+    $validityThreshold = new \DateTime();
+    $validityThreshold->sub($validityInterval);
+
+    $orm = $this->app['orm'];
+
+    $qb = $orm->getRepository(User::class)->createQueryBuilder('u');
+
+    $qb->select('u')
+      ->andWhere($qb->expr()->eq('u.passwordToken', $qb->expr()->literal($token)))
+      ->andWhere($qb->expr()->gt('u.passwordTokenTimestamp', ':validityThreshold'))
+      ->setParameter('validityThreshold', $validityThreshold, Type::DATETIME)
+    ;
+
+    return $qb->getQuery()->getOneOrNullResult();
+
+  }
+
   public function sendPasswordResetEmail(User $user) {
 
     $mailer = $this->app['mailer'];
@@ -94,9 +116,10 @@ class AccountService extends EventDispatcher {
     $urlGenerator = $this->app['url_generator'];
 
     $user->resetPasswordToken();
+    $orm->flush();
 
     $passwordResetUrl = $urlGenerator->generate('password_reset', ['token' => $user->getPasswordToken()], UrlGenerator::ABSOLUTE_URL);
-    $message = $twig->render(sprintf($translator->trans('email.password_reset_message'), $passwordResetUrl));
+    $message = sprintf($translator->trans('email.password_reset_message'), $passwordResetUrl);
 
     $messageVars = [
       'username' => $user->getUsername(),

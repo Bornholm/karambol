@@ -82,7 +82,14 @@ registration:
 password_reset:
   reset_password: Réinitialisation du mot de passe
   email: Adresse courriel
-  ask_reset: Demander la réinitialisation
+  request_reset: Demander la réinitialisation
+  new_password: Mot de passe
+  new_password_confirm: Confirmation du mot de passe
+  submit_reset: Enregistrer
+  invalid_token: Le jeton de réinitialisation de votre mot de passe est invalide ou périmé. Veuillez réitérer votre demande.
+  new_password_saved: Votre nouveau mot de passe a été enregistré.
+  email_unknown: Cette adresse courriel nous est inconnue.
+  reset_email_sent: Un courriel de réinitialisation de votre mot de passe vous a été envoyé.
 menus:
   admin:
     admin: Administration

@@ -41,7 +41,6 @@ class RegistrationController extends Controller {
     $orm = $this->get('orm');
     $data = $form->getData();
 
-
     $email = $data['email'];
 
     $tempPassword = substr(base64_encode(random_bytes(18)), 0, -2);
