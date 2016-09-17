@@ -54,7 +54,12 @@ class LinkAssetsCommand extends Command
 
       }
     }
+  }
 
+  private function createLink($src, $dest) {
+    if(!is_link($dest) && !file_exists($dest)) {
+      symlink($src, $dest);
+    }
   }
 
   protected function createLink($src, $dest) {
