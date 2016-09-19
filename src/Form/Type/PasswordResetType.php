@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Validator\Constraints as Constraints;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 class PasswordResetType extends AbstractType
 {
@@ -17,7 +16,9 @@ class PasswordResetType extends AbstractType
         ->add('password', Type\RepeatedType::class, array(
           'type' => Type\PasswordType::class,
           'required' => false,
-          'mapped' => false,
+          'constraints' => [
+            new Constraints\NotBlank()
+          ],
           'first_options'  => ['label' => 'password_reset.new_password'],
           'second_options' => ['label' => 'password_reset.new_password_confirm']
         ))

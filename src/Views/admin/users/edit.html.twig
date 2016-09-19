@@ -3,9 +3,12 @@
 {% block content %}
 
   <div class="row">
-    <div class="col-md-push-8  col-md-4 text-right">
+    <div class="col-md-push-8 col-md-4">
       {% if entity is defined %}
-        {{ form(entityDeleteForm, {'attr': {'class': 'form-inline'}}) }}
+      {{ form(entityDeleteForm, {'attr': {'class': 'form-inline pull-right'}}) }}
+      <form class="pull-right" style="margin-right: 10px" method="post" action="{{ path('admin_users_reset_password', {"userId": entity.id}) }}">
+        <button class="btn btn-primary">{{ 'admin.users.send_password_reset'|trans }}</button>
+      </form>
       {% endif %}
     </div>
     <div class="col-md-pull-4 col-md-8">

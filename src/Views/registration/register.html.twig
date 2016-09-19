@@ -3,7 +3,19 @@
 {% block body_content %}
   <div class="karambol-flex-container">
     <div class="karambol-flex-item">
-      {% include 'registration/_register_panel.html.twig' %}
+      {% if app.settings.get('allow_registration') %}
+        {% include 'registration/_register_panel.html.twig' %}
+      {% else %}
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+              <div class="alert alert-info">
+                <i class="fa fa-exclamation-circle"></i> {{ 'registration.registration_currently_disabled'|trans }}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
     </div>
     <div class="karambol-footer">
       {% block body_footer %}

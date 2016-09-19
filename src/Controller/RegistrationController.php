@@ -25,6 +25,9 @@ class RegistrationController extends Controller {
 
   public function handleRegisterForm() {
 
+    $settings = $this->get('settings');
+    if(!$settings->get('allow_registration')) return $this->abort(403);
+
     $request = $this->get('request');
 
     $form = $this->getRegisterForm();

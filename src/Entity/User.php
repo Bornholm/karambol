@@ -197,8 +197,7 @@ class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableV
 
   public function owns(ResourceInterface $resource) {
 
-    $owns = ( $resource->getResourceType() === 'user' ||
-      fnmatch('user.*', $resource->getResourceType()) ) &&
+    $owns = $resource->getResourceType() === 'user' &&
       $resource->getResourceId() === $this->getId()
     ;
 

@@ -6,6 +6,7 @@ use Karambol\KarambolApp;
 use Karambol\Form\Type\PasswordResetRequestType;
 use Karambol\Form\Type\PasswordResetType;
 use Karambol\Entity\User;
+use Symfony\Component\Form\FormError;
 
 class PasswordController extends Controller {
 
@@ -36,8 +37,8 @@ class PasswordController extends Controller {
     $form->handleRequest($request);
 
     if(!$form->isValid()) {
-      return $this->render('password/reset.html.twig', [
-        'passwordResetForm' => $form->createView()
+      return $this->render('password_reset/reset_request.html.twig', [
+        'resetRequestForm' => $form->createView()
       ]);
     }
 
@@ -49,8 +50,8 @@ class PasswordController extends Controller {
     if(!$user) {
       $translator = $this->get('translator');
       $form->get('email')->addError(new FormError($translator->trans('password_reset.email_unknown')));
-      return $this->render('password/reset.html.twig', [
-        'passwordResetForm' => $form->createView()
+      return $this->render('password_reset/reset_request.html.twig', [
+        'resetRequestForm' => $form->createView()
       ]);
     }
 

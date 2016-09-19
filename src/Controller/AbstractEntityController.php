@@ -54,7 +54,12 @@ abstract class AbstractEntityController extends Controller {
     return $entity->getId();
   }
 
-  protected function getRouteName($action = '') {
+  /**
+   * Return the route's name based of the controller's route prefix for the provided action
+   * @param string $action the name of the action
+   * @return string the route's name
+   */
+  protected function getRouteName($action) {
     return $this->getRouteNamePrefix().'_'.$action;
   }
 

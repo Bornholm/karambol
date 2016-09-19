@@ -17,7 +17,10 @@ class RegisterType extends AbstractType
 
     $builder
       ->add('username', Type\TextType::class, [
-        'label' => 'registration.username'
+        'label' => 'registration.username',
+        'constraints' => [
+          new Constraints\NotBlank()
+        ]
       ])
       ->add('email', Type\RepeatedType::class, array(
         'type' => Type\TextType::class,
@@ -25,6 +28,7 @@ class RegisterType extends AbstractType
         'second_options' => ['label' => 'registration.email_confirm'],
         'invalid_message' => $translator->trans('registration.emails_must_be_the_same'),
         'constraints' => [
+          new Constraints\NotBlank(),
           new Constraints\Email()
         ]
       ))
@@ -35,7 +39,7 @@ class RegisterType extends AbstractType
         ]
       ])
     ;
-    
+
   }
 
   public function configureOptions(OptionsResolver $resolver)

@@ -16,6 +16,31 @@ class UsersController extends AbstractEntityController {
   protected function getRoutePrefix() { return '/admin/users'; }
   protected function getRouteNamePrefix() { return 'admin_users'; }
 
+  public function mount(KarambolApp $app) {
+    parent::mount($app);
+    $app->post('/admin/users/{userId}/password-reset', [$this, 'handlePasswordReset'])->bind($this->getRouteName('reset_password'));
+  }
+
+  public function handlePasswordReset($userId) {
+
+    $user = $this->get('orm')->getRepository(User::class)->find($userId);
+
+    if(!$user) return $this->abort(404);
+
+    if(empty($user->getEmail())) {
+      $this->addFlashMessage('admin.users.user_has_no_mail', ['type' => 'error']);
+    } else {
+      $this->get('accounts')->sendPasswordResetEmail($user);
+      $this->addFlashMessage('admin.users.password_reset_sent', ['type' => 'success']);
+    }
+
+    $urlGen = $this->get('url_generator');
+
+    $url = $urlGen->generate($this->getRouteName($this::EDIT_ACTION), ['entityId' => $userId]);
+    return $this->redirect($url);
+
+  }
+
   public function getEntities($offset = 0, $limit = null) {
 
     $orm = $this->get('orm');
