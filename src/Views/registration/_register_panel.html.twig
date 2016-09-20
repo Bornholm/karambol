@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row karambol-spacedup">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{ 'registration.create_account' | trans }}</h3>
+        </div>
+        <div class="panel-body">
+          {{ form_start(registerForm) }}
+          {{ form_row(registerForm.username) }}
+          {{ form_row(registerForm.email) }}
+          <div class="clearfix">
+            {{ form_row(registerForm.submit, {'attr':{'class':'pull-right btn btn-success'}}) }}
+          </div>
+          {{ form_end(registerForm, {'render_reset': true}) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row karambol-spacedup">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{ 'password_reset.reset_password' | trans }}</h3>
+        </div>
+        <div class="panel-body">
+          {{ form_start(resetRequestForm) }}
+          {{ form_row(resetRequestForm.email) }}
+          <div class="clearfix">
+            {{ form_row(resetRequestForm.submit, {'attr':{'class':'pull-right btn btn-success'}}) }}
+          </div>
+          {{ form_end(resetRequestForm, {'render_reset': true}) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

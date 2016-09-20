@@ -39,6 +39,16 @@ class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableV
   protected $password;
 
   /**
+   * @ORM\Column(type="string", length=64, nullable=true)
+   */
+  protected $passwordToken;
+
+  /**
+   * @ORM\Column(type="datetime", nullable=true)
+   */
+  protected $passwordTokenTimestamp;
+
+  /**
   * @var ArrayCollection
    * @ORM\OneToMany(targetEntity="Karambol\Entity\UserExtension", mappedBy="user", orphanRemoval=true, cascade="all")
    */
@@ -167,10 +177,27 @@ class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableV
     return $this;
   }
 
+  public function resetPasswordToken() {
+    $this->passwordToken = bin2hex(random_bytes(32));
+    $this->passwordTokenTimestamp = new \DateTime();
+  }
+
+  public function clearPasswordToken() {
+    $this->passwordToken = null;
+    $this->passwordTokenTimestamp = null;
+  }
+
+  public function getPasswordToken() {
+    return $this->passwordToken;
+  }
+
+  public function getPasswordTokenTimestamp() {
+    return $this->passwordTokenTimestamp;
+  }
+
   public function owns(ResourceInterface $resource) {
 
-    $owns = ( $resource->getResourceType() === 'user' ||
-      fnmatch('user.*', $resource->getResourceType()) ) &&
+    $owns = $resource->getResourceType() === 'user' &&
       $resource->getResourceId() === $this->getId()
     ;
 

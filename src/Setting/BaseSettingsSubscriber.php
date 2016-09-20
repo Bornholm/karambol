@@ -57,6 +57,13 @@ class BaseSettingsSubscriber implements EventSubscriberInterface {
 
     $entries[] = $defaultThemeEntry;
 
+    $allowRegistrationEntry = new SettingEntry('allow_registration', true);
+    $allowRegistrationEntry
+      ->setLabel('admin.settings.allow_registration')
+      ->setHelp('admin.settings.allow_registration_help')
+    ;
+    $entries[] = $allowRegistrationEntry;
+
     return $entries;
   }
 
