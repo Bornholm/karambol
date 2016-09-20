@@ -27,7 +27,7 @@
     <div class="row">
       <div class="col-md-{{flashMessageOpts.width}} col-md-offset-{{flashMessageOpts.offset}}">
         <div class="alert alert-{{ flashMessageAlertClass }}">
-          {% if flash.options.icon is defined %}<i class="{{ flash.options.icon }}"></i> {% endif %}{{ flash.content | trans }}
+          <i class="{{ flash.options.icon is defined ? flash.options.icon : 'fa fa-exclamation-circle' }}"></i> {{ flash.content | trans }}
         </div>
       </div>
     </div>
