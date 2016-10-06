@@ -14,17 +14,17 @@ use Karambol\RuleEngine\Rule;
 class AccessControlAPITest extends \PHPUnit_Framework_TestCase
 {
 
+  use \Karambol\Test\KarambolTestTrait { setUp as karambolSetUp; }
+
   public function setUp() {
 
-    $app = new KarambolApp();
-    $app->boot();
-    $this->app = $app;
+    $this->karambolSetUp();
 
     $context = new \stdClass();
     $context->authorizations = [];
 
     $this->context = $context;
-    $this->ruleEngine = $app['rule_engine'];
+    $this->ruleEngine = $this->app['rule_engine'];
 
   }
 

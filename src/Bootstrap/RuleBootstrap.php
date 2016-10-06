@@ -20,12 +20,12 @@ use Karambol\AccessControl\Resource;
 use Karambol\AccessControl\BaseActions;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class RuleEngineBootstrap implements BootstrapInterface {
+class RuleBootstrap implements BootstrapInterface {
 
   public function bootstrap(KarambolApp $app) {
 
     // Register rule engine service
-    $app->register(new Provider\RuleEngineServiceProvider());
+    $app->register(new Provider\RuleServiceProvider());
 
     $ruleEngine = $app['rule_engine'];
 

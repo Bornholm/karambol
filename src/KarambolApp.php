@@ -25,7 +25,7 @@ class KarambolApp extends Application
       'Karambol\Bootstrap\MailerBootstrap',
       'Karambol\Bootstrap\AccountBootstrap',
       'Karambol\Bootstrap\MonologBootstrap',
-      'Karambol\Bootstrap\RuleEngineBootstrap',
+      'Karambol\Bootstrap\RuleBootstrap',
       'Karambol\Bootstrap\SessionBootstrap',
       'Karambol\Bootstrap\FormBootstrap',
       'Karambol\Bootstrap\UrlGeneratorBootstrap',

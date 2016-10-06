@@ -20,7 +20,7 @@ class ConsoleBootstrap implements BootstrapInterface {
     $console->add(new Command\PromoteAccountCommand($app));
     $console->add(new Command\SeedRulesCommand($app));
     $console->add(new Command\PluginConfigCommand($app));
-    $console->add(new Command\ExportRulesCommand($app));
+    $console->add(new Command\DumpRulesCommand($app));
 
   }
 

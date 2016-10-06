@@ -9,10 +9,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Karambol\KarambolApp;
 use Karambol\Entity\RuleSet;
-use Karambol\Entity\CustomRule;
-use Symfony\Component\Yaml\Yaml;
 
-class ExportRulesCommand extends Command
+class DumpRulesCommand extends Command
 {
 
   protected $app;
@@ -25,17 +23,18 @@ class ExportRulesCommand extends Command
   protected function configure()
   {
     $this
-      ->setName('karambol:rules:export')
+      ->setName('karambol:rules:dump')
       ->setDescription('Export the rules from Karambol')
-      ->addOption('ruleset', null, InputOption::VALUE_OPTIONAL, 'Only export the rules associated with this ruletset', null)
+      ->addOption('ruleset', null, InputOption::VALUE_OPTIONAL, 'Only export the rules associated with this ruleset', null)
+      ->addOption('origin', null, InputOption::VALUE_OPTIONAL, 'Only export the rules associated with this origin', null)
     ;
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
 
-    $orm = $this->app['orm'];
     $rulesetFilter = $input->getOption('ruleset');
+    $originFilter = $input->getOption('origin');
 
     // Check that the filter actually matches an existing ruleset
     if($rulesetFilter !== null) {
@@ -46,28 +45,9 @@ class ExportRulesCommand extends Command
       }
     }
 
-    $dump = [
-      'version' => 1,
-      'rules' => []
-    ];
+    $ruleDumper = $this->app['rule_dumper'];
 
-    $rules = $orm->getRepository(CustomRule::class)->findAll();
-    foreach($rules as $rule) {
-      $ruleset = $rule->getRuleset()->getName();
-      if($rulesetFilter === null || $ruleset === $rulesetFilter) {
-        $dump['rules'][] = [
-          'origin' => $rule->getOrigin(),
-          'set' => $rule->getRuleset()->getName(),
-          'order' => $rule->getOrder(),
-          'condition' => $rule->getCondition(),
-          'actions' => $rule->getActions()
-        ];
-      }
-    }
-
-    $now = new \DateTime('now');
-    echo sprintf('# Karambol rules export -- %s'.PHP_EOL, $now->format('Y-m-d H:i:s'));
-    echo Yaml::dump($dump, 3, 2);
+    echo $ruleDumper->dump($rulesetFilter, $originFilter);
 
   }
 
