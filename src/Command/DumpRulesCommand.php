@@ -25,8 +25,8 @@ class DumpRulesCommand extends Command
     $this
       ->setName('karambol:rules:dump')
       ->setDescription('Export the rules from Karambol')
-      ->addOption('ruleset', null, InputOption::VALUE_OPTIONAL, 'Only export the rules associated with this ruleset', null)
-      ->addOption('origin', null, InputOption::VALUE_OPTIONAL, 'Only export the rules associated with this origin', null)
+      ->addOption('ruleset', 'r', InputOption::VALUE_OPTIONAL, 'Only export the rules associated with this ruleset', null)
+      ->addOption('origin', 'o', InputOption::VALUE_OPTIONAL, 'Only export the rules associated with this origin', null)
     ;
   }
 

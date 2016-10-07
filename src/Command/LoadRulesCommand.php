@@ -23,22 +23,35 @@ class LoadRulesCommand extends Command
     $this->app = $app;
   }
 
-  protected function configure()
-  {
+  protected function configure() {
     $this
       ->setName('karambol:rules:load')
-      ->addArgument(
-        'rules',
-        InputArgument::REQUIRED,
-        'The file containing the rules to load'
-      )
+      ->addArgument('dumpPath', InputArgument::REQUIRED, 'The file containing the rules to import')
+      ->addOption('cleanup', 'c', InputOption::VALUE_NONE, 'Cleanup the existing rules before import')
       ->setDescription('Load a set of rules from a file')
     ;
   }
 
-  protected function execute(InputInterface $input, OutputInterface $output)
-  {
-    
+  protected function execute(InputInterface $input, OutputInterface $output) {
+
+    $dumpPath = $input->getArgument('dumpPath');
+    $cleanup = $input->getOption('cleanup');
+
+    if(!is_file($dumpPath)) {
+      $output->writeln(sprintf('<error>Canno\'t find the file "%s" !</error>', $dumpPath));
+      return 1;
+    }
+
+    $output->writeln(sprintf('<info>Importing rules from "%s"...</info>', realpath($dumpPath)));
+
+    $dumpStr = file_get_contents($dumpPath);
+
+    $ruleDumper = $this->app['rule_dumper'];
+
+    $ruleDumper->load($dumpStr, $cleanup);
+
+    $output->writeln('<info>Done.</info>');
+
   }
 
 }

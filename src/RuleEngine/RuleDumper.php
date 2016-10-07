@@ -22,6 +22,10 @@ class RuleDumper {
 
   /**
    * Dump rules based on the provided filters as string
+   *
+   * @var string $rulesetFilter The ruleset filter
+   * @var string $originFilter The origin filter
+   * @return string
    */
   public function dump($rulesetFilter = null, $originFilter = null) {
 
@@ -61,7 +65,18 @@ class RuleDumper {
 
   }
 
-  public function load($yamlStr, $append = true) {
+  /**
+   * Load rules from a previous dump
+   *
+   * @throws Symfony\Component\Yaml\Exception\ParseException
+   *
+   * @var string $dumpStr The dump content
+   * @var boolean $cleanup Should we append the set to the existing rules or cleanup before ?
+   * @return $this
+   */
+  public function load($dumpStr, $cleanup = false) {
+
+    $dump = Yaml::parse($dumpStr);
 
     
 
