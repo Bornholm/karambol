@@ -37,3 +37,5 @@ assets:
     - { src: vendor/codemirror/codemirror/lib, dest: public/vendor/codemirror/lib }
     - { src: vendor/codemirror/codemirror/mode, dest: public/vendor/codemirror/mode }
     - { src: vendor/codemirror/codemirror/addon, dest: public/vendor/codemirror/addon }
+  debugbar:
+    - { src: vendor/maximebf/debugbar/src/DebugBar/Resources, dest: public/vendor/debugbar }

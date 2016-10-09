@@ -2,6 +2,7 @@
 
 namespace Karambol\Provider;
 
+use Doctrine\Common\Cache\ArrayCache;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Doctrine\ORM\Tools\Setup;
@@ -20,8 +21,14 @@ class DoctrineORMServiceProvider implements ServiceProviderInterface
     }
 
     public function register(Application $app) {
-      $config = Setup::createAnnotationMetadataConfiguration($this->entitiesFiles, $this->debug, null, null, false);
-      $app['orm'] = EntityManager::create($this->databaseConfig, $config);
+
+      $doctrineConfig = Setup::createAnnotationMetadataConfiguration($this->entitiesFiles, $this->debug, null, new ArrayCache(), false);
+      $databaseConfig = $this->databaseConfig;
+
+      $app['orm'] = $app->share(function() use ($doctrineConfig, $databaseConfig) {
+        return EntityManager::create($databaseConfig, $doctrineConfig);
+      });
+
     }
 
     public function boot(Application $app) {}

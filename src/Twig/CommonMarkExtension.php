@@ -17,13 +17,6 @@ use League\CommonMark\Inline\Renderer\InlineRendererInterface;
 use League\CommonMark\ElementRendererInterface;
 use Cocur\Slugify\Slugify;
 
-//
-//
-// $twig->addFunction(new \Twig_SimpleFunction('include_markdown_file', function($markdownFile) use ($markdownToHTML) {
-//   $markdown = file_get_contents(realpath(__DIR__.'/../../'.$markdownFile));
-//   return $markdownToHTML($markdown);
-// }, ['is_safe' => ['html']]));
-
 class CommonMarkExtension extends Twig_Extension {
 
   use \Karambol\Util\AppAwareTrait;
@@ -37,10 +30,6 @@ class CommonMarkExtension extends Twig_Extension {
 
   public function getName() {
     return 'karambol_commonmark_extension';
-  }
-
-  public function initRuntime(Twig_Environment $environment) {
-    parent::initRuntime($environment);
   }
 
   public function handleMarkdownFunction($markdown, $options = []) {

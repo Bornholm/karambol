@@ -19,7 +19,7 @@ class ConfigBootstrap implements BootstrapInterface {
       $app->register(new Provider\YamlConfigServiceProvider($localConfig));
     }
 
-    // Activate debug
+    // Expose debug mode
     $app['debug'] = $app['config']['debug'];
 
   }

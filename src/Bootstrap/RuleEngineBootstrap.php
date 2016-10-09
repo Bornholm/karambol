@@ -45,9 +45,12 @@ class RuleEngineBootstrap implements BootstrapInterface {
 
   public function customizationRulesMiddleware(Request $request, Application $app) {
 
-    $logger = $app['monolog'];
+    $logger = $app['logger'];
+    $debugBar = $app['debug_bar'];
     $ruleEngine = $app['rule_engine'];
     $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
+
+    $debugBar['time']->startMeasure('customization_rules', 'Customization rules execution');
 
     $ruleset = $rulesetRepo->findOneByName(RuleEngine::CUSTOMIZATION);
 
@@ -66,6 +69,8 @@ class RuleEngineBootstrap implements BootstrapInterface {
       // TODO Store rule exception and provide the debugging information to the administrator
       $logger->error($ex);
     }
+
+    $debugBar['time']->stopMeasure('customization_rules');
 
   }
 
