@@ -1,5 +1,5 @@
 # Karambol rules dump -- 2016-10-07 17:08:04
-version: 0
+version: 1
 rules:
   -
     origin: seed

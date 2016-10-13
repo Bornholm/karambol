@@ -2,6 +2,8 @@
 
 namespace Karambol\Command;
 
+use Karambol\RuleEngine\Backup\Deserializer;
+use Karambol\RuleEngine\Backup\Transform\CustomRuleTransformer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,7 +29,7 @@ class LoadRulesCommand extends Command
     $this
       ->setName('karambol:rules:load')
       ->addArgument('dumpPath', InputArgument::REQUIRED, 'The file containing the rules to import')
-      ->addOption('cleanup', 'c', InputOption::VALUE_NONE, 'Cleanup the existing rules before import')
+      ->addOption('cleanup', 'c', InputOption::VALUE_OPTIONAL, 'Cleanup the existing rules before import', null)
       ->setDescription('Load a set of rules from a file')
     ;
   }
@@ -38,19 +40,55 @@ class LoadRulesCommand extends Command
     $cleanup = $input->getOption('cleanup');
 
     if(!is_file($dumpPath)) {
-      $output->writeln(sprintf('<error>Canno\'t find the file "%s" !</error>', $dumpPath));
+      $output->writeln(sprintf('<error>Cannot find the file "%s" !</error>', $dumpPath));
       return 1;
     }
 
-    $output->writeln(sprintf('<info>Importing rules from "%s"...</info>', realpath($dumpPath)));
-
     $dumpStr = file_get_contents($dumpPath);
 
-    $ruleDumper = $this->app['rule_dumper'];
+    $deserializer = new Deserializer();
+    $transformer = new CustomRuleTransformer();
 
-    $ruleDumper->load($dumpStr, $cleanup);
+    $rules = $deserializer->deserialize($dumpStr, $transformer);
+
+    if($cleanup !== null) {
+      $output->writeln('<info>Deleting existing rules...</info>');
+      $numDeleted = $this->cleanupRules();
+      $output->writeln(sprintf('<info>Deleted %s rules.</info>', $numDeleted));
+    }
+
+    $output->writeln(sprintf('<info>Importing rules from "%s"...</info>', realpath($dumpPath)));
+    $this->loadRules($rules);
 
     $output->writeln('<info>Done.</info>');
+
+  }
+
+  protected function cleanupRules() {
+    $orm = $this->app['orm'];
+    $qb = $orm->getRepository(CustomRule::class)->createQueryBuilder('r');
+    $qb->delete();
+    return $qb->getQuery()->getSingleScalarResult();
+  }
+
+  protected function loadRules(array $rules) {
+    $orm = $this->app['orm'];
+    foreach($rules as $rule) {
+      $ruleset = $this->ensureRuleset($rule->getRuleset());
+      $rule->setRuleset($ruleset);
+      $orm->merge($rule);
+    }
+    $orm->flush();
+  }
+
+  protected function ensureRuleset(RuleSet $ruleset) {
+    $orm = $this->app['orm'];
+    $existingRuleset = $orm->getRepository(RuleSet::class)->findOneByName($ruleset->getName());
+    if($existingRuleset) $ruleset->setId($existingRuleset->getId());
+    return $ruleset;
+  }
+
+  protected function cleanup() {
 
   }
 

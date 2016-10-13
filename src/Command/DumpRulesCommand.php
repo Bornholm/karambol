@@ -2,6 +2,9 @@
 
 namespace Karambol\Command;
 
+use Karambol\Entity\CustomRule;
+use Karambol\RuleEngine\Backup\Serializer;
+use Karambol\RuleEngine\Backup\Transform\CustomRuleTransformer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,9 +48,13 @@ class DumpRulesCommand extends Command
       }
     }
 
-    $ruleDumper = $this->app['rule_dumper'];
+    $serializer = new Serializer();
 
-    echo $ruleDumper->dump($rulesetFilter, $originFilter);
+    $rules = $this->fetchRules($rulesetFilter, $originFilter);
+    $serializer->addRules($rules);
+
+    $transformer = new CustomRuleTransformer();
+    echo $serializer->serialize($transformer);
 
   }
 
@@ -61,6 +68,25 @@ class DumpRulesCommand extends Command
     ;
 
     return $qb->getQuery()->getSingleScalarResult() == 1;
+
+  }
+
+  protected function fetchRules($rulesetFilter = null, $originFilter = null) {
+
+    $orm = $this->app['orm'];
+    $qb = $orm->getRepository(CustomRule::class)->createQueryBuilder('r');
+
+    $qb->join('r.ruleset', 's');
+
+    if($rulesetFilter !== null) {
+      $qb->andWhere($qb->expr()->eq('s.name', $qb->expr()->literal($rulesetFilter)));
+    }
+
+    if($originFilter !== null) {
+      $qb->andWhere($qb->expr()->eq('r.origin', $qb->expr()->literal($originFilter)));
+    }
+
+    return $qb->getQuery()->getResult();
 
   }
 
