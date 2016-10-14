@@ -10,7 +10,7 @@ class AssetServiceProvider implements ServiceProviderInterface
 {
 
     public function register(Application $app) {
-      $app['assets'] = new AssetService(__DIR__.'/../../public');
+      $app['assets'] = new AssetService($app['app_path']);
     }
 
     public function boot(Application $app) {}

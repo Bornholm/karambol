@@ -22,7 +22,7 @@ class LinkAssetsCommand extends Command
   protected function configure()
   {
     $this
-      ->setName('karambol:link-assets')
+      ->setName('karambol:assets:link')
       ->setDescription('Expose the registered assets in the public web directory.')
     ;
   }
@@ -31,13 +31,14 @@ class LinkAssetsCommand extends Command
   {
 
     $assets = $this->app['config']['assets'];
-    $baseDir = __DIR__.'/../..';
+    $appPath = $this->app['app_path'];
+    $baseDir = $appPath->getAppDirectory();
 
     foreach($assets as $assetsNamespace) {
       foreach($assetsNamespace as $assetItem) {
 
-        $src = $baseDir.'/'.$assetItem['src'];
-        $dest = $baseDir.'/'.$assetItem['dest'];
+        $src = $baseDir.DIRECTORY_SEPARATOR.$assetItem['src'];
+        $dest = $baseDir.DIRECTORY_SEPARATOR.$assetItem['dest'];
 
         if(!file_exists($src)) $output->writeln(sprintf('Asset "%s" does not exists !', $src));
         if(!is_dir($src)) $output->writeln(sprintf('Asset "%s" must be a directory !', $src));

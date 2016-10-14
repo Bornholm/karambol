@@ -1,6 +1,7 @@
 <?php
 
 namespace Karambol\Asset;
+use Karambol\Provider\AppPathService;
 
 class AssetService {
 
@@ -8,8 +9,8 @@ class AssetService {
   protected $stylesheets = [];
   protected $publicDir;
 
-  public function __construct($publicDir) {
-    $this->publicDir = $publicDir;
+  public function __construct(AppPathService $appPath) {
+    $this->appPath = $appPath;
   }
 
   public function appendScripts(array $scripts) {
@@ -24,21 +25,22 @@ class AssetService {
 
   public function packScripts() {
 
+    $appPath = $this->appPath;
     $cachePrefix = 'cache/js';
-    $cacheDir = $this->publicDir.'/'.$cachePrefix;
+    $cacheDir = $appPath->getPublicDir($cachePrefix);
 
     if(!is_dir($cacheDir)) mkdir($cacheDir, 0777, true);
 
     $scripts = $this->getScripts();
     $hash = sha1(implode('', $scripts));
     $cachedFilename = $hash.'.js';
-    $localPath = $cachePrefix.'/'.$cachedFilename;
-    $fullPath = $cacheDir.'/'.$cachedFilename;
+    $localPath = $cachePrefix.DIRECTORY_SEPARATOR.$cachedFilename;
+    $fullPath = $cacheDir.DIRECTORY_SEPARATOR.$cachedFilename;
 
     if(is_file($fullPath)) return $localPath;
 
     foreach($scripts as $sc) {
-      $scriptContent = file_get_contents($this->publicDir.'/'.$sc);
+      $scriptContent = file_get_contents($appPath->getPublicDir($sc));
       file_put_contents($fullPath, $scriptContent.';', FILE_APPEND);
     }
 
