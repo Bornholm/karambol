@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Karambol\KarambolApp;
-use Karambol\Entity\RuleSet;
+use Karambol\Entity\Ruleset;
 use Karambol\Entity\CustomRule;
 use Karambol\RuleEngine\RuleEngine;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -123,12 +123,12 @@ class SeedRulesCommand extends Command
 
     $orm = $this->app['orm'];
 
-    $ruleset = $orm->getRepository('Karambol\Entity\RuleSet')
+    $ruleset = $orm->getRepository('Karambol\Entity\Ruleset')
       ->findOneByName($rulesetName)
     ;
 
     if(!$ruleset) {
-      $ruleset = new RuleSet();
+      $ruleset = new Ruleset();
       $ruleset->setName($rulesetName);
       $orm->persist($ruleset);
       $orm->flush();

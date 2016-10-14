@@ -59,7 +59,7 @@ class RuleEngineAccessControlVoter implements VoterInterface {
     $logger->debug(sprintf('Checking authorizations - %s', $this->getUserActionAsText($user, $action, $resource)));
 
     $ruleEngine = $app['rule_engine'];
-    $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
+    $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\Ruleset');
 
     $ruleset = $rulesetRepo->findOneByName(RuleEngine::ACCESS_CONTROL);
 

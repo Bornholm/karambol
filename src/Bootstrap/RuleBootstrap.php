@@ -12,7 +12,7 @@ use Karambol\RuleEngine\ExpressionFunctionProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 use Karambol\Entity\User;
-use Karambol\Entity\RuleSet;
+use Karambol\Entity\Ruleset;
 use Karambol\RuleEngine\BaseCustomizationAPIListener;
 use Karambol\RuleEngine\BaseAccessControlAPIListener;
 use Karambol\RuleEngine\RuleEngineVariableViewInterface;
@@ -48,7 +48,7 @@ class RuleBootstrap implements BootstrapInterface {
     $logger = $app['logger'];
     $debugBar = $app['debug_bar'];
     $ruleEngine = $app['rule_engine'];
-    $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\RuleSet');
+    $rulesetRepo = $app['orm']->getRepository('Karambol\Entity\Ruleset');
 
     $debugBar['time']->startMeasure('customization_rules', 'Customization rules execution');
 

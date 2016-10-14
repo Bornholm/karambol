@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Karambol\KarambolApp;
-use Karambol\Entity\RuleSet;
+use Karambol\Entity\Ruleset;
 
 class DumpRulesCommand extends Command
 {
@@ -59,16 +59,8 @@ class DumpRulesCommand extends Command
   }
 
   protected function rulesetExists($rulesetName) {
-
     $orm = $this->app['orm'];
-    $qb = $orm->getRepository(RuleSet::class)->createQueryBuilder('r');
-
-    $qb->select('count(r)')
-      ->where($qb->expr()->eq('r.name', $qb->expr()->literal($rulesetName)))
-    ;
-
-    return $qb->getQuery()->getSingleScalarResult() == 1;
-
+    return $orm->getRepository(Ruleset::class)->exists($rulesetName);
   }
 
   protected function fetchRules($rulesetFilter = null, $originFilter = null) {
@@ -89,5 +81,7 @@ class DumpRulesCommand extends Command
     return $qb->getQuery()->getResult();
 
   }
+
+
 
 }

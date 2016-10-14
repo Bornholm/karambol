@@ -44,7 +44,7 @@ class CustomRule implements RuleInterface {
   protected $origin = self::ORIGIN_USER;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Karambol\Entity\RuleSet", inversedBy="rules", cascade="all")
+   * @ORM\ManyToOne(targetEntity="Karambol\Entity\Ruleset", inversedBy="rules", cascade="all")
    * @ORM\JoinColumn(name="ruleset", referencedColumnName="id", onDelete="CASCADE", nullable=false)
    */
   protected $ruleset;

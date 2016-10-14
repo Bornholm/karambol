@@ -10,13 +10,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Karambol\KarambolApp;
-use Karambol\Entity\RuleSet;
+use Karambol\Entity\Ruleset;
 use Karambol\Entity\CustomRule;
 use Karambol\RuleEngine\RuleEngine;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class LoadRulesCommand extends Command
 {
+
+  const ALL_RULESETS = 'all';
 
   protected $app;
 
@@ -29,7 +31,7 @@ class LoadRulesCommand extends Command
     $this
       ->setName('karambol:rules:load')
       ->addArgument('dumpPath', InputArgument::REQUIRED, 'The file containing the rules to import')
-      ->addOption('cleanup', 'c', InputOption::VALUE_OPTIONAL, 'Cleanup the existing rules before import', null)
+      ->addOption('cleanup', 'c', InputOption::VALUE_OPTIONAL, 'Cleanup the specified ruleset before import, or "all" to cleanup all rulesets', null)
       ->setDescription('Load a set of rules from a file')
     ;
   }
@@ -52,9 +54,22 @@ class LoadRulesCommand extends Command
     $rules = $deserializer->deserialize($dumpStr, $transformer);
 
     if($cleanup !== null) {
-      $output->writeln('<info>Deleting existing rules...</info>');
-      $numDeleted = $this->cleanupRules();
+
+      $allRulesets = $cleanup === self::ALL_RULESETS;
+
+      if(!$allRulesets && !$this->rulesetExists($cleanup)) {
+        $output->writeln(sprintf('<error>The ruleset "%s" does not exist !</error>', $cleanup));
+        return 1;
+      }
+
+      $output->writeln(sprintf('<info>Deleting existing rules%s...</info>',
+        $allRulesets ? '' : ' for ruleset "'.$cleanup.'"'
+      ));
+
+      $numDeleted = $this->cleanupRules($cleanup);
+
       $output->writeln(sprintf('<info>Deleted %s rules.</info>', $numDeleted));
+
     }
 
     $output->writeln(sprintf('<info>Importing rules from "%s"...</info>', realpath($dumpPath)));
@@ -74,22 +89,34 @@ class LoadRulesCommand extends Command
   protected function loadRules(array $rules) {
     $orm = $this->app['orm'];
     foreach($rules as $rule) {
-      $ruleset = $this->ensureRuleset($rule->getRuleset());
+      $ruleset = $this->mergeExistingRuleset($rule->getRuleset());
       $rule->setRuleset($ruleset);
       $orm->merge($rule);
     }
     $orm->flush();
   }
 
-  protected function ensureRuleset(RuleSet $ruleset) {
+  protected function mergeExistingRuleset(Ruleset $ruleset) {
     $orm = $this->app['orm'];
-    $existingRuleset = $orm->getRepository(RuleSet::class)->findOneByName($ruleset->getName());
+    $existingRuleset = $orm->getRepository(Ruleset::class)->findOneByName($ruleset->getName());
     if($existingRuleset) $ruleset->setId($existingRuleset->getId());
     return $ruleset;
   }
 
-  protected function cleanup() {
+  protected function cleanup($cleanupRuleset) {
+    $orm = $this->app['orm'];
+    $qb = $orm->getRepository(CustomRule::class)->createQueryBuilder('r');
+    $qb->delete();
+    if( $cleanupRuleset !== self::ALL_RULESETS ) {
+      $qb->join('r.ruleset', 's');
+      $qb->where($qb->expr()->eq('s.name', $qb->expr()->literal($cleanupRuleset)));
+    }
+    return $qb->getQuery()->getSingleScalarResult();
+  }
 
+  protected function rulesetExists($rulesetName) {
+    $orm = $this->app['orm'];
+    return $orm->getRepository(Ruleset::class)->exists($rulesetName);
   }
 
 }

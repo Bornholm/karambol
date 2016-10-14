@@ -2,7 +2,7 @@
 
 namespace Karambol\RuleEngine\Backup\Transform;
 
-use Karambol\Entity\RuleSet;
+use Karambol\Entity\Ruleset;
 use Karambol\Entity\CustomRule;
 use Karambol\RuleEngine\Rule;
 use Karambol\RuleEngine\RuleInterface;
@@ -47,7 +47,7 @@ class CustomRuleTransformer extends BasicTransformer {
     $customRule->setOrigin($ruleData['origin']);
     $customRule->setOrder($ruleData['order']);
 
-    $ruleset = new RuleSet();
+    $ruleset = new Ruleset();
     $ruleset->setName($ruleData['set']);
     $customRule->setRuleset($ruleset);
 

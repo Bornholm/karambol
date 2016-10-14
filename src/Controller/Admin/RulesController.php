@@ -5,8 +5,8 @@ namespace Karambol\Controller\Admin;
 use Karambol\KarambolApp;
 use Karambol\Controller\Controller;
 use Karambol\Entity\Page;
-use Karambol\Entity\RuleSet;
-use Karambol\Form\Type\RuleSetType;
+use Karambol\Entity\Ruleset;
+use Karambol\Form\Type\RulesetType;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -33,16 +33,16 @@ class RulesController extends Controller {
     $twig = $this->get('twig');
     $orm = $this->get('orm');
 
-    $ruleset = $orm->getRepository('Karambol\Entity\RuleSet')
+    $ruleset = $orm->getRepository('Karambol\Entity\Ruleset')
       ->findOneByName($this->rulesetName)
     ;
 
     if($ruleset === null) {
-      $ruleset = new RuleSet();
+      $ruleset = new Ruleset();
       $ruleset->setName($this->rulesetName);
     }
 
-    $rulesetForm = $this->getRuleSetForm($ruleset);
+    $rulesetForm = $this->getRulesetForm($ruleset);
 
     return $twig->render('admin/rules/index.html.twig', [
       'rulesetForm' => $rulesetForm->createView(),
@@ -57,16 +57,16 @@ class RulesController extends Controller {
     $orm = $this->get('orm');
     $request = $this->get('request');
 
-    $ruleset = $orm->getRepository('Karambol\Entity\RuleSet')
+    $ruleset = $orm->getRepository('Karambol\Entity\Ruleset')
       ->findOneByName($this->rulesetName)
     ;
 
     if($ruleset === null) {
-      $ruleset = new RuleSet();
+      $ruleset = new Ruleset();
       $ruleset->setName($this->rulesetName);
     }
 
-    $rulesetForm = $this->getRuleSetForm($ruleset);
+    $rulesetForm = $this->getRulesetForm($ruleset);
 
     $rulesetForm->handleRequest($request);
 
@@ -90,12 +90,12 @@ class RulesController extends Controller {
 
   }
 
-  public function getRuleSetForm(RuleSet $ruleset) {
+  public function getRulesetForm(Ruleset $ruleset) {
 
     $formFactory = $this->get('form.factory');
     $urlGen = $this->get('url_generator');
 
-    $formBuilder = $formFactory->createBuilder(RuleSetType::class, $ruleset);
+    $formBuilder = $formFactory->createBuilder(RulesetType::class, $ruleset);
     $action = $urlGen->generate(sprintf('admin_ruleset_upsert_%s', $ruleset->getName()));
 
     return $formBuilder->setAction($action)
