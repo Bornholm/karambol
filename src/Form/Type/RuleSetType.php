@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 
-class RuleSetType extends AbstractType
+class RulesetType extends AbstractType
 {
 
   public function buildForm(FormBuilderInterface $builder, array $options)
@@ -31,7 +31,7 @@ class RuleSetType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-      'data_class' => 'Karambol\Entity\RuleSet',
+      'data_class' => 'Karambol\Entity\Ruleset',
       'cascade_validation' => true
     ]);
   }

@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Karambol\Entity\Repository\RulesetRepository")
  * @ORM\Table(name="rulesets")
  */
-class RuleSet {
+class Ruleset {
 
   /**
    * @ORM\Id
@@ -32,6 +32,11 @@ class RuleSet {
 
   public function __construct() {
     $this->rules = new ArrayCollection();
+  }
+
+  public function setId($id) {
+    $this->id = $id;
+    return $this;
   }
 
   public function getId() {

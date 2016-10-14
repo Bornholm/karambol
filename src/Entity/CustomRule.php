@@ -44,7 +44,7 @@ class CustomRule implements RuleInterface {
   protected $origin = self::ORIGIN_USER;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Karambol\Entity\RuleSet", inversedBy="rules")
+   * @ORM\ManyToOne(targetEntity="Karambol\Entity\Ruleset", inversedBy="rules", cascade="all")
    * @ORM\JoinColumn(name="ruleset", referencedColumnName="id", onDelete="CASCADE", nullable=false)
    */
   protected $ruleset;
@@ -67,6 +67,10 @@ class CustomRule implements RuleInterface {
 
   public function setAction($action) {
     $this->action = $action;
+  }
+
+  public function setActions(array $actions) {
+    $this->action = join(PHP_EOL, $actions);
   }
 
   public function getActions() {

@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Karambol\KarambolApp;
 use Karambol\Entity\User;
-use Karambol\Entity\RuleSet;
+use Karambol\Entity\Ruleset;
 use Karambol\Entity\CustomRule;
 use Karambol\RuleEngine\RuleEngine;
 
@@ -54,9 +54,9 @@ class PromoteAccountCommand extends Command
     $rule->setAction('allow("*", "*")');
     $rule->setOrigin(CustomRule::ORIGIN_COMMAND);
 
-    $ruleset = $orm->getRepository('Karambol\Entity\RuleSet')->findOneByName(RuleEngine::ACCESS_CONTROL);
+    $ruleset = $orm->getRepository('Karambol\Entity\Ruleset')->findOneByName(RuleEngine::ACCESS_CONTROL);
     if(!$ruleset) {
-      $ruleset = new RuleSet();
+      $ruleset = new Ruleset();
       $ruleset->setName(RuleEngine::ACCESS_CONTROL);
       $orm->persist($ruleset);
       $orm->flush();
