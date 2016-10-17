@@ -71,7 +71,7 @@ class AppPathService {
    * @return string The path
    */
   public function getDataDir($subPath = '') {
-    return $this->getDataDir(join(DIRECTORY_SEPARATOR, ['data', $subPath]));
+    return $this->getPath(join(DIRECTORY_SEPARATOR, ['data', $subPath]));
   }
 
   /**

@@ -40,17 +40,25 @@ class LinkAssetsCommand extends Command
         $src = $baseDir.DIRECTORY_SEPARATOR.$assetItem['src'];
         $dest = $baseDir.DIRECTORY_SEPARATOR.$assetItem['dest'];
 
-        if(!file_exists($src)) $output->writeln(sprintf('Asset "%s" does not exists !', $src));
-        if(!is_dir($src)) $output->writeln(sprintf('Asset "%s" must be a directory !', $src));
+        if(!file_exists($src)) {
+          $output->writeln(sprintf('<error>Source path "%s" does not exists !</error>', $src));
+          continue;
+        }
 
-        if( is_dir($src) && !file_exists($dest)) {
+        if(!is_dir($src)) {
+          $output->writeln(sprintf('<error>Source path "%s" must be a valid directory !</error>', $src));
+          continue;
+        }
+
+        if(!file_exists($dest)) {
           $destParentDir = dirname($dest);
           if(!file_exists($destParentDir)) mkdir($destParentDir, 0777, true);
-          $output->writeln('<info>Linking assets '.$assetItem['dest'].'</info>');
-        } elseif( is_dir($src) && file_exists($dest) ) {
-          $output->writeln('<info>Replace existing assets '.$assetItem['dest'].'</info>');
+          $output->writeln(sprintf('<info>Linking assets "%s" to "%s"</info>', $src, $dest));
+        } else {
+          $output->writeln(sprintf('<info>Relinking assets "%s" to "%s"</info>', $src, $dest));
           unlink($dest);
         }
+
         $this->createLink($src, $dest);
 
       }

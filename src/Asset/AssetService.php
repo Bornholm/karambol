@@ -29,7 +29,7 @@ class AssetService {
     $cachePrefix = 'cache/js';
     $cacheDir = $appPath->getPublicDir($cachePrefix);
 
-    if(!is_dir($cacheDir)) mkdir($cacheDir, 0777, true);
+    if(!is_dir($cacheDir)) mkdir($cacheDir, 0774, true);
 
     $scripts = $this->getScripts();
     $hash = sha1(implode('', $scripts));
