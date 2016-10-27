@@ -1,51 +1,45 @@
-# Karambol rules dump -- 2016-10-07 17:08:04
+# Karambol seed rules
 version: 1
 rules:
   -
-    origin: seed
-    set: customization
-    weight: 0
     condition: 'not isConnected()'
     actions: ['addPageToMenu("register", "home_main", {"align":"right", "icon_class": "fa fa-edit"})', 'addPageToMenu("login", "home_main", {"align":"right", "icon_class": "fa fa-sign-in"})']
-  -
     origin: seed
+    weight: 10
     set: customization
-    weight: 1
+  -
     condition: 'isGranted("ROLE_ADMIN")'
     actions: ['addPageToMenu("admin", "home_main", {"align":"right", "icon_class": "fa fa-wrench"})']
-  -
     origin: seed
+    weight: 30
     set: customization
-    weight: 2
+  -
     condition: isConnected()
     actions: ['addPageToMenu("profile", "home_main", {"align":"right", "icon_class": "fa fa-user"})', 'addPageToMenu("logout", "home_main", {"align":"right", "icon_class": "fa fa-sign-out"})']
-  -
     origin: seed
-    set: access_control
-    weight: 0
+    weight: 20
+    set: customization
+  -
     condition: 'true'
-    actions: ['allow("access", "url[/, /login, /register, /password, /doc*, /p/home, /zoco/search*, /zoco/boamp*]")']
-  -
+    actions: ['allow("access", "url[/, /login, /register, /password*, /doc*, /p/home]")']
     origin: seed
+    weight: 30
     set: access_control
-    weight: 1
+  -
     condition: isConnected()
     actions: ['allow("access", "url[/profile]")']
-  -
     origin: seed
+    weight: 20
     set: access_control
-    weight: 2
+  -
     condition: owns(resource)
     actions: ['allow("*", resource)']
-  -
-    origin: command
+    origin: seed
+    weight: 10
     set: access_control
-    weight: 0
-    condition: 'user.id == 1'
-    actions: ['allow("*", "*")']
   -
-    origin: user
-    set: customization
+    condition: 'hasRole("ROLE_ADMIN")'
+    actions: ['allow("*", "*")']
+    origin: seed
     weight: 0
-    condition: 'true'
-    actions: ['setHomepage(''zoco-search'')']
+    set: access_control

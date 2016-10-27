@@ -5,14 +5,14 @@ use Karambol\AccessControl\ResourceOwnerInterface;
 
 class ResourceSelector {
 
-  const SELF_OWNER = 'self';
-
   protected $resourceType;
   protected $resourceRererences;
+  protected $resourcePropertyName;
 
-  public function __construct($resourceType, array $resourceRererences = []) {
+  public function __construct($resourceType, array $resourceRererences = [], $resourcePropertyName = null) {
     $this->resourceType = $resourceType;
     $this->resourceRererences = $resourceRererences;
+    $this->resourcePropertyName = $resourcePropertyName;
   }
 
   public function getResourceType() {
@@ -23,10 +23,17 @@ class ResourceSelector {
     return $this->resourceRererences;
   }
 
+  public function getResourcePropertyName() {
+    return $this->resourcePropertyName;
+  }
+
   public function matches(ResourceInterface $resource) {
 
     $resourceTypeMatches = $this->matchResourceType($resource->getResourceType());
     if(!$resourceTypeMatches) return false;
+
+    $resourcePropertyMatches = $this->matchResourceProperty($resource->getResourceProperty());
+    if(!$resourcePropertyMatches) return false;
 
     return $this->matchResourceReferences($resource->getResourceId());
 
@@ -34,6 +41,11 @@ class ResourceSelector {
 
   protected function matchResourceType($resourceType) {
     return fnmatch($this->getResourceType(), $resourceType);
+  }
+
+  protected function matchResourceProperty(ResourceProperty $resourceProperty = null) {
+    $propertyName = $this->getResourcePropertyName();
+    return $resourceProperty === null || fnmatch($propertyName, $resourceProperty->getName());
   }
 
   protected function matchResourceReferences($resourceId) {
@@ -44,5 +56,6 @@ class ResourceSelector {
     }
     return false;
   }
+
 
 }

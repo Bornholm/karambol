@@ -53,6 +53,10 @@ class Page implements PageInterface, ResourceInterface {
     return $this->getSlug();
   }
 
+  public function getResourceProperty() {
+    return null;
+  }
+
   public function getResourceOwnerId() {
     return null;
   }

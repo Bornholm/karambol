@@ -19,6 +19,12 @@ class ResourceSelectorParserTest extends \PHPUnit_Framework_TestCase
     $this->assertArraySubset(['id1', 'id-2', 'ID3', 'id_5'], $selector->getResourceReferences());
     $this->assertCount(4, $selector->getResourceReferences());
 
+    $parser = new ResourceSelectorParser();
+    $selector = $parser->parse('user.password[5]');
+
+    $this->assertEquals('password', $selector->getResourcePropertyName());
+    $this->assertArraySubset(['5'], $selector->getResourceReferences());
+
   }
 
 }

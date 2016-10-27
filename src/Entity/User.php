@@ -3,18 +3,20 @@
 namespace Karambol\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Karambol\RuleEngine\Context\ProtectableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Karambol\AccessControl\ResourceInterface;
 use Karambol\AccessControl\ResourceOwnerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Karambol\RuleEngine\RuleEngineVariableViewInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
  * @ORM\HasLifecycleCallbacks
  */
-class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableViewInterface {
+class User implements UserInterface, ResourceOwnerInterface, ProtectableInterface {
+
+  const RESOURCE_TYPE = 'user';
 
   /**
    * @ORM\Id
@@ -197,7 +199,7 @@ class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableV
 
   public function owns(ResourceInterface $resource) {
 
-    $owns = $resource->getResourceType() === 'user' &&
+    $owns = $resource->getResourceType() === self::RESOURCE_TYPE &&
       $resource->getResourceId() === $this->getId()
     ;
 
@@ -214,11 +216,11 @@ class User implements UserInterface, ResourceOwnerInterface, RuleEngineVariableV
 
   }
 
-  public function createRuleEngineView() {
-    $view = new \stdClass();
-    $view->id = $this->getId();
-    $view->username = $this->getUsername();
-    return $view;
+  public function getExposedAttributes() {
+    return [
+      'id' => $this->getId(),
+      'username' => $this->getUsername()
+    ];
   }
 
   public function __toString() {

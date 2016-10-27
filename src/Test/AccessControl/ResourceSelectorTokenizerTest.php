@@ -45,6 +45,12 @@ class ResourceSelectorTokenizerTest extends \PHPUnit_Framework_TestCase
     $this->assertArraySubset([ 0 => [ 'token' => ResourceSelectorTokenizer::TOKEN_RESOURCE, 'type' => 'post5', 'references' => ['*']]], $tokens);
     $this->assertCount(1, $tokens);
 
+    $selector = 'user.password[5]';
+    $tokens = $tokenizer->tokenize($selector);
+
+    $this->assertArraySubset([ 0 => [ 'token' => ResourceSelectorTokenizer::TOKEN_RESOURCE, 'type' => 'user', 'references' => ['5'], 'property' => 'password']], $tokens);
+    $this->assertCount(1, $tokens);
+
   }
 
   public function testSelectorTokenizerInvalidExpression() {

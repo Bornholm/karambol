@@ -15,8 +15,8 @@
             <h3 class="panel-title">{{'profile.personal_informations'|trans}}</h3>
           </div>
           <div class="panel-body">
-            {{ form_row(profileForm.username, {"attr": {"disabled": not is_granted('update', resource('user.username', user.id))} }) }}
-            {{ form_row(profileForm.email, {"attr": {"disabled": not is_granted('update', resource('user.email', user.id))} }) }}
+            {{ form_row(profileForm.username, {"attr": {"disabled": not is_granted('update', resource('user', user.id, 'email'))} }) }}
+            {{ form_row(profileForm.email, {"attr": {"disabled": not is_granted('update', resource('user', user.id, 'email'))} }) }}
           </div>
         </div>
       </div>
@@ -26,8 +26,8 @@
             <h3 class="panel-title">{{'profile.change_password'|trans}}</h3>
           </div>
           <div class="panel-body">
-            {{ form_row(profileForm.password.first, {"attr": {"disabled": not is_granted('update', resource('user.password', user.id))} }) }}
-            {{ form_row(profileForm.password.second, {"attr": {"disabled": not is_granted('update', resource('user.password', user.id))} }) }}
+            {{ form_row(profileForm.password.first, {"attr": {"disabled": not is_granted('update', resource('user', user.id, 'password'))} }) }}
+            {{ form_row(profileForm.password.second, {"attr": {"disabled": not is_granted('update', resource('user', user.id, 'password'))} }) }}
           </div>
         </div>
       </div>

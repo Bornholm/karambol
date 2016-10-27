@@ -6,7 +6,7 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Karambol\RuleEngine\RuleEngine;
 
-class RuleServiceProvider implements ServiceProviderInterface
+class RuleEngineServiceProvider implements ServiceProviderInterface
 {
 
     public function register(Application $app) {

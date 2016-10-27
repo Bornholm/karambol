@@ -68,6 +68,10 @@ body.karambol.admin_rules_access_control .CodeMirror {
   height: auto;
 }
 
+.karambol-rule-weight {
+  width: 75px;
+}
+
 /* Documentation */
 
 .karambol-documentation img {

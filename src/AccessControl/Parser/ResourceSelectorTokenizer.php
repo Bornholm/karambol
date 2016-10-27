@@ -5,6 +5,7 @@ namespace Karambol\AccessControl\Parser;
 
 class ResourceSelectorTokenizer {
 
+  const PROPERTY_SEPARATOR = '.';
   const ID_SET_OPENING = '[';
   const ID_SET_CLOSING = ']';
   const ID_SEPARATOR = ',';
@@ -12,8 +13,9 @@ class ResourceSelectorTokenizer {
 
   const STATE_BEGIN = 0;
   const STATE_RESOURCE_TYPE_DEFINITION = 1;
-  const STATE_ID_LIST = 2;
-  const STATE_END = 3;
+  const STATE_RESOURCE_PROPERTY_DEFINITION = 2;
+  const STATE_ID_LIST = 3;
+  const STATE_END = 4;
 
   const TOKEN_RESOURCE = 'resource';
 
@@ -35,10 +37,13 @@ class ResourceSelectorTokenizer {
       switch($state) {
 
         case self::STATE_BEGIN:
+
           $this->checkInvalidResourceTypeChar($selectorStr, $charIndex);
-          $current = [ 'token' => self::TOKEN_RESOURCE, 'type' => '', 'references' => [] ];
+
+          $current = [ 'token' => self::TOKEN_RESOURCE, 'type' => '', 'references' => [], 'property' => '' ];
           if($char === self::ID_SET_OPENING) $this->throwInvalidCharException($selectorStr, $charIndex);
           $state = self::STATE_RESOURCE_TYPE_DEFINITION;
+
           break;
 
         case self::STATE_RESOURCE_TYPE_DEFINITION:
@@ -47,6 +52,12 @@ class ResourceSelectorTokenizer {
 
           if($char === self::ID_SET_OPENING) {
             $state = self::STATE_ID_LIST;
+            $charIndex++;
+            continue;
+          }
+
+          if($char === self::PROPERTY_SEPARATOR) {
+            $state = self::STATE_RESOURCE_PROPERTY_DEFINITION;
             $charIndex++;
             continue;
           }
@@ -60,6 +71,31 @@ class ResourceSelectorTokenizer {
           }
 
           break;
+
+        case self::STATE_RESOURCE_PROPERTY_DEFINITION:
+
+          $this->checkInvalidResourceTypeChar($selectorStr, $charIndex);
+
+          if($char === self::PROPERTY_SEPARATOR) {
+            $this->throwInvalidCharException($selectorStr, $charIndex);
+          }
+
+          if($char === self::ID_SET_OPENING) {
+            $state = self::STATE_ID_LIST;
+            $charIndex++;
+            continue;
+          }
+
+          $current['property'] .= $char;
+          $charIndex++;
+
+          if($charIndex === $strLength) {
+            $tokens[] = $current;
+            $state = self::STATE_END;
+          }
+
+          break;
+
 
         case self::STATE_ID_LIST:
 

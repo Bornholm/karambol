@@ -2,8 +2,9 @@
 
 namespace Karambol\RuleEngine;
 
+use Karambol\RuleEngine\ExpressionLanguage\SimpleExpressionFunctionProvider;
+use Karambol\RuleEngine\Context\Context;
 use Symfony\Component\EventDispatcher\Event;
-use Karambol\RuleEngine\ExpressionFunctionProvider;
 
 
 class RuleEngineEvent extends Event {
@@ -12,14 +13,14 @@ class RuleEngineEvent extends Event {
   const AFTER_EXECUTE_RULES = 'rule_engine.after_execute';
 
   protected $provider;
-  protected $vars;
+  protected $context;
   protected $rules;
   protected $type;
 
-  public function __construct($type, array $rules, array $vars = [], ExpressionFunctionProvider $provider = null) {
+  public function __construct($type, array $rules, Context $context = null, SimpleExpressionFunctionProvider $provider = null) {
     $this->type = $type;
     $this->rules = $rules;
-    $this->vars = $vars;
+    $this->context = $context;
     $this->provider = $provider;
   }
 
@@ -27,8 +28,8 @@ class RuleEngineEvent extends Event {
     return $this->provider;
   }
 
-  public function &getVars() {
-    return $this->vars;
+  public function &getContext() {
+    return $this->context;
   }
 
   public function &getRules() {

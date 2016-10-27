@@ -11,13 +11,13 @@ Portail web extensible
 
 ```bash
 # Vérification/installation des dépendances et génération du fichier de configuration local
-script/install
+bin/install
 # Vérification de la connexion à la base de données et mise à jour si nécessaire
-script/migrate
+bin/migrate
 # Au besoin, vous pouvez importer des règles d'amorçage de votre portail
-./script/console karambol:rules:seed
+bin/cli karambol:rules:load resources/seed.yml --cleanup=all
 # Lancement du serveur de développement, vous pouvez ajouter l'argument <port> si vous voulez modifier le port d'écoute par défaut (8080)
-script/server
+bin/server
 ```
 
 ## Lancer les tests

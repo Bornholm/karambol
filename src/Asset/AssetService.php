@@ -6,6 +6,7 @@ use Karambol\Provider\AppPathService;
 class AssetService {
 
   protected $scripts = [];
+  protected $data = [];
   protected $stylesheets = [];
   protected $publicDir;
 
@@ -13,14 +14,19 @@ class AssetService {
     $this->appPath = $appPath;
   }
 
-  public function appendScripts(array $scripts) {
+  public function appendScripts(array $scripts, $data = []) {
     foreach($scripts as $sc) {
       if(!in_array($sc, $this->scripts)) $this->scripts[] = $sc;
     }
+    $this->data = array_merge($this->data, $data);
   }
 
   public function getScripts() {
     return $this->scripts;
+  }
+
+  public function getData() {
+    return $this->data;
   }
 
   public function packScripts() {

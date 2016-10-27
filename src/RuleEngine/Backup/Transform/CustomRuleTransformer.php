@@ -9,6 +9,7 @@ use Karambol\RuleEngine\RuleInterface;
 use Karambol\RuleEngine\Backup\Transform\BasicTransformer;
 use Karambol\RuleEngine\Backup\Transform\TransformerInterface;
 use Karambol\RuleEngine\Backup\Transform\Exception\TransformerException;
+use Karambol\RuleEngine\Backup\Transform\Exception\InvalidRuleFormatException;
 
 class CustomRuleTransformer extends BasicTransformer {
 
@@ -18,7 +19,7 @@ class CustomRuleTransformer extends BasicTransformer {
 
     $export = parent::serialize($rule);
     $export['origin'] = $rule->getOrigin();
-    $export['order'] = $rule->getOrder();
+    $export['weight'] = $rule->getWeight();
     $export['set'] = $rule->getRuleset()->getName();
 
     return $export;
@@ -29,8 +30,8 @@ class CustomRuleTransformer extends BasicTransformer {
 
     $rule = parent::deserialize($ruleData);
 
-    if(!isset($ruleData['order']) || !is_int($ruleData['order'])) {
-      throw new InvalidRuleFormatException(sprintf('The rule\'s order attribute is invalid or malformed ! Rule: %s', json_encode($rule)));
+    if(!isset($ruleData['weight']) || !is_int($ruleData['weight'])) {
+      throw new InvalidRuleFormatException(sprintf('The rule\'s weigth attribute is invalid or malformed ! Rule: %s', json_encode($rule)));
     }
 
     if(!isset($ruleData['origin']) || !is_string($ruleData['origin'])) {
@@ -45,7 +46,7 @@ class CustomRuleTransformer extends BasicTransformer {
     $customRule->setActions($rule->getActions());
     $customRule->setCondition($rule->getCondition());
     $customRule->setOrigin($ruleData['origin']);
-    $customRule->setOrder($ruleData['order']);
+    $customRule->setWeight($ruleData['weight']);
 
     $ruleset = new Ruleset();
     $ruleset->setName($ruleData['set']);

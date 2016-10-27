@@ -51,6 +51,8 @@ admin:
     operations: Opérations
     documentation: Documentation
     methods: Méthodes
+    weight: Priorité
+    confirm_new_rule_unsaved: Vous n'avez pas ajouté votre nouvelle règle à la liste. Voulez vous continuer ?
   settings:
     portal_settings: Configuration du portail
     save_settings: Enregistrer

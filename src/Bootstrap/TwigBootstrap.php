@@ -36,8 +36,8 @@ class TwigBootstrap implements BootstrapInterface {
         mt_srand($seed);
       }));
 
-      $twig->addFunction(new \Twig_SimpleFunction('resource', function($resourceType, $resourceId) {
-        return new Resource($resourceType, $resourceId);
+      $twig->addFunction(new \Twig_SimpleFunction('resource', function($resourceType, $resourceId, $resourcePropertyName = null) {
+        return new Resource($resourceType, $resourceId, $resourcePropertyName);
       }));
 
       $twig->addFunction(new \Twig_SimpleFunction('random_color', function($luminosity = 'light', $hue = null, $format = 'rgbCss') {

@@ -7,7 +7,7 @@ use Silex\Provider\SecurityServiceProvider;
 use Karambol\Security\UserProvider;
 use Karambol\Security\UserFoundEvent;
 use Karambol\RuleEngine\RuleEngine;
-use Karambol\AccessControl\RuleEngineAccessControlVoter;
+use Karambol\AccessControl\Voter\RuleEngineAccessControlVoter;
 use Karambol\RuleEngine\RuleEngineVariableViewInterface;
 
 class SecurityBootstrap implements BootstrapInterface {
@@ -34,10 +34,6 @@ class SecurityBootstrap implements BootstrapInterface {
           ],
           'logout' => array('logout_path' => '/logout', 'invalidate_session' => true)
         ]
-      ],
-      'security.access_rules' => [
-        ['^/admin', 'IS_AUTHENTICATED_FULLY'],
-        ['^/profile', 'IS_AUTHENTICATED_FULLY']
       ]
     ]);
 

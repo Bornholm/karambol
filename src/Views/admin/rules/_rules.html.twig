@@ -2,7 +2,7 @@
   <table class="table table-hovered table-condensed">
     <thead>
       <tr>
-        <td>#</td>
+        <th>{{ 'admin.rules.weight'|trans }}</th>
         <th>{{ 'admin.rules.condition'|trans }}</th>
         <th>{{ 'admin.rules.action'|trans }}</th>
         <th>{{ 'admin.rules.operations'|trans }}</th>
@@ -11,7 +11,7 @@
     <tbody id="rules-holder">
       {% for rule in rulesetForm.rules %}
         <tr>
-          <td>{{ rule.vars.value.id }}</td>
+          <td>{{form_widget(rule.weight, {"attr": {"class": "karambol-rule-weight"}})}}</td>
           <td>{{form_widget(rule.condition)}}</td>
           <td>{{form_widget(rule.action)}}</td>
           <td><button class="remove-rule btn btn-danger btn-sm"><span class="fa fa-trash"></span></button></td>
@@ -19,8 +19,8 @@
       {% endfor %}
     </tbody>
     <tfoot>
-      <tr>
-        <td></td>
+      <tr id="new-rule">
+        <td><input class="form-control karambol-rule-weight" type="number" min="0" id="new-rule-weight" value="0"/></td>
         <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' id="new-rule-condition"></textarea></td>
         <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' id="new-rule-action"></textarea></td>
         <td><button id="add-rule" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span></button></td>
@@ -29,7 +29,7 @@
   </table>
   <template id="new-rule-template">
     <tr>
-      <td></td>
+      <td><input class="form-control karambol-rule-weight" name="rule_set[rules][__index__][weight]" type="number" min="0" value="0"/></td>
       <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' name="rule_set[rules][__index__][condition]"></textarea></td>
       <td><textarea data-codemirror='{"lineNumbers":true,"mode":"expression-language"}' name="rule_set[rules][__index__][action]"></textarea></td>
       <td><button class="remove-rule btn btn-danger btn-sm"><span class="fa fa-trash"></span></button></td>

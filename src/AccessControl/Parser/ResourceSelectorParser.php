@@ -12,14 +12,16 @@ class ResourceSelectorParser {
     $tokenizer = new ResourceSelectorTokenizer();
     $tokens = $tokenizer->tokenize($selectorStr);
 
-    $hasResourceTypeToken = isset($tokens[0]) && $tokens[0]['token'] === ResourceSelectorTokenizer::TOKEN_RESOURCE;
-    $hasOwnerToken = isset($tokens[1]) && $tokens[1]['token'] === ResourceSelectorTokenizer::TOKEN_OWNER;
+    $hasResourceToken = isset($tokens[0]) && $tokens[0]['token'] === ResourceSelectorTokenizer::TOKEN_RESOURCE;
 
-    if(!$hasResourceTypeToken) return null;
+    if(!$hasResourceToken) return null;
+
+    $resourceToken = $tokens[0];
 
     $selector = new ResourceSelector(
-      $tokens[0]['type'],
-      $tokens[0]['references']
+      $resourceToken['type'],
+      $resourceToken['references'],
+      !empty($resourceToken['property']) ? $resourceToken['property'] : null
     );
 
     return $selector;

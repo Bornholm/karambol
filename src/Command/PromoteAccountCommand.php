@@ -28,6 +28,7 @@ class PromoteAccountCommand extends Command
     $this
       ->setName('karambol:account:promote')
       ->setDescription('Promote a registered account to admin.')
+      ->addOption('universal', 'u', InputOption::VALUE_NONE, 'Use a universal "promotion" (without the user of "ROLE_ADMIN")')
       ->addArgument(
         'username',
         InputArgument::REQUIRED,
@@ -40,6 +41,7 @@ class PromoteAccountCommand extends Command
   {
 
     $username = $input->getArgument('username');
+    $universal = $input->getOption('universal');
     $orm = $this->app['orm'];
 
     $user = $orm->getRepository(User::class)->findOneByUsername($username);
@@ -51,7 +53,16 @@ class PromoteAccountCommand extends Command
 
     $rule = new CustomRule();
     $rule->setCondition(sprintf('user.id == %s', $user->getId()));
-    $rule->setAction('allow("*", "*")');
+
+    if($universal) {
+      $output->writeln(sprintf('<comment>Using universal rule...</comment>', $username));
+      $rule->setAction('allow("*", "*")');
+    } else {
+      $output->writeln(sprintf('<comment>Using role based rule...</comment>', $username));
+      $rule->setAction('addRole("ROLE_ADMIN")');
+    }
+
+    $rule->setWeight(100);
     $rule->setOrigin(CustomRule::ORIGIN_COMMAND);
 
     $ruleset = $orm->getRepository('Karambol\Entity\Ruleset')->findOneByName(RuleEngine::ACCESS_CONTROL);

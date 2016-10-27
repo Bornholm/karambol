@@ -40,8 +40,15 @@ class ResourceSelectorTest extends \PHPUnit_Framework_TestCase
 
     $this->assertTrue($match);
 
-    $selector = new ResourceSelector('*', ['*']);
-    $resource = new Resource('url', 'url[/admin]');
+    $selector = new ResourceSelector('*', ['/adm*']);
+    $resource = new Resource('url', '/admin');
+
+    $match = $selector->matches($resource);
+
+    $this->assertTrue($match);
+
+    $selector = new ResourceSelector('user.password', ['*']);
+    $resource = new Resource('user.password', '5');
 
     $match = $selector->matches($resource);
 

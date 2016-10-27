@@ -1,6 +1,6 @@
 <?php
 
-namespace Karambol\RuleEngine;
+namespace Karambol\RuleEngine\ExpressionLanguage;
 
 use Symfony\Component\ExpressionLanguage\ParserCache\ParserCacheInterface;
 use Symfony\Component\ExpressionLanguage\ParsedExpression;

@@ -1,7 +1,8 @@
 <?php
 
-namespace Karambol\AccessControl;
+namespace Karambol\AccessControl\Voter;
 
+use Karambol\RuleEngine\Variable\VarsFactory;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
@@ -10,10 +11,12 @@ use Karambol\AccessControl\ResourceInterface;
 use Karambol\AccessControl\Resource;
 use Karambol\AccessControl\BaseActions;
 use Karambol\AccessControl\Parser\ResourceSelectorParser;
+use Karambol\AccessControl\Permission\PermissionCollection;
 use Karambol\AccessControl\ResourceOwnerInterface;
+use Karambol\AccessControl\Permission\PermissionChecker;
 use Karambol\RuleEngine\RuleEngine;
 use Karambol\Entity\User;
-use Karambol\RuleEngine\RuleEngineVariableViewInterface;
+use Karambol\RuleEngine\Context\Context;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class RuleEngineAccessControlVoter implements VoterInterface {
@@ -68,20 +71,16 @@ class RuleEngineAccessControlVoter implements VoterInterface {
       return VoterInterface::ACCESS_ABSTAIN;
     }
 
-    $context = new \stdClass();
-    $context->authorizations = [];
-    $context->user = $user;
-
-    $vars = [
-      '_context' => $context,
-      'user' =>  $user instanceof RuleEngineVariableViewInterface ? $user->createRuleEngineView() : $user,
-      'resource' => $resource instanceof RuleEngineVariableViewInterface ? $resource->createRuleEngineView() : $resource
-    ];
+    $context = new Context();
+    $context->expose('user', $user);
+    $context->expose('resource', $resource);
+    $context->expose('_authorizations', new PermissionCollection());
+    $context->expose('_rejections', new PermissionCollection());
 
     $rules = $ruleset->getRules()->toArray();
 
     try {
-      $ruleEngine->execute(RuleEngine::ACCESS_CONTROL, $rules, $vars);
+      $ruleEngine->execute(RuleEngine::ACCESS_CONTROL, $rules, $context);
     } catch(\Exception $ex) {
       // TODO Store rule exception and provide the debugging information to the administrator
       $logger->error($ex);
@@ -89,37 +88,20 @@ class RuleEngineAccessControlVoter implements VoterInterface {
       return VoterInterface::ACCESS_DENIED;
     }
 
-    $authorizations =  $context->authorizations;
-    $parser = new ResourceSelectorParser();
+    $rejections = $context->getVariable('_rejections')->getSource();
+    $authorizations =  $context->getVariable('_authorizations')->getSource();
 
-    foreach($authorizations as $auth) {
+    $permChecker = new PermissionChecker($authorizations, $rejections);
+    $isAllowed = $permChecker->isAllowed($action, $resource);
 
-      $actionAuthorized = $auth['action'] === '*' || $auth['action'] === $action;
-      if(!$actionAuthorized) continue;
+    $debugBar['time']->stopMeasure('access_control_rules');
 
-      if($auth['resource'] !== null && $auth['resource'] === $resource) {
-        $logger->debug(sprintf('Authorization granted - %s', $this->getUserActionAsText($user, $action, $resource)));
-        $debugBar['time']->stopMeasure('access_control_rules');
-        return VoterInterface::ACCESS_GRANTED;
-      }
-
-      if($auth['selector'] !== null) {
-
-        $selector = $parser->parse($auth['selector']);
-        $resourceMatchesSelector = $selector->matches($resource);
-
-        if($resourceMatchesSelector) {
-          $logger->debug(sprintf('Authorization granted - %s', $this->getUserActionAsText($user, $action, $resource)));
-          $debugBar['time']->stopMeasure('access_control_rules');
-          return VoterInterface::ACCESS_GRANTED;
-        }
-      }
-
+    if($isAllowed) {
+      $logger->debug(sprintf('Authorization granted - %s', $this->getUserActionAsText($user, $action, $resource)));
+      return VoterInterface::ACCESS_GRANTED;
     }
 
     $logger->debug(sprintf('Authorization denied - %s', $this->getUserActionAsText($user, $action, $resource)));
-
-    $debugBar['time']->stopMeasure('access_control_rules');
     return VoterInterface::ACCESS_DENIED;
 
   }
@@ -129,7 +111,7 @@ class RuleEngineAccessControlVoter implements VoterInterface {
       '"%s" DO "%s" ON "%s")',
       $user instanceof UserInterface && $user->getUsername() ? $user->getUsername() : 'anon.',
       $action,
-      sprintf('%s[%s]', $resource->getResourceType(), $resource->getResourceId())
+      $resource
     );
   }
 

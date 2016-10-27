@@ -1,11 +1,11 @@
 <?php
 
-namespace Karambol\RuleEngine;
+namespace Karambol\RuleEngine\ExpressionLanguage;
 
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
-class ExpressionFunctionProvider implements ExpressionFunctionProviderInterface
+class SimpleExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
 
   protected $functions = [];

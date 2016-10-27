@@ -34,9 +34,9 @@ class CustomRule implements RuleInterface {
   protected $action;
 
   /**
-   * @ORM\Column(type="integer", name="`order`")
+   * @ORM\Column(type="integer", name="weight")
    */
-  protected $order = 0;
+  protected $weight = 0;
 
   /**
    * @ORM\Column(type="text", length=64, nullable=false)
@@ -88,19 +88,19 @@ class CustomRule implements RuleInterface {
   /**
    * @return
    */
-  public function getOrder()
+  public function getWeight()
   {
-    return $this->order;
+    return $this->weight;
   }
 
   /**
-   * @param  $order
+   * @param  $weight
    *
-   * @return static
+   * @return $this
    */
-  public function setOrder($order)
+  public function setWeight($weight)
   {
-    $this->order = $order;
+    $this->weight = $weight;
     return $this;
   }
 
