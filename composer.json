@@ -4,9 +4,9 @@
       "type": "package",
       "package": {
         "name": "font-awesome/font-awesome",
-        "version": "4.6.3",
+        "version": "4.7.0",
         "dist": {
-          "url": "https://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.6.3.zip",
+          "url": "https://github.com/FortAwesome/Font-Awesome/archive/v4.7.0.zip",
           "type": "zip"
         }
       }
@@ -40,7 +40,7 @@
     "symfony/security-csrf": "^3.0",
     "symfony/event-dispatcher": "^3.0",
     "symfony/expression-language": "^3.0",
-    "font-awesome/font-awesome": "4.6.3",
+    "font-awesome/font-awesome": "^4.7",
     "cocur/slugify": "^2.1",
     "codemirror/codemirror": "5.13.4",
     "symfony/console": "^3.1",
