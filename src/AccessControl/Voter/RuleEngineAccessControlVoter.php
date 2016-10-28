@@ -84,8 +84,6 @@ class RuleEngineAccessControlVoter implements VoterInterface {
     } catch(\Exception $ex) {
       // TODO Store rule exception and provide the debugging information to the administrator
       $logger->error($ex);
-      $debugBar['time']->stopMeasure('access_control_rules');
-      return VoterInterface::ACCESS_DENIED;
     }
 
     $rejections = $context->getVariable('_rejections')->getSource();
