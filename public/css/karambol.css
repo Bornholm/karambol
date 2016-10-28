@@ -63,6 +63,8 @@ html, body {
 
 /* Admin - Rules */
 
+body.karambol.admin_ruleset_upsert_access_control .CodeMirror,
+body.karambol.admin_ruleset_upsert_customization .CodeMirror,
 body.karambol.admin_rules_customization .CodeMirror,
 body.karambol.admin_rules_access_control .CodeMirror {
   height: auto;

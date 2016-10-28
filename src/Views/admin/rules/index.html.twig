@@ -11,6 +11,7 @@
       {% set ruleset_title = 'admin.rules.' ~ ruleset.name ~ '_rules' %}
       <h3>{{ ruleset_title|trans }}</h3>
       {{ form_start(rulesetForm) }}
+      {{form_errors(rulesetForm)}}
       {% include 'admin/rules/_rules.html.twig' %}
       {% do rulesetForm.rules.setRendered %}
       <div class="row">

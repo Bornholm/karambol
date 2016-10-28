@@ -57,7 +57,7 @@ $(function() {
 
     $newRuleCondition.val('').trigger('change');
     $newRuleAction.val('').trigger('change');
-    $newRuleWeight.val('').trigger('change');
+    $newRuleWeight.val(0).trigger('change');
 
     $rulesHolder.append($clone);
     $rulesHolder.data('index', index+1);

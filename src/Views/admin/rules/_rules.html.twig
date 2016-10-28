@@ -11,9 +11,18 @@
     <tbody id="rules-holder">
       {% for rule in rulesetForm.rules %}
         <tr>
-          <td>{{form_widget(rule.weight, {"attr": {"class": "karambol-rule-weight"}})}}</td>
-          <td>{{form_widget(rule.condition)}}</td>
-          <td>{{form_widget(rule.action)}}</td>
+          <td>
+            {{form_widget(rule.weight, {"attr": {"class": "karambol-rule-weight"}})}}
+            {{form_errors(rule.weight)}}
+          </td>
+          <td>
+            {{form_widget(rule.condition)}}
+            {{form_errors(rule.condition)}}
+          </td>
+          <td>
+            {{form_widget(rule.action)}}
+            {{form_errors(rule.action)}}
+          </td>
           <td><button class="remove-rule btn btn-danger btn-sm"><span class="fa fa-trash"></span></button></td>
         </tr>
       {% endfor %}

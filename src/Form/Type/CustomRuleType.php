@@ -27,11 +27,12 @@ class CustomRuleType extends AbstractType
       $builder->add('condition', Type\TextAreaType::class, [
         'attr' => [
           'data-codemirror' => $codeMirrorOpts,
-          'constraints' => [
-            new Constraints\NotBlank()
-          ]
+        ],
+        'constraints' => [
+          new Constraints\NotBlank()
         ]
       ]);
+
       $builder->add('action', Type\TextAreaType::class, [
         'attr' => [
           'data-codemirror' => $codeMirrorOpts
@@ -45,6 +46,8 @@ class CustomRuleType extends AbstractType
         'scale' => 0,
         'rounding_mode' => IntegerToLocalizedStringTransformer::ROUND_DOWN,
         'constraints' => [
+          new Constraints\NotBlank(),
+          new Constraints\Type(['type' => 'int']),
           new Constraints\Range(['min' => 0])
         ],
         'attr' => [
