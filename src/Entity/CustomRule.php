@@ -13,7 +13,7 @@ use Karambol\RuleEngine\RuleInterface;
 class CustomRule implements RuleInterface {
 
   const ORIGIN_SEED = 'seed';
-  const ORIGIN_USER = 'user';
+  const ORIGIN_BACKOFFICE = 'backoffice';
   const ORIGIN_COMMAND = 'command';
 
   /**
@@ -41,7 +41,7 @@ class CustomRule implements RuleInterface {
   /**
    * @ORM\Column(type="text", length=64, nullable=false)
    */
-  protected $origin = self::ORIGIN_USER;
+  protected $origin = self::ORIGIN_BACKOFFICE;
 
   /**
    * @ORM\ManyToOne(targetEntity="Karambol\Entity\Ruleset", inversedBy="rules", cascade="all")

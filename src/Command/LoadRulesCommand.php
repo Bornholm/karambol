@@ -57,7 +57,7 @@ class LoadRulesCommand extends Command
 
       $allRulesets = $cleanup === self::ALL_RULESETS;
 
-      if(!$allRulesets && !$this->rulesetExists($cleanup)) {
+      if(!$allRulesets && !$this->rulesetExists($cleanup) ) {
         $output->writeln(sprintf('<error>The ruleset "%s" does not exist !</error>', $cleanup));
         return 1;
       }
@@ -66,7 +66,7 @@ class LoadRulesCommand extends Command
         $allRulesets ? '' : ' for ruleset "'.$cleanup.'"'
       ));
 
-      $numDeleted = $this->cleanupRules($cleanup);
+      $numDeleted = $this->cleanup($cleanup);
 
       $output->writeln(sprintf('<info>Deleted %s rules.</info>', $numDeleted));
 
@@ -79,39 +79,51 @@ class LoadRulesCommand extends Command
 
   }
 
-  protected function cleanupRules() {
-    $orm = $this->app['orm'];
-    $qb = $orm->getRepository(CustomRule::class)->createQueryBuilder('r');
-    $qb->delete();
-    return $qb->getQuery()->getSingleScalarResult();
-  }
-
   protected function loadRules(array $rules) {
+
     $orm = $this->app['orm'];
+
+    $rulesets = [];
     foreach($rules as $rule) {
-      $ruleset = $this->mergeExistingRuleset($rule->getRuleset());
-      $rule->setRuleset($ruleset);
+      $rulesetName = $rule->getRuleset()->getName();
+      if(isset($rulesets[$rulesetName])) continue;
+      $rulesetId = $this->ensureRuleset($rulesetName);
+      $rulesets[$rulesetName] = $orm->getReference(Ruleset::class, $rulesetId);
+    }
+
+    foreach($rules as $rule) {
+      $rulesetName = $rule->getRuleset()->getName();
+      $rule->setRuleset($rulesets[$rulesetName]);
       $orm->merge($rule);
     }
+
     $orm->flush();
+
   }
 
-  protected function mergeExistingRuleset(Ruleset $ruleset) {
+  protected function ensureRuleset($rulesetName) {
     $orm = $this->app['orm'];
-    $existingRuleset = $orm->getRepository(Ruleset::class)->findOneByName($ruleset->getName());
-    if($existingRuleset) $ruleset->setId($existingRuleset->getId());
-    return $ruleset;
+    $ruleset = $orm->getRepository(Ruleset::class)->findOneByName($rulesetName);
+    if($ruleset) return $ruleset->getId();
+    $ruleset = new Ruleset();
+    $ruleset->setName($rulesetName);
+    $orm->persist($ruleset);
+    $orm->flush();
+    return $ruleset->getId();
   }
+
 
   protected function cleanup($cleanupRuleset) {
     $orm = $this->app['orm'];
     $qb = $orm->getRepository(CustomRule::class)->createQueryBuilder('r');
-    $qb->delete();
     if( $cleanupRuleset !== self::ALL_RULESETS ) {
-      $qb->join('r.ruleset', 's');
-      $qb->where($qb->expr()->eq('s.name', $qb->expr()->literal($cleanupRuleset)));
+      $qb->join('r.ruleset', 'rs');
+      $qb->where($qb->expr()->eq('rs.name', $qb->expr()->literal($cleanupRuleset)));
     }
-    return $qb->getQuery()->getSingleScalarResult();
+    $rules = $qb->getQuery()->getResult();
+    foreach($rules as $r) $orm->remove($r);
+    $orm->flush();
+    return count($rules);
   }
 
   protected function rulesetExists($rulesetName) {
