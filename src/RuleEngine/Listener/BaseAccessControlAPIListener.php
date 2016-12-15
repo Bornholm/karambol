@@ -35,7 +35,7 @@ class BaseAccessControlAPIListener {
     $provider->registerFunction('addRole', [$this, 'addRole']);
     $provider->registerFunction('removeRole', [$this, 'removeRole']);
     $provider->registerFunction('hasRole', [$this, 'hasRole']);
-    $provider->registerFunction('matches', [$this, 'matches']);
+    $provider->registerFunction('match', [$this, 'match']);
 
   }
 
@@ -93,7 +93,7 @@ class BaseAccessControlAPIListener {
     return false;
   }
 
-  public function matches(array $vars, ResourceInterface $resource, $criteria) {
+  public function match(array $vars, $resource, $criteria) {
 
     $resource = $this->unwrap($resource);
     $criteria = $this->unwrap($criteria);

@@ -22,22 +22,14 @@ class AccessControlAPITest extends \PHPUnit_Framework_TestCase
   public function setUp() {
     $this->karambolSetUp();
     $this->ruleEngine = $this->app['rule_engine'];
+    $listener = new BaseAccessControlAPIListener($this->app);
   }
 
   public function testOwnsAllowMethod() {
 
-    $listener = new BaseAccessControlAPIListener($this->app);
-
-    $userStub = $this->createPartialMock(User::class, array('getId'));
-    $userStub->method('getId')->willReturn(1);
-
+    $userStub = $this->getUserStub(1);
     $resource = new Resource('user', 1);
-
-    $context = new Context();
-    $context->expose('user', $userStub);
-    $context->expose('resource', $resource);
-    $context->expose('_authorizations', new PermissionCollection());
-    $context->expose('_rejections', new PermissionCollection());
+    $context = $this->getAccessControlContext($userStub, $resource);
 
     $rules = [
       new Rule('owns(resource)', ["allow('*', resource)"])
@@ -61,19 +53,12 @@ class AccessControlAPITest extends \PHPUnit_Framework_TestCase
 
   public function testOwnsDenyMethod() {
 
-    $listener = new BaseAccessControlAPIListener($this->app);
-
     $userId = 1;
     $userStub = $this->getUserStub($userId);
 
     $notUserId = 2;
     $resource = new Resource('user', $notUserId, 'password');
-
-    $context = new Context();
-    $context->expose('user', $userStub);
-    $context->expose('resource', $resource);
-    $context->expose('_authorizations', new PermissionCollection());
-    $context->expose('_rejections', new PermissionCollection());
+    $context = $this->getAccessControlContext($userStub, $resource);
 
     $rules = [
       new Rule('!owns(resource)', ["deny('*', resource)"])
@@ -97,19 +82,10 @@ class AccessControlAPITest extends \PHPUnit_Framework_TestCase
 
   public function testAllowDeny() {
 
-    $listener = new BaseAccessControlAPIListener($this->app);
-
     $userId = 1;
     $userStub = $this->getUserStub($userId);
-
     $resource = new Resource('user', $userId, 'password');
-
-    $context = new Context();
-    $context->expose('user', $userStub);
-    $context->expose('resource', $resource);
-    $context->expose('_authorizations', new PermissionCollection());
-    $context->expose('_rejections', new PermissionCollection());
-
+    $context = $this->getAccessControlContext($userStub, $resource);
     $rules = [
       new Rule('owns(resource)', ["allow('*', resource)"]),
       new Rule('owns(resource) and resource.type == "user" and resource.property == "password"', ['deny("*", resource)'])
@@ -128,6 +104,48 @@ class AccessControlAPITest extends \PHPUnit_Framework_TestCase
       'resource' => $resource,
       'action' => '*'
     ], $reject);
+
+  }
+
+
+  public function testMatch() {
+
+    $user = $this->getUserStub(1);
+    $resource = new Resource('foo', 1);
+    $context = $this->getAccessControlContext($user, $resource);
+
+    $rules = [
+      new Rule('match(resource, "foo")', ["allow('*', resource)"])
+    ];
+
+    $this->ruleEngine->execute(RuleEngine::ACCESS_CONTROL, $rules, $context);
+
+    $authorizations = $context->getVariable('_authorizations')->getSource();
+
+    $this->assertNotNull($authorizations);
+    $this->assertCount(1, $authorizations);
+
+    $auth = $authorizations[0];
+
+    $this->assertArraySubset([
+      'resource' => $resource,
+      'action' => '*'
+    ], $auth);
+
+
+  }
+
+
+  protected function getAccessControlContext($user, $resource) {
+
+    $context = new Context();
+
+    $context->expose('user', $user);
+    $context->expose('resource', $resource);
+    $context->expose('_authorizations', new PermissionCollection());
+    $context->expose('_rejections', new PermissionCollection());
+
+    return $context;
 
   }
 
