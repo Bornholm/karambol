@@ -37,7 +37,6 @@ html, body {
 
 .karambol-flex-item {
   flex: 1 1 auto;
-  align-items: stretch;
   flex-flow: column;
   align-items: stretch;
   display: flex;
@@ -48,6 +47,12 @@ html, body {
 }
 
 /* Page */
+
+.karambol-page-flex {
+  bottom: 0;
+  position: absolute;
+  top: 50px;
+}
 
 .karambol-page-container {
   display: flex;
