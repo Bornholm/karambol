@@ -15,14 +15,14 @@ class ResourceSelectorParserTest extends \PHPUnit_Framework_TestCase
     $parser = new ResourceSelectorParser();
     $selector = $parser->parse('post3[id1,id-2,ID3,id_5]');
 
-    $this->assertEquals('post3', $selector->getResourceType());
+    $this->assertArraySubset(['post3'], $selector->getResourceType());
     $this->assertArraySubset(['id1', 'id-2', 'ID3', 'id_5'], $selector->getResourceReferences());
     $this->assertCount(4, $selector->getResourceReferences());
 
     $parser = new ResourceSelectorParser();
     $selector = $parser->parse('user.password[5]');
 
-    $this->assertEquals('password', $selector->getResourcePropertyName());
+    $this->assertArraySubset(['user', 'password'], $selector->getResourceType());
     $this->assertArraySubset(['5'], $selector->getResourceReferences());
 
   }

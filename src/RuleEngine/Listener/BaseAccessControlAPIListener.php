@@ -43,6 +43,7 @@ class BaseAccessControlAPIListener {
 
     $app = $this->app;
 
+    /* @var Karambol/AccessControl/ResourceInterface */
     $resource = $this->unwrap($resource);
     $user = $this->unwrap($vars['user']);
 
@@ -55,6 +56,9 @@ class BaseAccessControlAPIListener {
     if(!($resource instanceof ResourceInterface)) {
       throw new \Exception('The resource argument must implement the ResourceInterface !');
     }
+
+    // If the resource has not identifier, consider that it has no specific owner yet
+    if(empty($resource->getResourceId())) return true;
 
     return $user->owns($resource);
 
@@ -103,12 +107,9 @@ class BaseAccessControlAPIListener {
     }
 
     if(is_string($criteria)) {
-
       $parser = new ResourceSelectorParser();
       $selector = $parser->parse($criteria);
-
       return $selector->matches($resource);
-
     }
 
     throw new \InvalidArgumentException('The $criteria argument must be a valid resource selector or implements ResourceInterface !');

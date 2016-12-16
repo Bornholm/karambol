@@ -68,19 +68,11 @@ class CustomPage implements PageInterface, ResourceInterface {
   }
 
   public function getResourceType() {
-    return 'page';
+    return ['page'];
   }
 
   public function getResourceId() {
     return $this->getSlug();
-  }
-
-  public function getResourceProperty() {
-    return null;
-  }
-
-  public function getResourceOwnerId() {
-    return null;
   }
 
 }

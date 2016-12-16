@@ -5,14 +5,13 @@ use Karambol\AccessControl\ResourceOwnerInterface;
 
 class ResourceSelector {
 
+  /* @var array */
   protected $resourceType;
   protected $resourceRererences;
-  protected $resourcePropertyName;
 
-  public function __construct($resourceType, array $resourceRererences = [], $resourcePropertyName = null) {
-    $this->resourceType = $resourceType;
+  public function __construct($resourceType, array $resourceRererences = []) {
+    $this->resourceType = is_array($resourceType) ? $resourceType: [$resourceType];
     $this->resourceRererences = $resourceRererences;
-    $this->resourcePropertyName = $resourcePropertyName;
   }
 
   public function getResourceType() {
@@ -23,29 +22,39 @@ class ResourceSelector {
     return $this->resourceRererences;
   }
 
-  public function getResourcePropertyName() {
-    return $this->resourcePropertyName;
-  }
-
   public function matches(ResourceInterface $resource) {
 
-    $resourceTypeMatches = $this->matchResourceType($resource->getResourceType());
-    if(!$resourceTypeMatches) return false;
+    $resourceType = $resource->getResourceType();
 
-    $resourcePropertyMatches = $this->matchResourceProperty($resource->getResourceProperty());
-    if(!$resourcePropertyMatches) return false;
+    $rootTypeMatches = $this->matchRootType($resourceType[0]);
+    if(!$rootTypeMatches) return false;
+
+    $propertyType = count($resourceType) > 1 ? $resourceType[1] : null;
+    $propertyTypeMatches = $this->matchPropertyType($propertyType);
+    if(!$propertyTypeMatches) return false;
 
     return $this->matchResourceReferences($resource->getResourceId());
 
   }
 
-  protected function matchResourceType($resourceType) {
-    return fnmatch($this->getResourceType(), $resourceType);
+  protected function matchRootType($rootType) {
+    return fnmatch($this->getResourceType()[0], $rootType);
   }
 
-  protected function matchResourceProperty(ResourceProperty $resourceProperty = null) {
-    $propertyName = $this->getResourcePropertyName();
-    return $resourceProperty === null || fnmatch($propertyName, $resourceProperty->getName());
+  protected function matchPropertyType($resourcePropertyType = null) {
+
+    $selectorType = $this->getResourceType();
+    $selectorPropertyType = count($selectorType) > 1 ? $selectorType[1] : null;
+
+    $selectorHasProperty = !empty($selectorPropertyType);
+    $resourceHasProperty = !empty($resourcePropertyType);
+
+    if(!$resourceHasProperty && !$selectorHasProperty) return true;
+    if($resourceHasProperty && !$selectorHasProperty) return true;
+    if(!$resourceHasProperty && $selectorHasProperty) return false;
+
+    return fnmatch($selectorPropertyType, $resourcePropertyType);
+
   }
 
   protected function matchResourceReferences($resourceId) {
@@ -56,6 +65,5 @@ class ResourceSelector {
     }
     return false;
   }
-
 
 }

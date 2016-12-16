@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="users")
  * @ORM\HasLifecycleCallbacks
  */
-class User implements UserInterface, ResourceOwnerInterface, ProtectableInterface {
+class User implements UserInterface, ResourceOwnerInterface, ProtectableInterface, ResourceInterface {
 
   const RESOURCE_TYPE = 'user';
 
@@ -199,7 +199,7 @@ class User implements UserInterface, ResourceOwnerInterface, ProtectableInterfac
 
   public function owns(ResourceInterface $resource) {
 
-    $owns = $resource->getResourceType() === self::RESOURCE_TYPE &&
+    $owns = $resource->getResourceType()[0] === self::RESOURCE_TYPE &&
       $resource->getResourceId() === $this->getId()
     ;
 
@@ -221,6 +221,14 @@ class User implements UserInterface, ResourceOwnerInterface, ProtectableInterfac
       'id' => $this->getId(),
       'username' => $this->getUsername()
     ];
+  }
+
+  public function getResourceType() {
+    return ['user'];
+  }
+
+  public function getResourceId() {
+    return $this->getId();
   }
 
   public function __toString() {

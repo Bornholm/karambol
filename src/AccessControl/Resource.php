@@ -7,14 +7,13 @@ use Karambol\RuleEngine\Context\ProtectableInterface;
 
 class Resource implements ResourceInterface, ProtectableInterface {
 
+  /* @var array */
   protected $resourceType;
   protected $resourceId;
-  protected $resourceProperty;
 
-  public function __construct($resourceType, $resourceId, $propertyName = null) {
-    $this->resourceType = $resourceType;
+  public function __construct($resourceType, $resourceId = null) {
+    $this->resourceType = is_array($resourceType) ? $resourceType: [$resourceType];
     $this->resourceId = $resourceId;
-    if($propertyName !== null) $this->resourceProperty = new ResourceProperty($this, $propertyName);
   }
 
   public function getResourceId() {
@@ -25,23 +24,19 @@ class Resource implements ResourceInterface, ProtectableInterface {
     return $this->resourceType;
   }
 
-  public function getResourceProperty() {
-    return $this->resourceProperty;
-  }
-
   public function getExposedAttributes() {
+    $type = $this->getResourceType();
     return [
       'id' => $this->getResourceId(),
-      'type' => $this->getResourceType(),
-      'property' => $this->getResourceProperty() ? $this->getResourceProperty()->getName() : null
+      'type' => $type[0],
+      'property' => count($type) > 1 ? $type[1] : null
     ];
   }
 
   public function __toString() {
     return sprintf(
-      '%s%s[%s]',
-      $this->getResourceType(),
-      $this->getResourceProperty() ? '.'.$this->getResourceProperty()->getName() : '',
+      '%s[%s]',
+      implode('.', $this->getResourceType()),
       $this->getResourceId()
     );
   }

@@ -57,7 +57,7 @@ class AccessControlAPITest extends \PHPUnit_Framework_TestCase
     $userStub = $this->getUserStub($userId);
 
     $notUserId = 2;
-    $resource = new Resource('user', $notUserId, 'password');
+    $resource = new Resource(['user', 'password'], $notUserId);
     $context = $this->getAccessControlContext($userStub, $resource);
 
     $rules = [
@@ -84,7 +84,7 @@ class AccessControlAPITest extends \PHPUnit_Framework_TestCase
 
     $userId = 1;
     $userStub = $this->getUserStub($userId);
-    $resource = new Resource('user', $userId, 'password');
+    $resource = new Resource(['user', 'password'], $userId);
     $context = $this->getAccessControlContext($userStub, $resource);
     $rules = [
       new Rule('owns(resource)', ["allow('*', resource)"]),
@@ -108,29 +108,22 @@ class AccessControlAPITest extends \PHPUnit_Framework_TestCase
   }
 
 
-  public function testMatch() {
+  public function testSelectorMatchProperty() {
 
     $user = $this->getUserStub(1);
-    $resource = new Resource('foo', 1);
+    $resource = new Resource('user');
     $context = $this->getAccessControlContext($user, $resource);
 
     $rules = [
-      new Rule('match(resource, "foo")', ["allow('*', resource)"])
+      new Rule('match(resource, "user.password")', ["deny('*', resource)"])
     ];
 
     $this->ruleEngine->execute(RuleEngine::ACCESS_CONTROL, $rules, $context);
 
-    $authorizations = $context->getVariable('_authorizations')->getSource();
+    $rejections = $context->getVariable('_rejections')->getSource();
 
-    $this->assertNotNull($authorizations);
-    $this->assertCount(1, $authorizations);
-
-    $auth = $authorizations[0];
-
-    $this->assertArraySubset([
-      'resource' => $resource,
-      'action' => '*'
-    ], $auth);
+    $this->assertNotNull($rejections);
+    $this->assertCount(0, $rejections, 'There should be no rejections because the rule should not pass.');
 
 
   }

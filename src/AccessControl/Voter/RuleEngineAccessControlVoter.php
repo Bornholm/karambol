@@ -109,7 +109,7 @@ class RuleEngineAccessControlVoter implements VoterInterface {
       '"%s" DO "%s" ON "%s")',
       $user instanceof UserInterface && $user->getUsername() ? $user->getUsername() : 'anon.',
       $action,
-      $resource
+      method_exists($resource, '__toString') ? $resource : get_class($resource)
     );
   }
 

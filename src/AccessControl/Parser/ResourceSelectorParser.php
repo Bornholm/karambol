@@ -18,10 +18,12 @@ class ResourceSelectorParser {
 
     $resourceToken = $tokens[0];
 
+    $resourceType = [$resourceToken['type']];
+    if(!empty($resourceToken['property'])) $resourceType[] = $resourceToken['property'];
+
     $selector = new ResourceSelector(
-      $resourceToken['type'],
-      $resourceToken['references'],
-      !empty($resourceToken['property']) ? $resourceToken['property'] : null
+      $resourceType,
+      $resourceToken['references']
     );
 
     return $selector;

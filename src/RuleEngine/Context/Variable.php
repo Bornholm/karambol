@@ -25,4 +25,11 @@ class Variable {
     return is_array($source) ? $source[$name] : $source->$name;
   }
 
+  public function __toString() {
+    if(method_exists($this->getSource(), '__toString')) {
+      return $this->getSource()->__toString();
+    }
+    throw new \Exception('This variable has no string representation !');
+  }
+
 }

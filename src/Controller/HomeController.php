@@ -37,9 +37,6 @@ class HomeController extends Controller {
 
     if(!$page) return $this->app->abort(404, 'Page not found !');
 
-    $authChecker = $this->get('security.authorization_checker');
-    $authChecker->isGranted(BaseActions::READ, $page);
-
     return $twig->render('home/page.html.twig', [
       'page' => $page
     ]);
