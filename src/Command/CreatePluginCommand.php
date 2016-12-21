@@ -98,7 +98,7 @@ class CreatePluginCommand extends Command
 
     $this->copyTemplate('config.yml.twig', $pluginDir.'/config.yml', $vars);
     $this->copyTemplate('composer.json.twig', $pluginDir.'/composer.json', $vars);
-    $this->copyTemplate('Plugin.php.twig', $pluginDir.'/src/'.$pluginName.'.php', $vars);
+    $this->copyTemplate('Plugin.php.twig', $pluginDir.'/src/'.$pluginName.'Plugin.php', $vars);
     $this->copyTemplate('gitignore.twig', $pluginDir.'/.gitignore', $vars);
     $this->copyTemplate('fr.yml.twig', $pluginDir.'/locales/fr.yml', $vars);
     $this->copyTemplate('MyController.php.twig', $pluginDir.'/src/Controller/MyController.php', $vars);
@@ -131,6 +131,10 @@ class CreatePluginCommand extends Command
 
     if(is_file($composerManifestPath)) {
       $manifest = json_decode(file_get_contents($composerManifestPath), true);
+      if(!$manifest) {
+        $output->writeln(sprintf('<error>The local composer manifest "%s" seems to be malformed ! Aborting.</error>', $composerManifestPath));
+        return 1;
+      }
     } else {
       $manifest = [
         'repositories' => [],
