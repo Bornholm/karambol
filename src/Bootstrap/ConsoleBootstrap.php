@@ -22,6 +22,7 @@ class ConsoleBootstrap implements BootstrapInterface {
     $console->add(new Command\DumpRulesCommand($app));
     $console->add(new Command\LoadRulesCommand($app));
     $console->add(new Command\ClearCacheCommand($app));
+    $console->add(new Command\CreatePluginCommand($app));
 
   }
 

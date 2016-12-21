@@ -1,0 +1,21 @@
+<?php
+
+namespace {{pluginNamespace}}\Controller;
+
+use Karambol\Controller\Controller;
+use Karambol\KarambolApp;
+
+class MyController extends Controller {
+
+  public function mount(KarambolApp $app) {
+    $app->get('/{{pluginNamespaceSlug}}/{{pluginNameSlug}}', [$this, 'showMyPage'])
+      ->bind('plugins_{{pluginNamespaceSlug}}_{{pluginNameSlug}}_my_page')
+    ;
+  }
+
+  public function showMyPage() {
+    $twig = $this->get('twig');
+    return $twig->render('plugins/{{pluginNamespaceSlug}}/{{pluginNameSlug}}/mypage.html.twig');
+  }
+
+}

@@ -12,8 +12,10 @@ class MonologBootstrap implements BootstrapInterface {
 
     $loggerConfig = $app['config']['logger'];
 
+    $logFile = php_sapi_name() == 'cli' ? $loggerConfig['cli_file'] : $loggerConfig['file'];
+
     $app->register(new MonologServiceProvider(), [
-      'monolog.logfile' => empty($loggerConfig['file']) ? 'php://stdout' : $loggerConfig['file'],
+      'monolog.logfile' => empty($logFile) ? 'php://stdout' : $logFile,
       'monolog.level' => $loggerConfig['level'],
       'monolog.name' => 'karambol',
       'monolog.use_error_handler' => true

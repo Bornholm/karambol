@@ -1,0 +1,9 @@
+plugins:
+  {{pluginNamespaceSlug}}-{{pluginNameSlug}}:
+    class: {{pluginNamespace}}\{{pluginName}}
+    options: ~
+
+# See doc/<language>/assets for informations on how to deploy you plugin assets automatically
+assets:
+  {{pluginNamespaceSlug}}-{{pluginNameSlug}}:
+    - { src: "vendor/{{pluginNamespaceSlug}}/{{pluginNameSlug}}/public", dest: "public/plugins/{{pluginNamespaceSlug}}/{{pluginNameSlug}}" }
