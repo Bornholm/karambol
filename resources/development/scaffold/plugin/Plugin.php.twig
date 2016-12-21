@@ -4,12 +4,29 @@ namespace {{pluginNamespace}};
 
 use Karambol\KarambolApp;
 use Karambol\Plugin\Plugin;
+use {{pluginNamespace}}\Controller;
 
 class {{pluginName}} extends Plugin {
 
   public function boot(KarambolApp $app, array $options) {
-    // $app est l'instance de l'application Karambol
-    // $options est le tableau de paramètres renseignés dans le fichier de configuration de votre plugin.
+
+    parent::boot($app, $options);
+
+    // Add your views
+    $this->registerViews(__DIR__.'/Views');
+
+    // Add your entities
+    // You will need to run "bin/migrate" to update the database schema
+    $this->registerEntities(__DIR__.'/Entity');
+
+    // Add your own translation files
+    $this->registerTranslation('fr', __DIR__.'/../locales/fr.yml');
+
+    // Add your own controllers
+    $this->registerControllers([
+      Controller\MyController::class
+    ]);
+
   }
 
 }

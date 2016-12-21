@@ -12,6 +12,7 @@ database:
 logger:
   file: ~
   level: WARNING
+  cli_file: log/cli.log
 
 mailer:
   sender_address: [noreply@karambol.lan, Karambol Mailer]

@@ -1,0 +1,12 @@
+{{ '{%' }} extends 'home/index.html.twig' {{ '%}' }}
+
+{{ '{%' }} block body_content {{ '%}' }}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="alert alert-success">
+          <p>{{ '{{' }}  '{{pluginNamespaceSlug}}-{{pluginNameSlug}}.my-section.hello_world' | trans {{ '}}' }}</p>
+        </div>
+      </div>
+    </div>
+{{ '{%' }}  endblock {{ '%}' }}
