@@ -17,10 +17,25 @@ class TwigBootstrap implements BootstrapInterface {
 
     $app->register(new HttpFragmentServiceProvider());
 
+    /* @var Karambol/Provider/AppPathprovider/AppPathService */
+    $appPath = $app['app_path'];
+
+    // Initialize Twig options
+    $twigOptions = [];
+
+    // If not in debug mode, activate twig cache
+    if(!$app['debug']) {
+      $twigCacheDir = $appPath->getCacheDir('twig');
+      if(!is_dir($twigCacheDir)) mkdir($twigCacheDir, 0755, true);
+      $twigOptions['cache'] = $twigCacheDir;
+    }
+
+
     // Init Twig view engine
     $app->register(new TwigServiceProvider(), [
       'twig.path' => [__DIR__.'/../Views'],
-      'twig.form.templates' => ['bootstrap_3_layout.html.twig']
+      'twig.form.templates' => ['bootstrap_3_layout.html.twig'],
+      'twig.options' => $twigOptions
     ]);
 
     // Add default helpers
