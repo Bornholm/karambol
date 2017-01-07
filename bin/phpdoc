@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+php ~/.config/composer/vendor/bin/phpdoc.php -d src/ --target /var/www/karambol_will/phpdoc/ --title Karambol
