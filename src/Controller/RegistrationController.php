@@ -1,28 +1,61 @@
 <?php
-
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 namespace Karambol\Controller;
 
 use Karambol\KarambolApp;
 use Karambol\Account\Exception\AccountExistsException;
 use Karambol\Account\Exception\EmailExistsException;
-use Karambol\Entity\User;
 use Karambol\Form\Type\RegisterType;
 use Symfony\Component\Form\FormError;
 
+/**
+ * Enregistrement controller
+ * @package Karambol
+ * @license AGPLv3
+ * @author William Petit
+ */
 class RegistrationController extends Controller {
-
+  
+  /**
+   * Definition des routes
+   * @param KarambolApp $app Application
+   * @author William Petit
+   */
   public function mount(KarambolApp $app) {
     $app->get('/register', [$this, 'showRegister'])->bind('register');
     $app->post('/register', [$this, 'handleRegisterForm'])->bind('handle_register');
   }
-
+  
+  /**
+   * Page enregistrement
+   * @return View
+   * @author William Petit
+   */
   public function showRegister() {
     $form = $this->getRegisterForm();
     return $this->render('registration/register.html.twig', [
       'registerForm' => $form->createView()
     ]);
   }
-
+  
+  /**
+   * Traitement de l'enregistrement
+   * @return redirect
+   * @author William Petit
+   */
   public function handleRegisterForm() {
 
     $settings = $this->get('settings');
@@ -72,7 +105,12 @@ class RegistrationController extends Controller {
     return $this->redirect($this->get('url_generator')->generate('home'));
 
   }
-
+  
+  /**
+   * Renvoi le formulaire d'inscription
+   * @return Form
+   * @author William Petit
+   */
   protected function getRegisterForm() {
 
     $formFactory = $this->get('form.factory');
