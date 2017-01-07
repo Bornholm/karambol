@@ -10,5 +10,4 @@
 !/config/local.d/.gitkeep
 /components
 /composer.local.json
-/composer.lock
 /data
