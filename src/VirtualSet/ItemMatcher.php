@@ -40,7 +40,7 @@ class ItemMatcher {
 
       $getter = [$item, 'get'.ucfirst($key)];
       if(is_callable($getter)) {
-        $item = $item->$getter[1]();
+        $item = $item->{$getter[1]}();
         $position++;
         continue;
       }
