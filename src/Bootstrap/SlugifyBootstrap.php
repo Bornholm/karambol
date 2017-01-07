@@ -21,7 +21,6 @@ use Cocur\Slugify\Bridge\Silex\SlugifyServiceProvider;
 /**
  * Initialisation slug
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

@@ -20,7 +20,6 @@ use Karambol\AccessControl\Parser\ResourceSelectorParser;
 /**
  * Check permission
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

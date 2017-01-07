@@ -25,7 +25,6 @@ use Cocur\Slugify\Slugify;
 /**
  * Commande creation de plugin
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

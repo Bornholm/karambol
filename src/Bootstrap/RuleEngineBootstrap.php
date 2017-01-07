@@ -32,7 +32,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * Initialisation moteur de regle
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

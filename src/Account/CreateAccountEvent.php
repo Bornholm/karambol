@@ -21,7 +21,6 @@ use Karambol\Entity\User;
 /**
  * Evenement creation de compte
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

@@ -1,5 +1,18 @@
 <?php
-
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 namespace Karambol\Controller\Admin;
 
 use Karambol\KarambolApp;
@@ -10,14 +23,35 @@ use Karambol\Form\Type\RulesetType;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * Rule controller
+ * @package Karambol
+ * @license AGPLv3
+ * @author William Petit
+ */
 class RulesController extends Controller {
-
+  
+  /**
+   * Nom du set de regle
+   * @var string
+ * @author William Petit
+   */
   protected $rulesetName;
-
+  
+  /**
+   * Constructeur de classe
+   * @param String $rulesetName
+   * @author William Petit
+   */
   public function __construct($rulesetName) {
     $this->rulesetName = $rulesetName;
   }
-
+  
+  /**
+   * Définition des routes
+   * @param KarambolApp $app Application
+   * @author William Petit
+   */
   public function mount(KarambolApp $app) {
     $rulesetName = $this->rulesetName;
     $app->get(sprintf('/admin/rules/%s', $rulesetName), [$this, 'showRules'])
@@ -27,7 +61,12 @@ class RulesController extends Controller {
       ->bind(sprintf('admin_ruleset_upsert_%s', $rulesetName))
     ;
   }
-
+  
+  /**
+   * Affichage des regles
+   * @return View
+   * @author William Petit
+   */
   public function showRules() {
 
     $twig = $this->get('twig');
@@ -50,7 +89,12 @@ class RulesController extends Controller {
     ]);
 
   }
-
+  
+  /**
+   * Insert/Update regle
+   * @return Redirect
+   * @author William Petit
+   */
   public function handleRulesetUpsert() {
 
     $twig = $this->get('twig');
@@ -88,8 +132,14 @@ class RulesController extends Controller {
     $urlGen = $this->get('url_generator');
     return $this->redirect($urlGen->generate(sprintf('admin_rules_%s', $this->rulesetName)));
 
-  }
+  } 
 
+  /**
+   * Renvoi le formulaire de regle
+   * @param Ruleset $ruleset
+   * @return Form
+   * @author William Petit
+   */
   public function getRulesetForm(Ruleset $ruleset) {
 
     $formFactory = $this->get('form.factory');

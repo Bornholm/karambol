@@ -20,7 +20,7 @@ use Karambol\AccessControl\ResourceInterface;
 /**
  * Propriete d'une ressource
  * @package Karambol
- * @since 1.0.0
+ * 
  * @license AGPLv3
  * @author William Petit
  */

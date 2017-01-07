@@ -25,7 +25,6 @@ use Doctrine\DBAL\Types\Type;
 /**
  * Gestion des comptes
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

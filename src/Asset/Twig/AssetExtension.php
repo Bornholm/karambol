@@ -17,12 +17,10 @@ namespace Karambol\Asset\Twig;
 
 use \Twig_Extension;
 use \Twig_SimpleFunction;
-use \Twig_Environment;
 
 /**
  * Gestion des assets
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

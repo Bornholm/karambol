@@ -22,7 +22,6 @@ use Symfony\Component\Translation\Loader\YamlFileLoader;
 /**
  * Initialisation locale
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

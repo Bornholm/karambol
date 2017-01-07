@@ -18,15 +18,12 @@ namespace Karambol\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Karambol\KarambolApp;
-use Karambol\Account\Exception\AccountExistsException;
 
 /**
  * Commande configuration plugin
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author Benjamin Gaudé
  */

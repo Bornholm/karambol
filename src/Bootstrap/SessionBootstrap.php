@@ -21,7 +21,6 @@ use Silex\Provider\SessionServiceProvider;
 /**
  * Initialisation session
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

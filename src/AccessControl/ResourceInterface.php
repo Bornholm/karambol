@@ -18,7 +18,7 @@ namespace Karambol\AccessControl;
 /**
  * Interface pour les ressources
  * @package Karambol
- * @since 1.0.0
+ * 
  * @license AGPLv3
  * @author William Petit
  */

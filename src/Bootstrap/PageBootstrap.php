@@ -22,7 +22,6 @@ use Karambol\Page\BasePagesSubscriber;
 /**
  * Initialisation page
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

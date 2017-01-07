@@ -24,7 +24,6 @@ use Karambol\KarambolApp;
 /**
  * Commande creation de compte
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

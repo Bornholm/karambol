@@ -21,7 +21,7 @@ use Karambol\RuleEngine\Context\ProtectableInterface;
 /**
  * Gestion des ressources
  * @package Karambol
- * @since 1.0.0
+ * 
  * @author William Petit
  */
 class Resource implements ResourceInterface, ProtectableInterface {

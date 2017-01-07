@@ -22,7 +22,6 @@ use Silex\Provider\ValidatorServiceProvider;
 /**
  * Initialisation formulaire
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

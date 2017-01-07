@@ -21,7 +21,6 @@ use Karambol\Entity\User;
 /**
  * Evenement changement de mot de passe
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

@@ -29,7 +29,6 @@ use Karambol\Entity\CustomRule;
 /**
  * Commande chargement des regles
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

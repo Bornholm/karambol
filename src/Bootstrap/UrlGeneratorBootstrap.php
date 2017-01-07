@@ -21,7 +21,6 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 /**
  * Initialisation generateur url
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

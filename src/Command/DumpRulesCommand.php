@@ -28,7 +28,6 @@ use Karambol\Entity\Ruleset;
 /**
  * Commande sauvegarde regle
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

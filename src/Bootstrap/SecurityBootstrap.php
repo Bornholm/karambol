@@ -23,7 +23,6 @@ use Karambol\AccessControl\Voter\RuleEngineAccessControlVoter;
 /**
  * Initialisation securite
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

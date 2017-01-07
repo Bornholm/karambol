@@ -23,7 +23,6 @@ use Karambol\KarambolApp;
 /**
  * Commande generation des assets
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

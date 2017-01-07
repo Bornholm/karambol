@@ -29,7 +29,6 @@ use Karambol\RuleEngine\RuleEngine;
 /**
  * Commande promotion de compte
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

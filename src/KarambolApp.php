@@ -20,14 +20,14 @@ use Silex\Application;
 /**
  * Classe principale
  * @package Karambol
- * @since 1.0.0
+ * 
  * @license AGPLv3
  */
 class KarambolApp extends Application {
 
   /**
    * Constructeur de class
-   * @since 1.0.0
+   * 
    * @author William Petit
    */
   public function __construct() {
@@ -37,7 +37,7 @@ class KarambolApp extends Application {
 
   /**
    * Instancie l'ensemble des éléments nécessaire à l'application
-   * @since 1.0.0
+   * 
    * @author William Petit
    */
   protected function bootstrapApplication() {

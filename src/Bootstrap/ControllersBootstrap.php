@@ -22,7 +22,6 @@ use Karambol\RuleEngine\RuleEngine;
 /**
  * Initialisation controller
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */

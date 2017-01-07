@@ -21,7 +21,6 @@ use Karambol\Plugin\PluginSettingSubscriber;
 /**
  * Initialisation plugin
  * @package Karambol
- * @since 1.0.0
  * @license AGPLv3
  * @author William Petit
  */
