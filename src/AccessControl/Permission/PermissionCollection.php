@@ -1,11 +1,35 @@
 <?php
-
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 namespace Karambol\AccessControl\Permission;
 
 use Karambol\AccessControl\ResourceInterface;
 
+/**
+ * Collection de permission
+ * @package Karambol
+ * @since 1.0.0
+ * @license AGPLv3
+ * @author William Petit
+ */
 class PermissionCollection implements \ArrayAccess, \Countable, \IteratorAggregate {
-
+  
+  /**
+   * Tableau d'autorisation
+   * @var array 
+   */
   protected $authorizations = [];
 
   /**
@@ -15,7 +39,7 @@ class PermissionCollection implements \ArrayAccess, \Countable, \IteratorAggrega
    *
    * @param string $action
    * @param string|ResourceInterface $resource
-   * @return $this
+   * @return PersmissionCollection
    */
   public function add($action, $resource = null) {
 
@@ -33,29 +57,58 @@ class PermissionCollection implements \ArrayAccess, \Countable, \IteratorAggrega
     return $this;
 
   }
-
+  
+  /**
+   * Test l'existence d'une cle
+   * @param int $offset
+   * @return boolean
+   */
   public function offsetExists($offset) {
     return array_key_exists($offset, $this->authorizations);
   }
-
+  
+  /**
+   * Renvoi un enregistrement
+   * @param int $offset
+   * @return array
+   */
   public function offsetGet($offset) {
     return $this->authorizations[$offset];
   }
-
+  
+  /**
+   * Defini la valeur d'un enregistrement
+   * @param int $offset
+   * @param array $value
+   * @return PersmissionCollection
+   */
   public function offsetSet($offset, $value) {
     $this->authorizations[$offset] = $value;
     return $this;
   }
-
+  
+  /**
+   * Supprime un enregistrement
+   * @param int $offset 
+   * @return PermissionCollection
+   */
   public function offsetUnset($offset) {
     unset($this->authorizations[$offset]);
     return $this;
   }
-
+  
+  /**
+   * Compte les enregistrements
+   * @return int
+   */
   public function count() {
     return count($this->authorizations);
   }
-
+  
+  /**
+   * @todo description
+   * @return \ArrayIterator
+   */
   public function getIterator() {
     return new \ArrayIterator($this->authorizations);
   }

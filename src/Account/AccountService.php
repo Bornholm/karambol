@@ -1,5 +1,18 @@
 <?php
-
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 namespace Karambol\Account;
 
 use Karambol\Entity\User;
@@ -9,14 +22,41 @@ use Karambol\Account\ChangePasswordEvent;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Doctrine\DBAL\Types\Type;
 
+/**
+ * Gestion des comptes
+ * @package Karambol
+ * @since 1.0.0
+ * @license AGPLv3
+ * @author William Petit
+ */
 class AccountService extends EventDispatcher {
-
+  
+  /**
+   * Application
+   * @var KarambolApp
+   * @author William Petit
+   */
   protected $app;
-
+  
+  /**
+   * Constructeur de classe
+   * @param KarambolApp $app Application
+   * @author William Petit
+   */
   public function __construct(KarambolApp $app) {
     $this->app = $app;
   }
-
+  
+  /**
+   * Creation de compte
+   * @param string $username Nom d'utilisateur
+   * @param string $password Mot de passe
+   * @param string $email Adresse email
+   * @return User
+   * @throws Exception\AccountExistsException
+   * @throws Exception\EmailExistsException
+   * @author William Petit
+   */
   public function createAccount($username, $password, $email = null) {
 
     if($this->accountExists($username)) {
@@ -49,7 +89,13 @@ class AccountService extends EventDispatcher {
     return $user;
 
   }
-
+  
+  /**
+   * Test l'existence d'un compte
+   * @param string $username Nom d'utilisateur
+   * @return boolean
+   * @author William Petit
+   */
   public function accountExists($username) {
     $orm = $this->app['orm'];
     $qb = $orm->getRepository(User::class)->createQueryBuilder('u');
@@ -58,7 +104,13 @@ class AccountService extends EventDispatcher {
     ;
     return $qb->getQuery()->getSingleScalarResult() != 0;
   }
-
+  
+  /**
+   * Test l'existence d'un email
+   * @param string $email Adresse email
+   * @return boolean
+   * @author William Petit
+   */
   public function emailExists($email) {
     $orm = $this->app['orm'];
     $qb = $orm->getRepository(User::class)->createQueryBuilder('u');
@@ -67,7 +119,14 @@ class AccountService extends EventDispatcher {
     ;
     return $qb->getQuery()->getSingleScalarResult() != 0;
   }
-
+  
+  /**
+   * Change le mot de passe d'un utilisateur
+   * @param User $user
+   * @param string $newPassword
+   * @return User
+   * @author William Petit
+   */
   public function changePassword(User $user, $newPassword) {
 
     $orm = $this->app['orm'];
@@ -85,7 +144,14 @@ class AccountService extends EventDispatcher {
     return $user;
 
   }
-
+  
+  /**
+   * Trouve un utilisateur a partir d'un token
+   * @param string $token
+   * @param \DateInterval $validityInterval
+   * @return User
+   * @author William Petit
+   */
   public function findUserForPasswordToken($token, \DateInterval $validityInterval = null) {
 
     if($validityInterval == null) $validityInterval = new \DateInterval('P1D');
@@ -106,7 +172,13 @@ class AccountService extends EventDispatcher {
     return $qb->getQuery()->getOneOrNullResult();
 
   }
-
+  
+  /**
+   * Envoi un mail pour renouveler son mot de passe
+   * @param User $user
+   * @return AccountService
+   * @author William Petit
+   */
   public function sendPasswordResetEmail(User $user) {
 
     $mailer = $this->app['mailer'];
@@ -141,11 +213,23 @@ class AccountService extends EventDispatcher {
     return $this;
 
   }
-
+  
+  /**
+   * Génère un grain de sel
+   * @return string
+   * @author William Petit
+   */
   protected function generateSalt() {
     return base64_encode(random_bytes(8));
   }
-
+  
+  /**
+   * Hash un mot de passe
+   * @param string $password
+   * @param string $salt
+   * @return string Mot de passe hashé
+   * @author William Petit
+   */
   protected function hashPassword($password, $salt) {
     $encoder = $this->app['security.encoder.digest'];
     return $encoder->encodePassword($password, $salt);

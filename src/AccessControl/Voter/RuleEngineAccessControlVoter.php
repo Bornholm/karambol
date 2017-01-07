@@ -1,8 +1,20 @@
 <?php
-
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 namespace Karambol\AccessControl\Voter;
 
-use Karambol\RuleEngine\Variable\VarsFactory;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
@@ -10,19 +22,31 @@ use Symfony\Component\HttpFoundation\Request;
 use Karambol\AccessControl\ResourceInterface;
 use Karambol\AccessControl\Resource;
 use Karambol\AccessControl\BaseActions;
-use Karambol\AccessControl\Parser\ResourceSelectorParser;
 use Karambol\AccessControl\Permission\PermissionCollection;
-use Karambol\AccessControl\ResourceOwnerInterface;
 use Karambol\AccessControl\Permission\PermissionChecker;
 use Karambol\RuleEngine\RuleEngine;
 use Karambol\Entity\User;
 use Karambol\RuleEngine\Context\Context;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Regles d'access
+ * @package Karambol
+ * @since 1.0.0
+ * @license AGPLv3
+ * @author William Petit
+ */
 class RuleEngineAccessControlVoter implements VoterInterface {
 
   use \Karambol\Util\AppAwareTrait;
 
+  /**
+   * @todo description
+   * @param TokenInterface $token
+   * @param type $subject
+   * @param array $attributes
+   * @return VoterInterface
+   */
   public function vote(TokenInterface $token, $subject, array $attributes) {
 
     $app = $this->app;

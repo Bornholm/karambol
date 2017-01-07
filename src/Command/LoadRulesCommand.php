@@ -1,5 +1,18 @@
 <?php
-
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 namespace Karambol\Command;
 
 use Karambol\RuleEngine\Backup\Deserializer;
@@ -12,21 +25,43 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Karambol\KarambolApp;
 use Karambol\Entity\Ruleset;
 use Karambol\Entity\CustomRule;
-use Karambol\RuleEngine\RuleEngine;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 
+/**
+ * Commande chargement des regles
+ * @package Karambol
+ * @since 1.0.0
+ * @license AGPLv3
+ * @author William Petit
+ */
 class LoadRulesCommand extends Command
 {
-
+  /**
+   * Toutes les règles
+   * @var string
+   */
   const ALL_RULESETS = 'all';
-
+  
+  /**
+   * Application
+   * @var KarambolApp 
+   * @author William Petit
+   */
   protected $app;
 
+  /**
+   * Constructeur de classe
+   * @param KarambolApp $app
+   * @author William Petit
+   */
   public function __construct(KarambolApp $app) {
     parent::__construct();
     $this->app = $app;
   }
-
+  
+  /**
+   * Configure command
+   * @author William Petit
+   */
   protected function configure() {
     $this
       ->setName('karambol:rules:load')
@@ -35,7 +70,14 @@ class LoadRulesCommand extends Command
       ->setDescription('Load a set of rules from a file')
     ;
   }
-
+  
+  /**
+   * Execute la commande
+   * @param InputInterface $input
+   * @param OutputInterface $output
+   * @return int
+   * @author William Petit
+   */
   protected function execute(InputInterface $input, OutputInterface $output) {
 
     $dumpPath = $input->getArgument('dumpPath');
@@ -78,7 +120,12 @@ class LoadRulesCommand extends Command
     $output->writeln('<info>Done.</info>');
 
   }
-
+  
+  /**
+   * Charge les regles
+   * @param array $rules
+   * @author William Petit
+   */
   protected function loadRules(array $rules) {
 
     $orm = $this->app['orm'];
@@ -100,7 +147,13 @@ class LoadRulesCommand extends Command
     $orm->flush();
 
   }
-
+  
+  /**
+   * Enregistre des regles
+   * @param type $rulesetName
+   * @return int
+   * @author William Petit
+   */
   protected function ensureRuleset($rulesetName) {
     $orm = $this->app['orm'];
     $ruleset = $orm->getRepository(Ruleset::class)->findOneByName($rulesetName);
@@ -112,7 +165,11 @@ class LoadRulesCommand extends Command
     return $ruleset->getId();
   }
 
-
+  /**
+   * Nettoie un jeu de regle
+   * @param string $cleanupRuleset
+   * @return int
+   */
   protected function cleanup($cleanupRuleset) {
     $orm = $this->app['orm'];
     $qb = $orm->getRepository(CustomRule::class)->createQueryBuilder('r');
@@ -125,7 +182,12 @@ class LoadRulesCommand extends Command
     $orm->flush();
     return count($rules);
   }
-
+  
+  /**
+   * Test si un jeu de regle existe
+   * @param string $rulesetName
+   * @return boolean
+   */
   protected function rulesetExists($rulesetName) {
     $orm = $this->app['orm'];
     return $orm->getRepository(Ruleset::class)->exists($rulesetName);
